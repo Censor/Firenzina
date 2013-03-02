@@ -1,0 +1,24 @@
+Firenzina 2.2.2 xTreme is a free, open-source UCI chess engine by Yuri Censor (Dmitri Gusev), 
+a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt),
+a derivative (via Fire) of FireBird by Kranium (Norman Schmidt) and Sentinel (Milos Stanisavljevic),
+based on (via Fire and FireBird) IppoLit engines
+by Yakov Petrovich Golyadkin, Igor Igorovich Igoronov, Roberto Pescatore,
+Yusuf Ralf Weisskopf, Ivan Skavinsky Skavar and all Decembrists.
+
+Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio added. 
+Acknowledgments: Yuri Censor (Dmitri Gusev) thanks Jose Velasco (Velmarin), Kranium (Norman Schmidt), 
+Jon Dart and Jim Ablett for their support and advice.  
+
+Firenzina 2.2.2 xTreme
+Following the advice of Jose Velasco (Velmarin), switched to _mm_popcnt_u64() from <nmmintrin.h>.
+In order to improve xTreme configurability, allowed up to twice as many threads as there are 
+processors (CPUs) reported. (Hyperthreaded designs report twice as many CPUs as cores. 
+For example, my Core i7 quad reports having 8 processors. Then the default NumThreads is now set to 
+8<<1 = 16. Limit by setting Max_Threads to a lower value than the default 64. In the past, 
+there was no way to have more threads than CPUs.)
+
+Compiled using Intel C++ 13.0 Update 3 (Feb. 6, 2013) under Microsoft Visual Studio Ultimate 2012 Update 1.
+Added a new Firenzina logo based on a fragment of the classic portrait of Giovanna Tuornabuoni 
+by Domenico Ghirlandaio (public domain). Released on February 25, 2013, under 
+GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007.
+ 
