@@ -52,9 +52,9 @@ volatile int init_threads;
 volatile int io_init;
 typePos* volatile Working[MaxCPUs];
 void ThreadStall(typePos *, int);
-static boolean SMPInit = false;
+static bool SMPInit = false;
 static int CurrCPUS = 0;
-static boolean volatile Destroy, Destroyed;
+static bool volatile Destroy, Destroyed;
 
 void EndSMP()
     {

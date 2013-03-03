@@ -52,7 +52,7 @@ int MyCut(typePos *Position, int value, int depth)
     typeDynamic *Pos0 = Position->Dyn;
     uint64 zob = Position->Dyn->Hash;
     int to, fr;
-    boolean Split;
+    bool Split;
 	
 	CheckForMate (value);
 
@@ -194,7 +194,7 @@ int MyCut(typePos *Position, int value, int depth)
            && NextMove->phase != Trans1 && cnt >= 1 && NextMove->phase <= Ordinary_Moves)
             {
             int r;
-            boolean b;
+            bool b;
             Split = true;
             b = IvanSplit(Position, NextMove, depth, value, value, NodeTypeCut, &r);
             if (b)
@@ -309,7 +309,7 @@ int MyCutCheck(typePos *Position, int value, int depth)
     uint64 zob = Position->Dyn->Hash;
     int best_value, singular;
     typeDynamic *Pos0 = Position->Dyn;
-    boolean Gen;
+    bool Gen;
 	
 	CheckForMate (value);
 

@@ -39,7 +39,7 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 static void OutputBestMove(typePos *Position)
     {
     int i, k;
-    boolean b;
+    bool b;
     TransPVDeclare();
     int PonderMove = MoveNone;
     if (!RootBestMove)
@@ -139,7 +139,7 @@ void Information(typePos *Position, sint64 x, int Alpha, int Value, int Beta)
     uint64 HashStack[256];
     int i;
     int cnt = 0;
-    boolean B;
+    bool B;
     int mpv;
 
 #ifdef RobboBases
@@ -304,7 +304,7 @@ void Search(typePos *Position)
         Position->Stack[++(Position->StackHeight)] = p->Hash;
     if (Analysing)
         {
-        boolean Repetition;
+        bool Repetition;
         for (p = S; p < Position->Dyn; p++)
             {
             Repetition = false;

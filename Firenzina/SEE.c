@@ -56,7 +56,7 @@ void SetValueArray()
 #include "black.h"
 #endif
 
-boolean MySEE(typePos *Position, uint32 move)
+bool MySEE(typePos *Position, uint32 move)
     {
     int fr, to, PieceValue, CaptureValue, d, dir;
     uint64 bit, cbf, mask, TableIndex[4], gcm = 0, T;

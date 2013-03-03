@@ -247,7 +247,7 @@ int MyExcludeCheck(typePos *Position, int value, int depth, uint32 Move)
     uint64 zob = Position->Dyn->Hash;
     int best_value;
     typeDynamic *Pos0 = Position->Dyn;
-    boolean Gen;
+    bool Gen;
 	CheckForMate (value);
 
     zob ^= Hash(EnumMyK, From(Move)) ^ Hash(EnumOppK, To(Move));

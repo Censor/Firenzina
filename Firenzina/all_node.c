@@ -49,7 +49,7 @@ int MyAll(typePos *Position, int value, int depth)
     typeDynamic *Pos0 = Position->Dyn;
     uint64 zob = Position->Dyn->Hash;
     int to, fr;
-    boolean Split;
+    bool Split;
 	
 	CheckForMate (value);
 
@@ -161,7 +161,7 @@ int MyAll(typePos *Position, int value, int depth)
            && NextMove->phase <= Ordinary_Moves)
             {
             int r;
-            boolean b;
+            bool b;
             Split = true;
             b = IvanSplit(Position, NextMove, depth, value, value, NodeTypeAll, &r);
             CheckHalt();
@@ -267,7 +267,7 @@ int MyAllCheck(typePos *Position, int value, int depth)
     uint64 zob = Position->Dyn->Hash;
     int best_value;
     typeDynamic *Pos0 = Position->Dyn;
-    boolean Gen;
+    bool Gen;
 	
 	CheckForMate (value);
 

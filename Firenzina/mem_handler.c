@@ -37,7 +37,7 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 
 #ifdef LinuxLargePages
 void SetupPrivileges() { }
-void CreateMem(void ** A, int align, uint64 size, int *w, boolean *use, char *string)
+void CreateMem(void ** A, int align, uint64 size, int *w, bool *use, char *string)
     {
         *w = shmget(IPC_PRIVATE, size, IPC_CREAT | SHM_R | SHM_W | SHM_HUGETLB);
         if ((*w) == -1)
@@ -65,7 +65,7 @@ void CreateMem(void ** A, int align, uint64 size, int *w, boolean *use, char *st
        (*use) = false;
     }
 
-void FreeMem(void *A, int *w, boolean *use)
+void FreeMem(void *A, int *w, bool *use)
     {
     if (!A)
         return;
@@ -82,7 +82,7 @@ void FreeMem(void *A, int *w, boolean *use)
 #endif
 
 #ifdef LargePages
-void CreateMem( void ** A, int align, uint64 size, int *w, boolean *use, char *string )
+void CreateMem( void ** A, int align, uint64 size, int *w, bool *use, char *string )
     {
     DWORD ErrorLP;
     if (NoSupport == true)
@@ -136,7 +136,7 @@ void CreateMem( void ** A, int align, uint64 size, int *w, boolean *use, char *s
         MemAlign((*A), align, size);
         }
     }
-void FreeMem( void *A, int *w, boolean *use )
+void FreeMem( void *A, int *w, bool *use )
     {
     if (!A)
         return;
@@ -206,11 +206,11 @@ void SetupPrivileges()
 #endif
 
 #if !defined( LinuxLargePages) && !defined(LargePages)
-void FreeMem( void *A, int *w, boolean *use )
+void FreeMem( void *A, int *w, bool *use )
     {
     AlignedFree(A);
     }
-void CreateMem( void ** A, int align, uint64 size, int *w, boolean *use, char *string )
+void CreateMem( void ** A, int align, uint64 size, int *w, bool *use, char *string )
     {
     MemAlign((*A), align, size);
     }

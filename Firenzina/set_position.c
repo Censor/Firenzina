@@ -201,7 +201,7 @@ static void ParseFen(typePos *Position, char *I)
 static char *ReadFEN(typePos *Position, char *I)
     {
     char i[1024];
-    boolean ok;
+    bool ok;
     int ep;
     sscanf(I, "%s", i);
     ParseFen(Position, i);

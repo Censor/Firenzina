@@ -123,7 +123,7 @@ struct TP
 #endif
 
     uint8 cpu, rp;
-    boolean stop, used;
+    bool stop, used;
     MutexType padlock[1];
     int ChildCount;
     struct TP *parent, *children[MaxCPUs];
