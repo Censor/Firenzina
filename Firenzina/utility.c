@@ -30,7 +30,9 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 
 #include "fire.h"
 #include "material_value.h"
+#ifdef WINDOWS
 #include "intrin.h"
+#endif
 
 #define Tweak (0x74d3c012a8bf965e)
 int PreviousDepth, PreviousFast;
@@ -398,11 +400,7 @@ void GetSysInfo()
 
 		}
 	    
-	NumThreads = NumCPUs<<1; // Modification by Yuri Censor for Firenzina, 2/16/2013
-	                         // Was: NumThreads = NumCPUs; 
-	                         // Problem: We couldn't have more threads than processors
-    if(NumThreads > MaxCPUs)
-        NumThreads = MaxCPUs;
+	NumThreads = (NumCPUs << 1 <= MaxCPUs) ? NumCPUs << 1 : MaxCPUs;
 
     if(NumThreads > OptMaxThreads)
         NumThreads = OptMaxThreads;
