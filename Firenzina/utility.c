@@ -342,26 +342,24 @@ void NewGame(typePos *Position, bool full)
     ResetPositionalGain();
     PawnHashReset();
     }
-void ShowBanner()
-    {
-    char *startup_banner = "" Engine " " Vers " " Platform "\n"
-        "by Yuri Censor, a clone of Fire 2.2 xTreme by Kranium, based on Ippolit\n" // Modification by Yuri Censor for Firenzina, 2/16/2013
-        "compiled by Yuri Censor\n" // Modified by Yuri Censor for Firenzina, 2/23/2013; Was: compiled by NS (i.e., Norman Schmidt)
-        "" __DATE__ " " __TIME__ "\n\n";
+void ShowBanner() 
+    { 
+    char *startup_banner; 
 
-    Send(startup_banner);
-    fflush(stdout);
+   sprintf(startup_banner, Engine Vers Platform "\n");
 
-#ifdef Log
-		if (WriteLog)
-			{
-			log_file = fopen(log_filename, "a");
-			fprintf(log_file, startup_banner);
-			close_log();
-			}
-#endif
+    Send(startup_banner); 
+    fflush(stdout); 
+
+#ifdef Log 
+      if (WriteLog) 
+         { 
+         log_file = fopen(log_filename, "a"); 
+         fprintf(log_file, startup_banner); 
+         close_log(); 
+         } 
+#endif 
     }
-
 void GetSysInfo()
     {
     SYSTEM_INFO sysinfo;
