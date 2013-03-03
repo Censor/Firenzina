@@ -439,25 +439,33 @@ void GetSysInfo()
 
 void SetPOPCNT()
 	{
+#ifndef WINDOWS
+	POPCNT= &__builtin_popcountll;
+
+	Send("Using GCC builtin POPCNT\n");
+
+#else
   	int CPUInfo[4] = {-1};
   	__cpuid(CPUInfo, 0x00000001);
   	HasPopcnt = (CPUInfo[2] >> 23) & 1;
   	if(HasPopcnt)
   		{
     	POPCNT = &PopcntHard;
-    	Send("Hardware POPCNT supported\n\n");
+
+    	Send("Hardware POPCNT supported\n");
 
 #ifdef Log
 		if (WriteLog)
 			{
 			log_file = fopen(log_filename, "a");
-			fprintf(log_file, "Hardware POPCNT supported\n\n");
+			fprintf(log_file, "Hardware POPCNT supported\n");
 			close_log();
 			}
 #endif
   		}
   	else
 		POPCNT = &PopcntEmul;
+#endif
 	}
 
 #ifdef Log
