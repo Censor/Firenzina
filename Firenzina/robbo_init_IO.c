@@ -38,7 +38,7 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 #define WINDOWS_Prefix "icomp."
 int Stat(char * filename);
 
-static int canonico_windows(char *AB, boolean *simm)
+static int canonico_windows(char *AB, bool *simm)
     {
     char Sort[32] = "KQRBNPEFGHIJZUVWX";
     char A[32];
@@ -122,7 +122,7 @@ static int canonico_windows(char *AB, boolean *simm)
         *simm = true;
     return n;
     }
-int NomeCanonico(char *A, boolean *simm)
+int NomeCanonico(char *A, bool *simm)
     {
     char Sort[32] = "QRBNPEFGHIJZUVWXqrbnpefghij";
     int j, n, i, SO[MaxNum];
@@ -489,7 +489,7 @@ void RobboTotalAdd(RobboTotalBase *tb, char *nome, char *DIRECTORY)
     {
     int i, p[4], v, w, u;
     char NOME2[16], NOME[16];
-    boolean PawnFlag = false;
+    bool PawnFlag = false;
     int c = 1, file;
     for (i = 0; i < 16; i++)
         NOME[i] = NOME2[i] = 0;
@@ -736,7 +736,7 @@ void RobboTotalAdd(RobboTotalBase *tb, char *nome, char *DIRECTORY)
     NumTotalBases++;
     }
 
-boolean RobboTotalRegister(char *nome, char *DIRECTORY)
+bool RobboTotalRegister(char *nome, char *DIRECTORY)
     {
     int i, j, v;
     RobboTotalBase *tb;
@@ -911,7 +911,7 @@ static void BlockTotalIndexRegister(char *DIR, FILE *F)
     unsigned char B[16];
     RobboTotalBase *tb;
     int i, num_indexes, n, v, e;
-    boolean SOTT;
+    bool SOTT;
     char NomeFile[1024];
     NOME[4] = 0;
     while (fread(B, 1, 4, F))
@@ -1020,7 +1020,7 @@ static void BlockTotalIndexRegister(char *DIR, FILE *F)
         }
     TotalBaseCountList();
     }
-static boolean HasTotalBlockIndex(char *DIR)
+static bool HasTotalBlockIndex(char *DIR)
     {
     FILE *F;
     char Name[256];

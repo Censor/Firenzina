@@ -46,10 +46,10 @@ int SameO2[64][64];
 typedef struct
     {
     uint8 pi[4], sq[4], wK, bK;
-    boolean wtm, Pawn;
+    bool wtm, Pawn;
     uint32 n;
     uint64 Blocked;
-    boolean DTR;
+    bool DTR;
     } type_PiSq;
 int RB_CPUS;
 uint64 ListSize;
@@ -75,7 +75,7 @@ uint64 ListSize;
 #endif
 MutexType RB_SMP[1];
 MutexType FWriteLock[1];
-boolean DiskSwap;
+bool DiskSwap;
 typedef struct
     {
     uint64 m[4];
@@ -84,7 +84,7 @@ typedef struct
     uint64 pro, PawnMult, PawnMult8, supp;
     int num, maximum_rima, shift, num_indexes;
     uint32 *indexes, Blockpro, BWT;
-    boolean Pawn, simm, Memory, TYPE, is_uno, DTR;
+    bool Pawn, simm, Memory, TYPE, is_uno, DTR;
     sint8 efgh1, efgh2, _0;
     uint16 efgh[4];
     uint8 efgh_shift[4], efgh_file[4];
@@ -131,24 +131,24 @@ uint8 SpearHoriz[64], SpearVert[64], SpearDiag[64];
 typedef struct
     {
     uint8 sq[4], pi[4], rip[4], rip_ai[4], efgh_shift[4], wK, bK;
-    boolean capW[4], capB[4];
+    bool capW[4], capB[4];
     uint64 m[4], KingSlice_molt, Double, ind, Occupied, Pawn, KingSlice, PawnOnFourth;
     } tipo_fPos;
-boolean TotIndOtt(type_PiSq *, int *, uint64 *, uint64 *, int *);
+bool TotIndOtt(type_PiSq *, int *, uint64 *, uint64 *, int *);
 uint64 MakeMark(RobboTotalBase *, int, RobboTotalBase *);
 uint64 MakeRima(RobboTotalBase *, int, RobboTotalBase *);
 void InitVariation();
 int Compression(unsigned char *, int, int);
 int BlockDecompress(unsigned char *, unsigned char *, int, int);
 void InitTotalBaseCache(uint64);
-boolean BitboardPQ(typePos *, type_PiSq *);
+bool BitboardPQ(typePos *, type_PiSq *);
 char TripleBaseDir[1024];
 uint64 TotIndexes;
 #define wEnumB wEnumBL
 #define bEnumB bEnumBL
 #define BlockedPawn 8
 #define MaxNum 4
-int NomeCanonico(char *, boolean *);
+int NomeCanonico(char *, bool *);
 void RobboTotalSott(char *);
 char TotalBaseDir[1024];
 char CompressPrefix[1024];
@@ -188,13 +188,13 @@ int ColScamb[16];
 #define DiskWin(x) ((x) == dWin)
 #define DiskDraw(x) ((x) == dDraw)
 #define DiskLoss(x) ((x) >= dLoss)
-boolean OttIndice(type_PiSq *, uint64 *, uint64 *, int *);
-boolean RobboTotalBaseScore(typePos *, int *);
+bool OttIndice(type_PiSq *, uint64 *, uint64 *, int *);
+bool RobboTotalBaseScore(typePos *, int *);
 int TotalValue(RobboTotalBase *, uint64);
 void KingSlice(RobboTotalBase *, int);
 void RobboTotalAdd(RobboTotalBase *, char *, char *);
-boolean RobboTotalRegister(char *, char *);
-void InitTotalBaseUtility(boolean);
+bool RobboTotalRegister(char *, char *);
+void InitTotalBaseUtility(bool);
 void InitTotalBaseCache();
 void InitTripleBase();
 #define Exchange(x,y) { x ^= y; y ^= x; x ^= y; }

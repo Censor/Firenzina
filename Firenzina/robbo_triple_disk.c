@@ -152,7 +152,7 @@ void OfftoneTripleSMP()
     {
     NextGet->rtb = NULL;
     }
-boolean SubsumeTripleSMP()
+bool SubsumeTripleSMP()
     {
     RobboTripleBase *rtb;
     uint64 off_set, meld;
@@ -191,8 +191,8 @@ boolean SubsumeTripleSMP()
     UnLock(TripleBaseUsage);
     return true;
     }
-boolean DemandDynamicTripleCache(RobboTripleBase *rtb, int heap, int slice, TripleBaseCache ** Cache, uint8 ** Data,
-   uint32 ** Index, boolean ProbingWeak, boolean ProbingImpale)
+bool DemandDynamicTripleCache(RobboTripleBase *rtb, int heap, int slice, TripleBaseCache ** Cache, uint8 ** Data,
+   uint32 ** Index, bool ProbingWeak, bool ProbingImpale)
     {
     int i, h[4], e, bytes, ind;
     uint64 meld = (((uint64)rtb->num) << 48) | (((uint64)heap) << 32) | slice;

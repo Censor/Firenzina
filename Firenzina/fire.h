@@ -30,16 +30,14 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 #define WINDOWS
 //#define WINDOWS_X64
 
 #define Engine "Firenzina"
 #define Vers "2.2.2 xTreme"
-#define Author "Yuri Censor, a clone of Fire 2.2 xTreme by Kranium"
-
-#define true 1
-#define false 0
+#define Author "Yuri Censor, a clone of Fire 2.2 xTreme by Kranium, w/ bugfixed by ZirconiumX"
 
 #define HasPopCNT
 #define HasPreFetch
@@ -87,7 +85,7 @@ uint64 NodeCheck;
 #define Height(x)((x)->height)
 #define Is_Exact(x) (x)
 #include "move.h"
-boolean BoardIsOk, isNewGame;
+bool BoardIsOk, isNewGame;
 
 #define CheckRepetition(in_check)                                             \
 	CheckHalt ();                                                              \
@@ -147,18 +145,18 @@ typedef struct
 #define BitSet(b, B) B |=((uint64) 1) << (b)
 
 // System
-volatile boolean DoPonder;
-volatile boolean Ponder_Hit;
-volatile boolean DoInfinite;
-volatile boolean SuppressInput;
-volatile boolean Stop;
-volatile boolean UCINewGame;
+volatile bool DoPonder;
+volatile bool Ponder_Hit;
+volatile bool DoInfinite;
+volatile bool SuppressInput;
+volatile bool Stop;
+volatile bool UCINewGame;
 
-boolean Ponder;
-boolean CfgFound;
-boolean DoOutput;
-boolean StallInput;
-boolean NoSupport;
+bool Ponder;
+bool CfgFound;
+bool DoOutput;
+bool StallInput;
+bool NoSupport;
 
 int CfgFile;
 int MultiPV;
@@ -172,7 +170,7 @@ long long (*POPCNT) (unsigned long long); // Modification by Yuri Censor for Fir
 uint8 HasPopcnt; 
 
 #ifdef Log
-boolean WriteLog;
+bool WriteLog;
 #endif
 
 // Eval Weights
@@ -204,18 +202,18 @@ int PruneCheck;
 
 // RobboBases
 #ifdef RobboBases
-boolean UseRobboBases;
-boolean VerboseRobboBases;
-boolean AutoloadTotalBases;
-boolean AutoloadTripleBases;
+bool UseRobboBases;
+bool VerboseRobboBases;
+bool AutoloadTotalBases;
+bool AutoloadTripleBases;
 char TotalDir[1024];
 char TripleDir[1024];
 int TotalBaseCache;
 int TripleBaseHash;
 int DynamicTripleBaseCache;
-boolean TotalBasesLoaded;
-boolean TripleBasesLoaded;
-boolean SearchRobboBases;
+bool TotalBasesLoaded;
+bool TripleBasesLoaded;
+bool SearchRobboBases;
 int TripleMaxUsage;
 char BulkDirectory[1024];
 char BulkName[1024];
@@ -223,11 +221,11 @@ char BulkName[1024];
 
 //Search Vars
 int AspirationWindow;
-boolean ExtendInCheck;
+bool ExtendInCheck;
 int ValueCut;
 int NullReduction;
 int VerifyReduction;
-boolean VerifyNull;
+bool VerifyNull;
 int DeltaCutoff;
 int DepthRedMin;
 int HeightMultiplier;
@@ -242,11 +240,11 @@ int TopMinDepth;
 int UndoCountThreshold;
 
 //Split Depths
-boolean SplitAtCN;
+bool SplitAtCN;
 int ANSplitDepth;
 int CNSplitDepth;
 int PVSplitDepth;
-boolean SlitDepth;
+bool SlitDepth;
 
 //Time Management
 int AbsoluteFactor;
@@ -256,17 +254,17 @@ int EasyFactorPonder;
 int NormalFactor;
 
 //UCI Info Strings
-boolean CPULoadInfo;
-boolean CurrMoveInfo;
-boolean DepthInfo;
-boolean HashFullInfo;	
-boolean LowDepthPVs;
-boolean NPSInfo;
-boolean VerboseUCI;
+bool CPULoadInfo;
+bool CurrMoveInfo;
+bool DepthInfo;
+bool HashFullInfo;	
+bool LowDepthPVs;
+bool NPSInfo;
+bool VerboseUCI;
 int MinPVDepth;
 
 #ifdef RobboBases
-	boolean TBHitInfo;
+	bool TBHitInfo;
 #endif
 
 #define CheckForMate(v) \

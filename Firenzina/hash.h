@@ -32,7 +32,7 @@ typedef struct
     {
     uint64 volatile PawnHash;
     uint8 wPfile_count, bPfile_count, OpenFileCount;
-    boolean locked;
+    bool locked;
     uint32 wKdanger, bKdanger;
     uint8 wPlight, wPdark, bPlight, bPdark, wPassedFiles, bPassedFiles, wDrawWeight, bDrawWeight;
     uint32 Score;

@@ -52,7 +52,7 @@ void *FromSlab(uint64 sz)
     }
 
 static int SlabNumber = -1;
-static boolean LargeSlab = false;
+static bool LargeSlab = false;
 void DeleteSlab()
     {
     FreeMem(SlabRootLoc, &SlabNumber, &LargeSlab);

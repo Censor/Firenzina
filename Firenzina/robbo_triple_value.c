@@ -189,8 +189,8 @@ static int GetData(uint8 *E, int ba, uint8 *AB, uint8 *A, int PR, int sb, uint32
         }
     return AB[r];
     }
-static boolean Dynamic256kbBlockLookup(RobboTripleBase *rtb, int heap, uint64 ind, int w, int *res,
-   boolean ProbingWeak, boolean ProbingImpale)
+static bool Dynamic256kbBlockLookup(RobboTripleBase *rtb, int heap, uint64 ind, int w, int *res,
+   bool ProbingWeak, bool ProbingImpale)
     {
     int f;
     uint32 *I;
@@ -244,8 +244,8 @@ static boolean Dynamic256kbBlockLookup(RobboTripleBase *rtb, int heap, uint64 in
         }
     return true;
     }
-static boolean RobboDynamicValue(RobboTripleBase *rtb, uint64 ind, int *res, boolean ProbingWeak,
-   boolean ProbingImpale)
+static bool RobboDynamicValue(RobboTripleBase *rtb, uint64 ind, int *res, bool ProbingWeak,
+   bool ProbingImpale)
     {
     int heap, l, w;
     uint32 *I;
@@ -270,8 +270,8 @@ static boolean RobboDynamicValue(RobboTripleBase *rtb, uint64 ind, int *res, boo
         }
     return Dynamic256kbBlockLookup(rtb, heap, ind, w, res, ProbingWeak, ProbingImpale);
     }
-static boolean RobboTripleValue(RobboTripleBase *rtb, uint64 ind, int *res, boolean ProbingWeak,
-   boolean ProbingImpale)
+static bool RobboTripleValue(RobboTripleBase *rtb, uint64 ind, int *res, bool ProbingWeak,
+   bool ProbingImpale)
     {
     int w = 0, l, u;
     if (rtb->w[2] == 0)
@@ -303,7 +303,7 @@ static boolean RobboTripleValue(RobboTripleBase *rtb, uint64 ind, int *res, bool
     return true;
     }
 
-static boolean TripleIndex(type_PiSq *PISQ, int *tb_num, uint64 *ind)
+static bool TripleIndex(type_PiSq *PISQ, int *tb_num, uint64 *ind)
     {
     int v, i, x, K1, K2, P[4], Q[4];
     int rf;
@@ -430,7 +430,7 @@ static boolean TripleIndex(type_PiSq *PISQ, int *tb_num, uint64 *ind)
 static RobboTripleBase *ThisTripleBase(typePos *Position)
     {
     type_PiSq PiSq[1];
-    boolean b;
+    bool b;
     int i, v;
     uint64 U, V, W;
     PiSq->pi[0] = PiSq->pi[1] = PiSq->pi[2] = PiSq->pi[3] = 0;
@@ -459,12 +459,12 @@ static RobboTripleBase *ThisTripleBase(typePos *Position)
         }
     return NULL;
     }
-static boolean TripleWork(typePos *Position, int *r, boolean ProbingWeak, boolean ProbingImpale)
+static bool TripleWork(typePos *Position, int *r, bool ProbingWeak, bool ProbingImpale)
     {
     int tb;
     uint64 ind, U, V, W;
     type_PiSq PiSq[1];
-    boolean b;
+    bool b;
     PiSq->pi[0] = PiSq->pi[1] = PiSq->pi[2] = PiSq->pi[3] = 0;
     PiSq->sq[0] = PiSq->sq[1] = PiSq->sq[2] = PiSq->sq[3] = 0;
     U = wBitboardP &(bBitboardP >> 8);
@@ -512,7 +512,7 @@ static boolean TripleWork(typePos *Position, int *r, boolean ProbingWeak, boolea
     return false;
     }
 
-boolean TripleValue(typePos *Position, int *Value, boolean ProbingWeak, boolean ProbingImpale)
+bool TripleValue(typePos *Position, int *Value, bool ProbingWeak, bool ProbingImpale)
     {
     int r = vaLOSS, b = vaLOSS, i, move;
     typeMoveList List[256], *list;

@@ -37,7 +37,7 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 static sint64 LastMessage;
 static sint64 AbsoluteTime, DesiredTime, Increment;
 static int Depth;
-static boolean NewPonderhit;
+static bool NewPonderhit;
 jmp_buf J;
 static sint64 BattleTime, EasyTime, NormalTime;
 

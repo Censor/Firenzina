@@ -38,7 +38,7 @@ static char RiMap[16] =
     0, wEnumP, wEnumN, wEnumK, wEnumB, wEnumB, wEnumR, wEnumQ, 8, bEnumP, bEnumN, bEnumK, bEnumB, bEnumB, bEnumR, bEnumQ
     };
 
-boolean BitboardPQ(typePos *Position, type_PiSq *PiSq)
+bool BitboardPQ(typePos *Position, type_PiSq *PiSq)
     {
     uint64 T;
     int n = 0, sq;
@@ -68,12 +68,12 @@ boolean BitboardPQ(typePos *Position, type_PiSq *PiSq)
     return true;
     }
 
-boolean TotIndOtt(type_PiSq *PiSq, int *tb_num, uint64 *ind, uint64 *Double, int *KingSlice)
+bool TotIndOtt(type_PiSq *PiSq, int *tb_num, uint64 *ind, uint64 *Double, int *KingSlice)
     {
     int K1, K2, rf;
     int i = 0, v, PI[4], Squ[4], x;
     RobboTotalBase *TotalBase;
-    boolean simm = false;
+    bool simm = false;
     if (Double != NULL)
         *Double = -1;
     if (PiSq->wtm)
@@ -295,7 +295,7 @@ boolean TotIndOtt(type_PiSq *PiSq, int *tb_num, uint64 *ind, uint64 *Double, int
         *Double = -1;
     return true;
     }
-boolean MakePQ(type_PiSq *PiSq, int *Value, uint64 *ind, uint64 *Double, int *rf)
+bool MakePQ(type_PiSq *PiSq, int *Value, uint64 *ind, uint64 *Double, int *rf)
     {
     int tb;
     RobboTotalBase *TotalBase;
@@ -308,12 +308,12 @@ boolean MakePQ(type_PiSq *PiSq, int *Value, uint64 *ind, uint64 *Double, int *rf
         return true;
     return false;
     }
-static boolean TotalBaseScore(typePos *Position, int *Value)
+static bool TotalBaseScore(typePos *Position, int *Value)
     {
     uint64 ind, U, V, W;
     int rf;
     type_PiSq PiSq[1];
-    boolean b;
+    bool b;
     PiSq->pi[0] = PiSq->pi[1] = PiSq->pi[2] = PiSq->pi[3] = 0;
     PiSq->sq[0] = PiSq->sq[1] = PiSq->sq[2] = PiSq->sq[3] = 0;
     U = wBitboardP &(bBitboardP >> 8);
@@ -332,17 +332,17 @@ static boolean TotalBaseScore(typePos *Position, int *Value)
         }
     return b;
     }
-boolean OttIndice(type_PiSq *PiSq, uint64 *ind, uint64 *Double, int *rf)
+bool OttIndice(type_PiSq *PiSq, uint64 *ind, uint64 *Double, int *rf)
     {
     int tb;
     if (TotIndOtt(PiSq, &tb, ind, Double, rf))
         return true;
     return false;
     }
-boolean RobboTotalBaseScore(typePos *Position, int *Value)
+bool RobboTotalBaseScore(typePos *Position, int *Value)
     {
     int ep = Position->Dyn->ep, move, w, vb = 255;
-    boolean b, b1, b2;
+    bool b, b1, b2;
     if (Position->Dyn->oo)
         return false;
     if (!ep)
