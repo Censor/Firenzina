@@ -262,7 +262,7 @@ static void StackSpear()
         SpearDiag[sq] = (File(sq) << 3) + Rank(sq);
         }
     }
-void InitTotalBaseUtility(boolean Build)
+void InitTotalBaseUtility(bool Build)
     {
     StackSpear();
     strcpy(TotalBaseDir, "RobboTotalBase");

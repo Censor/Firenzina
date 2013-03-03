@@ -57,7 +57,7 @@ void MyTopAnalysis(typePos *Position)
         };
     int sm = 0;
 	
-    boolean TriplePeek = false;
+    bool TriplePeek = false;
     int TriplePeekValue = -ValueInfinity;
 
 	Mobility (Position);

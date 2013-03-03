@@ -192,7 +192,7 @@ int LoadRobboTripleBases()
     TripleBasesLoaded = true;	
     return true;
     }
-boolean RobboMove(typePos *Position, uint32 *am, int *v, int *cap)
+bool RobboMove(typePos *Position, uint32 *am, int *v, int *cap)
     {
     int va, v2, av = 0xff, zv = 0x00, cp;
     typeMoveList move_list[256];
@@ -275,7 +275,7 @@ boolean RobboMove(typePos *Position, uint32 *am, int *v, int *cap)
         }
     return true;
     }
-boolean RobboMake(typePos *Position)
+bool RobboMake(typePos *Position)
     {
     int va, v2, cp;
     uint32 m;

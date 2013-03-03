@@ -184,7 +184,7 @@ void InitBitboards(typePos *Position)
     }
 #ifdef WINDOWS
 #include <time.h>
-boolean TryInput()
+bool TryInput()
     {
     static int init = 0, is_pipe;
     static HANDLE stdin_h;
@@ -240,7 +240,7 @@ uint64 ProcessClock()
 }
 #else
 #include <unistd.h>
-boolean TryInput()
+bool TryInput()
     {
     int v;
     fd_set fd[1];
@@ -300,7 +300,7 @@ void ErrorFen(char *fmt, ...)
     vfprintf(stdout, fmt, Value);
     exit(1);
     }
-void NewGame(typePos *Position, boolean full)
+void NewGame(typePos *Position, bool full)
     {
     int i;
     for (i = A1; i <= H8; i++)

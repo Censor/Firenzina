@@ -33,20 +33,20 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 
 static uint64 PVHashSize = 0x20000;
 static uint64 HashSize;
-static boolean PVFlagHashInit = false;
-static boolean LargePVHash = false;
-static boolean LargeEvalHash = false;
-static boolean LargePawnsHash = false;
-static boolean PawnHashWrapper = false;
-static boolean FlagHashInit = false;
-static boolean Use = false;
+static bool PVFlagHashInit = false;
+static bool LargePVHash = false;
+static bool LargeEvalHash = false;
+static bool LargePawnsHash = false;
+static bool PawnHashWrapper = false;
+static bool FlagHashInit = false;
+static bool Use = false;
 static int LargeEvalNumber = -1;
 static int LargePV = -1;
 static int LargePawns = -1;
 static int Large = -1;
 
 #ifdef RobboBases
-static boolean LargeTripleHash = false;
+static bool LargeTripleHash = false;
 static int LargeTripleNumber = -1;
 #endif
 

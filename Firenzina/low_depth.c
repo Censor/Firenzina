@@ -226,7 +226,7 @@ int MyLowDepthCheck(typePos *Position, int value, int depth)
     {
     int ignored, trans_move = 0, trans_depth, move_depth = 0;
     int Value, i, move, best_value, v, new_depth;
-    boolean Gen;
+    bool Gen;
     TransDeclare();
     typeMoveList List[256], *list, *p, *q;
     typeDynamic *Pos0 = Position->Dyn;

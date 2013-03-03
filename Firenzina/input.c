@@ -33,10 +33,10 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 #define MaxVar 8
 #define NumSubClasses 8
 
-static boolean HasDeletion = false;
+static bool HasDeletion = false;
 static MutexType InputDelete[1];
-static boolean Init = false;
-static boolean QuitDemand = false;
+static bool Init = false;
+static bool QuitDemand = false;
 
 static int UCIFen ()
 	{
@@ -368,7 +368,7 @@ static void SetOption(char *string)
                 {
                 if (!strcmp(v + 6, "false"))
                     {
-                    if (* ((boolean *)(uci->var)) == false)
+                    if (* ((bool *)(uci->var)) == false)
                         {
 						if (VerboseUCI)
 							Send ("info string Option %s %s\n", uci->name, "false");
@@ -384,13 +384,13 @@ static void SetOption(char *string)
 
                         return;
                         }
-                    * ((boolean *)(uci->var)) = false;
+                    * ((bool *)(uci->var)) = false;
                     if (uci->action)
                         uci->action(false);
                     }
                 if (!strcmp(v + 6, "true"))
                     {
-                    if (* ((boolean *)(uci->var)) == true)
+                    if (* ((bool *)(uci->var)) == true)
                         {
 						if (VerboseUCI)
 							Send ("info string Option %s %s\n", uci->name, "true");
@@ -406,18 +406,18 @@ static void SetOption(char *string)
 
                         return;
                         }
-                    * ((boolean *)(uci->var)) = true;
+                    * ((bool *)(uci->var)) = true;
                     if (uci->action)
                         uci->action(true);
                     }
 				if (VerboseUCI)
-					Send ("info string Option %s %s\n", uci->name, (* ((boolean*) (uci->var))) ? "true" : "false");
+					Send ("info string Option %s %s\n", uci->name, (* ((bool*) (uci->var))) ? "true" : "false");
 
 #ifdef Log
 				if (WriteLog)
 					{
 					log_file = fopen(log_filename, "a");
-					fprintf(log_file, "info string Option %s %s\n", uci->name,(*((boolean*) (uci->var))) ? "true" : "false");
+					fprintf(log_file, "info string Option %s %s\n", uci->name,(*((bool*) (uci->var))) ? "true" : "false");
 					close_log();
 					}
 #endif

@@ -112,7 +112,7 @@ void MyPVNodeSMP(typePos *Position)
             }
         if (!sp->tot && !Position->stop)
             {
-            boolean b = (OppKingCheck != 0);
+            bool b = (OppKingCheck != 0);
             v = -OppPV(Position, -beta, -alpha, new_depth, b);
             Undo(Position, m);
             if (Position->stop)

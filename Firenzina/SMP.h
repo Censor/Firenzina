@@ -33,13 +33,13 @@ MutexType Wakeup_Lock_IO[1];
 MutexType SMP[1];
 CondType PThreadCondWait[MaxCPUs];
 CondType Wakeup_IO[1];
-boolean volatile Die[MaxCPUs];
-boolean volatile SMPisActive;
-boolean volatile IvanAllHalt;
-boolean volatile IOAwake;
-boolean volatile InfiniteLoop;
-boolean volatile SearchIsDone;
-boolean volatile StallMode;
+bool volatile Die[MaxCPUs];
+bool volatile SMPisActive;
+bool volatile IvanAllHalt;
+bool volatile IOAwake;
+bool volatile InfiniteLoop;
+bool volatile SearchIsDone;
+bool volatile StallMode;
 int volatile NumThreads;
 typedef struct
     {
@@ -52,8 +52,8 @@ typedef struct
     uint32 good_move;
     uint32 childs;
     typeNext *MovePick;
-    boolean tot;
-    boolean active;
+    bool tot;
+    bool active;
     MutexType splock[1];
     } SplitPoint;
 SplitPoint RootSP[MaxSP];

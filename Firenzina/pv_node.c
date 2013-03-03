@@ -51,7 +51,7 @@ int MyPV(typePos *Position, int Alpha, int Beta, int depth, int check)
     int extend, best_value, new_depth, move_is_check, to, fr;
     typeDynamic *Pos0 = Position->Dyn;
     int singular, LMR, cnt, Median, Margin;
-    boolean Split, see;
+    bool Split, see;
     if (Beta < -ValueMate)
         return(-ValueMate);
     if (Alpha > ValueMate)
@@ -214,7 +214,7 @@ int MyPV(typePos *Position, int Alpha, int Beta, int depth, int check)
 			&& best_value != -ValueInfinity)
             {
             int r;
-            boolean b;
+            bool b;
             Split = true;
             b = IvanSplit(Position, NextMove, depth, Beta, Alpha, NodeTypePV, &r);
             CheckHalt();

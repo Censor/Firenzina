@@ -311,7 +311,7 @@ static SplitPoint *new_splitpoint()
             return &RootSP[sp];
     return NULL;
     }
-boolean IvanSplit(typePos *Position, typeNext *NextMove, int depth, int beta, int alpha, int NodeType, int * r)
+bool IvanSplit(typePos *Position, typeNext *NextMove, int depth, int beta, int alpha, int NodeType, int * r)
     {
     int cpu;
     int split;

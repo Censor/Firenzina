@@ -60,7 +60,7 @@ typedef struct
     FILE *disk;
     char DirNome[256];
     char string[16], path[32];
-    boolean pawns, direct;
+    bool pawns, direct;
     sint8 efgh1, efgh2;
     uint16 efgh[4];
     uint8 efgh_shift[4], efgh_file[4];
@@ -85,6 +85,6 @@ void UnWindowsTriple(char *);
 void InitTripleBase();
 void ReadyTripleBase();
 void VerifyTripleBase(int *);
-boolean DemandDynamicTripleCache(RobboTripleBase *, int, int, TripleBaseCache **, uint8 **, uint32 **, boolean,
-   boolean);
+bool DemandDynamicTripleCache(RobboTripleBase *, int, int, TripleBaseCache **, uint8 **, uint32 **, bool,
+   bool);
 #define TriplePrefix "TRIPLE"

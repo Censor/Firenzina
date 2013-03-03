@@ -736,7 +736,7 @@ static void BlockTripleIndexRegister(char *DIR, FILE *F)
     unsigned char B[16];
     RobboTripleBase *triple;
     int i, heaps, h, j;
-    boolean IS_OK;
+    bool IS_OK;
     char NomeFile[1024], Path[128];
     NOME[4] = 0;
     while (fread(B, 1, 4, F))
@@ -878,7 +878,7 @@ static void BlockTripleIndexRegister(char *DIR, FILE *F)
 	if (VerboseRobboBases)
 		TripleEmit();
     }
-static boolean HasTripleBlockIndex(char *DIR)
+static bool HasTripleBlockIndex(char *DIR)
     {
     FILE *F;
     char Name[256];

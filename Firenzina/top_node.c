@@ -57,7 +57,7 @@ void MyTop(typePos *Position)
         };
 
 #ifdef RobboBases		
-    boolean TriplePeek = false;
+    bool TriplePeek = false;
     int TriplePeekValue = -ValueInfinity;
 #endif
 

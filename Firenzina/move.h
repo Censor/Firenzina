@@ -99,5 +99,5 @@ typedef struct
     } typeMPV;
 typeMPV MPV[256];
 int MultiPV;
-boolean DoSearchMoves;
+bool DoSearchMoves;
 uint32 SearchMoves[256];
