@@ -30,7 +30,11 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
+
+#define bool char
+
+#define true 0
+#define false 1
 
 #define WINDOWS
 //#define WINDOWS_X64
