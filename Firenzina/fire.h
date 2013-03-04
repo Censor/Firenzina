@@ -33,6 +33,9 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 
 #define bool char
 
+#define true 0
+#define false 1
+
 #define WINDOWS
 //#define WINDOWS_X64
 
