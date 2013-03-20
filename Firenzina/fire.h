@@ -31,17 +31,17 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 #include <stdio.h>
 #include <stdlib.h>
 
-#define bool char
+//#define bool char
 
-#define true 0
-#define false 1
+#define true 1
+#define false 0
 
 #define WINDOWS
 //#define WINDOWS_X64
 
 #define Engine "Firenzina"
-#define Vers "2.2.2 xTreme"
-#define Author "Yuri Censor, a clone of Fire 2.2 xTreme by Kranium, w/ bugfixed by ZirconiumX"
+#define Vers "2.2.3 xTreme"
+#define Author "Yuri Censor and ZirconiumX, a clone of Fire 2.2 xTreme by Kranium"
 
 #define HasPopCNT
 #define HasPreFetch

@@ -29,6 +29,8 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 *******************************************************************************/
 #include <nmmintrin.h> // Modification by Yuri Censor for Firenzina, 2/16/2013
                     // Needed to have access to _mm_popcnt_u64, an intrinsic function.
+#include <intrin.h> // Returned by Yuri Censor for Firenzina, 3/4/2013
+//#pragma intrinsic(_BitScanForward64)
 #ifdef _MSC_VER
 static INLINE int BSF(UINT64 x)
     {

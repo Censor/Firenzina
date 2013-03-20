@@ -30,9 +30,7 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 
 #include "fire.h"
 #include "material_value.h"
-#ifdef WINDOWS
 #include "intrin.h"
-#endif
 
 #define Tweak (0x74d3c012a8bf965e)
 int PreviousDepth, PreviousFast;
@@ -186,7 +184,7 @@ void InitBitboards(typePos *Position)
     }
 #ifdef WINDOWS
 #include <time.h>
-bool TryInput()
+boolean TryInput()
     {
     static int init = 0, is_pipe;
     static HANDLE stdin_h;
@@ -242,7 +240,7 @@ uint64 ProcessClock()
 }
 #else
 #include <unistd.h>
-bool TryInput()
+boolean TryInput()
     {
     int v;
     fd_set fd[1];
@@ -302,7 +300,7 @@ void ErrorFen(char *fmt, ...)
     vfprintf(stdout, fmt, Value);
     exit(1);
     }
-void NewGame(typePos *Position, bool full)
+void NewGame(typePos *Position, boolean full)
     {
     int i;
     for (i = A1; i <= H8; i++)
@@ -344,24 +342,26 @@ void NewGame(typePos *Position, bool full)
     ResetPositionalGain();
     PawnHashReset();
     }
-void ShowBanner() 
-    { 
-    char *startup_banner; 
+void ShowBanner()
+    {
+    char *startup_banner = "" Engine " " Vers " " Platform "\n" // Modification by Yuri Censor for Firenzina, 2/16/2013: 
+        "by Yuri Censor and ZirconiumX, a clone of Fire 2.2 xTreme by Kranium, based on Ippolit\n" // ZirconiumX added, 3/19/2013
+        "compiled by Yuri Censor\n" // Modified by Yuri Censor for Firenzina, 2/23/2013; Was: compiled by NS (i.e., Norman Schmidt)
+        "" __DATE__ " " __TIME__ "\n\n";
 
-   sprintf(startup_banner, Engine Vers Platform "\n");
+    Send(startup_banner);
+    fflush(stdout);
 
-    Send(startup_banner); 
-    fflush(stdout); 
-
-#ifdef Log 
-      if (WriteLog) 
-         { 
-         log_file = fopen(log_filename, "a"); 
-         fprintf(log_file, startup_banner); 
-         close_log(); 
-         } 
-#endif 
+#ifdef Log
+		if (WriteLog)
+			{
+			log_file = fopen(log_filename, "a");
+			fprintf(log_file, startup_banner);
+			close_log();
+			}
+#endif
     }
+
 void GetSysInfo()
     {
     SYSTEM_INFO sysinfo;
@@ -400,7 +400,11 @@ void GetSysInfo()
 
 		}
 	    
-	NumThreads = (NumCPUs << 1 <= MaxCPUs) ? NumCPUs << 1 : MaxCPUs;
+	NumThreads = NumCPUs<<1; // Modification by Yuri Censor for Firenzina, 2/16/2013
+	                         // Was: NumThreads = NumCPUs; 
+	                         // Problem: We couldn't have more threads than processors
+    if(NumThreads > MaxCPUs)
+        NumThreads = MaxCPUs;
 
     if(NumThreads > OptMaxThreads)
         NumThreads = OptMaxThreads;
@@ -437,33 +441,27 @@ void GetSysInfo()
 
 void SetPOPCNT()
 	{
-#ifndef WINDOWS
-	POPCNT= &__builtin_popcountll;
-
-	Send("Using GCC builtin POPCNT\n");
-
-#else
   	int CPUInfo[4] = {-1};
   	__cpuid(CPUInfo, 0x00000001);
   	HasPopcnt = (CPUInfo[2] >> 23) & 1;
-  	if(HasPopcnt)
+	// Direction by Yuri Censor for Firenzina, 03/19/2013.
+	// Comment out the section below to disable hardware POPCNT support:
+  	/**/if(HasPopcnt)
   		{
     	POPCNT = &PopcntHard;
-
-    	Send("Hardware POPCNT supported\n");
+    	Send("Hardware POPCNT supported\n\n");
 
 #ifdef Log
 		if (WriteLog)
 			{
 			log_file = fopen(log_filename, "a");
-			fprintf(log_file, "Hardware POPCNT supported\n");
+			fprintf(log_file, "Hardware POPCNT supported\n\n");
 			close_log();
 			}
 #endif
   		}
-  	else
+  	else/**/
 		POPCNT = &PopcntEmul;
-#endif
 	}
 
 #ifdef Log

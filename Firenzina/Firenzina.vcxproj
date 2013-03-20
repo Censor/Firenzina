@@ -39,8 +39,11 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>Intel C++ Compiler XE 13.0</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>PGInstrument</WholeProgramOptimization>
+    <CharacterSet>NotSet</CharacterSet>
+    <ProfileGuidedOptimization>PGOOptimize</ProfileGuidedOptimization>
+    <InterproceduralOptimization>true</InterproceduralOptimization>
+    <UseIntelIPP>false</UseIntelIPP>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -49,9 +52,9 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>NotSet</CharacterSet>
     <InterproceduralOptimization>true</InterproceduralOptimization>
-    <UseIntelIPP>Sequential</UseIntelIPP>
+    <UseIntelIPP>false</UseIntelIPP>
     <UseIntelMKL>No</UseIntelMKL>
-    <ProfileGuidedOptimization>PGOInstrument</ProfileGuidedOptimization>
+    <ProfileGuidedOptimization>PGOOptimize</ProfileGuidedOptimization>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -91,9 +94,22 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <OmitFramePointers>true</OmitFramePointers>
+      <UseIntelOptimizedHeaders>false</UseIntelOptimizedHeaders>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;NOALIAS</PreprocessorDefinitions>
+      <C99Support>true</C99Support>
+      <VectorizerDiagnosticLevel>LoopsSuccessUnsuccessVect2</VectorizerDiagnosticLevel>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <Optimization>MaxSpeedHighLevel</Optimization>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <CallingConvention>Cdecl</CallingConvention>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -106,7 +122,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>MaxSpeedHighLevel</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
@@ -115,7 +131,7 @@
       <VectorizerDiagnosticLevel>LoopsSuccessUnsuccessVect2</VectorizerDiagnosticLevel>
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);NOALIAS</PreprocessorDefinitions>
       <Parallelization>false</Parallelization>
-      <UseIntelOptimizedHeaders>true</UseIntelOptimizedHeaders>
+      <UseIntelOptimizedHeaders>false</UseIntelOptimizedHeaders>
       <GenerateAlternateCodePaths>None</GenerateAlternateCodePaths>
       <UseProcessorExtensions>SSE42</UseProcessorExtensions>
       <EnableAnsiAliasing>true</EnableAnsiAliasing>
@@ -158,6 +174,7 @@
     <ClInclude Include="undef.h" />
     <ClInclude Include="white.h" />
     <ClInclude Include="win-linux.h" />
+    <ClInclude Include="win32bits.h" />
     <ClInclude Include="win64bits.h" />
   </ItemGroup>
   <ItemGroup>

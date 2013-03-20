@@ -1,30 +1,36 @@
-/*
-Fire is a UCI chess playing engine by Kranium (Norman Schmidt)
-Fire is based on Ippolit source code: http://ippolit.wikispaces.com/
-authors: Yakov Petrovich Golyadkin, Igor Igorovich Igoronov,
-and Roberto Pescatore copyright: (C) 2009 Yakov Petrovich Golyadkin
-date: 92th and 93rd year from Revolution
-owners: PUBLICDOMAIN (workers)
-dedication: To Vladimir Ilyich
+/*******************************************************************************
+Firenzina is a UCI chess playing engine by Yuri Censor (Dmitri Gusev).
+Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
+Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
+Firenzina is a derivative (via Fire) of FireBird by Kranium (Norman Schmidt) 
+and Sentinel (Milos Stanisavljevic). Firenzina is based (via Fire and FireBird)
+on Ippolit source code: http://ippolit.wikispaces.com/
+Ippolit authors: Yakov Petrovich Golyadkin, Igor Igorovich Igoronov,
+and Roberto Pescatore 
+Ippolit copyright: (C) 2009 Yakov Petrovich Golyadkin
+Ippolit date: 92th and 93rd year from Revolution
+Ippolit owners: PUBLICDOMAIN (workers)
+Ippolit dedication: To Vladimir Ilyich
 "This Russian chess ship is a truly glorious achievement of the
  October Revolution and Decembrists movement!"
 
-Fire is free software: you can redistribute it and/or modify
+Firenzina is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-Fire is distributed in the hope that it will be useful,
+Firenzina is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program. If not, see http://www.gnu.org/licenses/.
-*/
+*******************************************************************************/
 
-static int BSF(UINT64 x)
-    {
+#define UINT64 unsigned long long int // Added by Yuri Censor for Firenzina, 3/4/2013
+static _inline int BSF(UINT64 x) // Modified by Yuri Censor for Firenzina, 3/4/2013: _inline instead of INLINE
+    {   // Reason: Intel 13.0 compiler seems happy this way
 		{
 		_asm
             {
@@ -39,8 +45,8 @@ static int BSF(UINT64 x)
 			}
 		}
     }
-static int BSR(UINT64 x)
-    {
+static _inline int BSR(UINT64 x) // Modified by Yuri Censor for Firenzina, 3/4/2013: _inline instead of INLINE
+    {   // Reason: Intel 13.0 compiler seems happy this way
 		{
         _asm
             {
@@ -55,9 +61,8 @@ static int BSR(UINT64 x)
             }
 		}
     }
-// static INLINE int PopcntHard (UINT64 w)
-static INLINE DWORD64 PopcntHard(DWORD64 w) // Modification by Yuri Censor for Firenzina, 2/17/2013
-	{   // Reason: Types changed for __popcnt64 in MS Visual Studio Ultimate 2012
+ static _inline int PopcntHard (UINT64 w) // Modified by Yuri Censor for Firenzina, 3/4/2013: _inline instead of INLINE
+	{   // Reason: Intel 13.0 compiler seems happy this way   
 		{
 		_asm
 			{
@@ -67,9 +72,9 @@ static INLINE DWORD64 PopcntHard(DWORD64 w) // Modification by Yuri Censor for F
 			}
 		}
 	}
-// static INLINE int PopcntEmul (UINT64 v)
-static INLINE DWORD64 PopcntEmul (DWORD64 v) // Modification by Yuri Censor for Firenzina, 2/17/2013
-	{   // Reason: Types changed for __popcnt64 in MS Visual Studio Ultimate 2012
+
+static _inline int PopcntEmul (UINT64 v) // Modified by Yuri Censor for Firenzina, 3/4/2013: _inline instead of INLINE
+	{    // Reason: Intel 13.0 compiler seems happy this way
 	unsigned int v1, v2;
 	v1 = (unsigned int) (v & 0xFFFFFFFF);
 	v1 -= (v1 >> 1) & 0x55555555;
