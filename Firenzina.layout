@@ -32,7 +32,7 @@
 		<Cursor position="752" topLine="0" />
 	</File>
 	<File name="src/benchmark.c" open="0" top="0" tabpos="0">
-		<Cursor position="1137" topLine="0" />
+		<Cursor position="1137" topLine="27" />
 	</File>
 	<File name="src/bits.h" open="0" top="0" tabpos="0">
 		<Cursor position="2712" topLine="0" />
@@ -68,7 +68,7 @@
 		<Cursor position="1181" topLine="0" />
 	</File>
 	<File name="src/fire.h" open="0" top="0" tabpos="0">
-		<Cursor position="1212" topLine="0" />
+		<Cursor position="1533" topLine="21" />
 	</File>
 	<File name="src/functions.h" open="0" top="0" tabpos="0">
 		<Cursor position="752" topLine="0" />
@@ -92,7 +92,7 @@
 		<Cursor position="752" topLine="0" />
 	</File>
 	<File name="src/input.c" open="0" top="0" tabpos="0">
-		<Cursor position="1137" topLine="25" />
+		<Cursor position="9064" topLine="207" />
 	</File>
 	<File name="src/kp_black.h" open="0" top="0" tabpos="0">
 		<Cursor position="752" topLine="0" />
@@ -107,7 +107,7 @@
 		<Cursor position="1137" topLine="0" />
 	</File>
 	<File name="src/main.c" open="0" top="0" tabpos="0">
-		<Cursor position="1137" topLine="25" />
+		<Cursor position="1137" topLine="0" />
 	</File>
 	<File name="src/make_move.c" open="0" top="0" tabpos="0">
 		<Cursor position="1137" topLine="0" />
@@ -236,24 +236,24 @@
 		<Cursor position="1173" topLine="0" />
 	</File>
 	<File name="src/undef.h" open="0" top="0" tabpos="0">
-		<Cursor position="752" topLine="0" />
+		<Cursor position="752" topLine="140" />
 	</File>
 	<File name="src/unmake_move.c" open="0" top="0" tabpos="0">
 		<Cursor position="1137" topLine="0" />
 	</File>
 	<File name="src/utility.c" open="0" top="0" tabpos="0">
-		<Cursor position="1137" topLine="0" />
+		<Cursor position="13173" topLine="456" />
 	</File>
 	<File name="src/white.h" open="0" top="0" tabpos="0">
 		<Cursor position="752" topLine="0" />
 	</File>
 	<File name="src/win-linux.h" open="0" top="0" tabpos="0">
-		<Cursor position="752" topLine="0" />
+		<Cursor position="4743" topLine="80" />
 	</File>
 	<File name="src/win32bits.h" open="0" top="0" tabpos="0">
 		<Cursor position="752" topLine="0" />
 	</File>
 	<File name="src/win64bits.h" open="0" top="0" tabpos="0">
-		<Cursor position="752" topLine="0" />
+		<Cursor position="1556" topLine="9" />
 	</File>
 </CodeBlocks_layout_file>

@@ -23,7 +23,12 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see http://www.gnu.org/licenses/.
 */
 
-#if defined(_WIN64)
+#if defined(__GNUC__)
+
+#include "bits.h"
+
+#elif defined(_WIN64) && defined(_MSC_VER)
+
 static INLINE int BSF(UINT64 x)
     {
     int r;
@@ -36,22 +41,8 @@ static INLINE int BSR(UINT64 x)
     _BitScanReverse64(&r, x);
     return r;
     }
-#else
-static int BSF(UINT64 x)
-    {
-    _asm
-        {
-        bsf rax, x
-        }
-    }
-static int BSR(UINT64 x)
-    {
-    _asm
-        {
-        bsr rax, x
-        }
-    }
-#endif
+
+
 static INLINE int PopcntHard (UINT64 x)
 	{
   	_asm

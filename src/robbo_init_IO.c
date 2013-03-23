@@ -852,7 +852,7 @@ bool RobboTotalRegister(char *nome, char *DIRECTORY)
     return true;
     }
 
-#ifdef WINDOWS
+#if defined(_WIN32) || defined(_WIN64)
 #include <sys/types.h>
 #include <sys/stat.h>
 int Stat(char *filename)
@@ -1041,7 +1041,7 @@ static bool HasTotalBlockIndex(char *DIR)
     fclose(F);
     return true;
     }
-#ifdef WINDOWS
+#if defined(_WIN32) || defined(_WIN64)
 void GetTotalBase(char *A)
     {
     char B[1024];

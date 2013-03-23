@@ -26,6 +26,10 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 #include "fire.h"
 #include "make_unmake.h"
 
+#if defined(__GNUC__)
+#define INLINE inline
+#endif
+
 static INLINE void UnMakeWhiteOO(typePos *Position, int to)
     {
     if (to == G1)

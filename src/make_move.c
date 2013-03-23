@@ -27,6 +27,11 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 #include "make_unmake.h"
 #include "material_value.h"
 
+#if defined(__GNUC__)
+#define INLINE inline
+#endif
+
+
 #define RevCastle(Pos) (Pos)->Dyn->reversible = 0
 
 typedef enum

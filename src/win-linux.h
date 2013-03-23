@@ -23,7 +23,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see http://www.gnu.org/licenses/.
 */
 
-#ifdef WINDOWS
+#if defined(_WIN32) || defined(_WIN64)
 #include <windows.h>
 #define NomeWindows
 
@@ -120,5 +120,5 @@ pthread_t PThread[MaxCPUs], PThreadIO;
 #define IvanThread(A) void* SMPThread (void* A)
 #define IOThread(A) void* io_thread (void* A)
 #define VoidStarType void*
-#define LinuxLargePages true
+//#define LinuxLargePages true
 #endif

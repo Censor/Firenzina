@@ -23,6 +23,8 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see http://www.gnu.org/licenses/.
 */
 
+
+
 #include "fire.h"
 #define DoLocked(x) { Lock (SMP); (x); UnLock (SMP); }
 #define MaxSplit 8
@@ -116,6 +118,12 @@ void FailHigh(SplitPoint *sp, typePos *Position, uint32 m)
     UnLock(Position->parent->padlock);
     UnLock(SMP);
     }
+
+#if defined(__GNUC__)
+#define INLINE inline
+#endif
+
+
 static INLINE void SMPBadHistory(typePos *Position, uint32 m, SplitPoint *sp)
     {
     if ((Position->Dyn + 1)->cp == 0 && MoveHistory(m))
@@ -204,7 +212,7 @@ void ThreadStall(typePos *Parent, int cpu)
             {
             if (Die[cpu])
                 return;
-#ifdef WINDOWS
+#if defined(_WIN32) || defined(_WIN64)
             WaitForLock(PThreadCondWait[cpu], PThreadCondMutex[cpu]);
 #else
             Lock(&PThreadCondMutex[cpu]);
