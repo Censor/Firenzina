@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Firenzina" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/Firenzina" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/Firenzina" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+		</Compiler>
+		<Unit filename="src/50move.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/Makefile" />
+		<Unit filename="src/SEE.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/SMP.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/SMP.h" />
+		<Unit filename="src/SMP_init.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/SMP_search.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/all_node.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/arrays.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/arrays.h" />
+		<Unit filename="src/benchmark.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/bits.h" />
+		<Unit filename="src/black.h" />
+		<Unit filename="src/board.h" />
+		<Unit filename="src/common.h" />
+		<Unit filename="src/control.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/control.h" />
+		<Unit filename="src/cut_node.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/endgame.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/evaluation.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/evaluation.h" />
+		<Unit filename="src/exclude_node.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/fire.h" />
+		<Unit filename="src/functions.h" />
+		<Unit filename="src/hash.h" />
+		<Unit filename="src/hash_init.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/hash_use.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/history.h" />
+		<Unit filename="src/init.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/init_gen.h" />
+		<Unit filename="src/input.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/kp_black.h" />
+		<Unit filename="src/kp_white.h" />
+		<Unit filename="src/low_depth.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/magic_mult.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/make_move.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/make_unmake.h" />
+		<Unit filename="src/material_value.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/material_value.h" />
+		<Unit filename="src/mem_handler.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/mobility.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/move.h" />
+		<Unit filename="src/move_gen.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/next_move.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/null_move.h" />
+		<Unit filename="src/ok_move.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/pawn_eval.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/pawn_eval.h" />
+		<Unit filename="src/pv_node.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/qsearch.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/qsearch_pv.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/robbo_cache.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/robbo_comp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/robbo_count.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/robbo_decomp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/robbo_glue.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/robbo_init.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/robbo_init_IO.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/robbo_suffix.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/robbo_totalbase.h" />
+		<Unit filename="src/robbo_triple.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/robbo_triple_disk.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/robbo_triple_init.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/robbo_triple_value.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/robbo_triplebase.h" />
+		<Unit filename="src/robbo_utility.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/root_analysis.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/root_multipv.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/root_node.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/search.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/set_position.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/signals.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/slab_memory.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/slab_memory.h" />
+		<Unit filename="src/static.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/top_analysis.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/top_node.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/undef.h" />
+		<Unit filename="src/unmake_move.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/utility.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/white.h" />
+		<Unit filename="src/win-linux.h" />
+		<Unit filename="src/win32bits.h" />
+		<Unit filename="src/win64bits.h" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
