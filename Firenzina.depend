@@ -1,0 +1,497 @@
+# depslib dependency file v1.0
+1364058925 source:/home/matthew/Projects/Firenzina/src/50move.c
+	"fire.h"
+
+1364058601 /home/matthew/Projects/Firenzina/src/fire.h
+	<stdio.h>
+	<stdlib.h>
+	<memory.h>
+	"win-linux.h"
+	"hash.h"
+	"move.h"
+	"SMP.h"
+	"board.h"
+	"slab_memory.h"
+	"arrays.h"
+	"functions.h"
+	"common.h"
+
+1364058602 /home/matthew/Projects/Firenzina/src/win-linux.h
+	<windows.h>
+	"win64bits.h"
+	"win32bits.h"
+	"bits.h"
+	<pthread.h>
+
+1364058595 /home/matthew/Projects/Firenzina/src/win64bits.h
+
+1364058600 /home/matthew/Projects/Firenzina/src/win32bits.h
+
+1364058600 /home/matthew/Projects/Firenzina/src/bits.h
+	<limits.h>
+	<stdint.h>
+
+1364058601 /home/matthew/Projects/Firenzina/src/hash.h
+
+1364058601 /home/matthew/Projects/Firenzina/src/move.h
+
+1364058600 /home/matthew/Projects/Firenzina/src/SMP.h
+	<setjmp.h>
+
+1364058600 /home/matthew/Projects/Firenzina/src/board.h
+
+1364058601 /home/matthew/Projects/Firenzina/src/slab_memory.h
+
+1364058600 /home/matthew/Projects/Firenzina/src/arrays.h
+
+1364058601 /home/matthew/Projects/Firenzina/src/functions.h
+
+1364058600 /home/matthew/Projects/Firenzina/src/common.h
+
+1364058925 source:/home/matthew/Projects/Firenzina/src/SEE.c
+	"fire.h"
+	"SEE.c"
+	"white.h"
+	"black.h"
+
+1364058925 /home/matthew/Projects/Firenzina/src/SEE.c
+	"fire.h"
+	"SEE.c"
+	"white.h"
+	"black.h"
+
+1364058602 /home/matthew/Projects/Firenzina/src/white.h
+	"undef.h"
+
+1364058601 /home/matthew/Projects/Firenzina/src/undef.h
+
+1364058600 /home/matthew/Projects/Firenzina/src/black.h
+
+1364058925 source:/home/matthew/Projects/Firenzina/src/SMP.c
+	"fire.h"
+	<signal.h>
+
+1364058925 source:/home/matthew/Projects/Firenzina/src/SMP_init.c
+	"fire.h"
+
+1364058925 source:/home/matthew/Projects/Firenzina/src/SMP_search.c
+	"fire.h"
+	"SMP_search.c"
+	"white.h"
+	"black.h"
+
+1364058925 /home/matthew/Projects/Firenzina/src/SMP_search.c
+	"fire.h"
+	"SMP_search.c"
+	"white.h"
+	"black.h"
+
+1364058925 source:/home/matthew/Projects/Firenzina/src/all_node.c
+	"fire.h"
+	"history.h"
+	"null_move.h"
+	"all_node.c"
+	"white.h"
+	"black.h"
+
+1364058601 /home/matthew/Projects/Firenzina/src/history.h
+
+1364058601 /home/matthew/Projects/Firenzina/src/null_move.h
+
+1364058925 /home/matthew/Projects/Firenzina/src/all_node.c
+	"fire.h"
+	"history.h"
+	"null_move.h"
+	"all_node.c"
+	"white.h"
+	"black.h"
+
+1364058925 source:/home/matthew/Projects/Firenzina/src/arrays.c
+	"fire.h"
+
+1364058925 source:/home/matthew/Projects/Firenzina/src/benchmark.c
+	"fire.h"
+
+1364058925 source:/home/matthew/Projects/Firenzina/src/control.c
+	"fire.h"
+	"control.h"
+
+1364058601 /home/matthew/Projects/Firenzina/src/control.h
+	<setjmp.h>
+	<time.h>
+
+1364058925 source:/home/matthew/Projects/Firenzina/src/cut_node.c
+	"fire.h"
+	"history.h"
+	"null_move.h"
+	"cut_node.c"
+	"white.h"
+	"black.h"
+
+1364058925 /home/matthew/Projects/Firenzina/src/cut_node.c
+	"fire.h"
+	"history.h"
+	"null_move.h"
+	"cut_node.c"
+	"white.h"
+	"black.h"
+
+1364058925 source:/home/matthew/Projects/Firenzina/src/endgame.c
+	"fire.h"
+
+1364058925 source:/home/matthew/Projects/Firenzina/src/evaluation.c
+	"fire.h"
+	"evaluation.h"
+	"kp_white.h"
+	"kp_black.h"
+
+1364058601 /home/matthew/Projects/Firenzina/src/evaluation.h
+
+1364058601 /home/matthew/Projects/Firenzina/src/kp_white.h
+
+1364058601 /home/matthew/Projects/Firenzina/src/kp_black.h
+
+1364058925 source:/home/matthew/Projects/Firenzina/src/exclude_node.c
+	"fire.h"
+	"history.h"
+	"null_move.h"
+	"exclude_node.c"
+	"white.h"
+	"black.h"
+
+1364058925 /home/matthew/Projects/Firenzina/src/exclude_node.c
+	"fire.h"
+	"history.h"
+	"null_move.h"
+	"exclude_node.c"
+	"white.h"
+	"black.h"
+
+1364058925 source:/home/matthew/Projects/Firenzina/src/hash_init.c
+	"fire.h"
+
+1364058925 source:/home/matthew/Projects/Firenzina/src/hash_use.c
+	"fire.h"
+
+1364058925 source:/home/matthew/Projects/Firenzina/src/init.c
+	"fire.h"
+	<sys/time.h>
+
+1364058925 source:/home/matthew/Projects/Firenzina/src/input.c
+	"fire.h"
+	"control.h"
+	<io.h>
+	<conio.h>
+	<unistd.h>
+
+1364058925 source:/home/matthew/Projects/Firenzina/src/low_depth.c
+	"fire.h"
+	"history.h"
+	"null_move.h"
+	"low_depth.c"
+	"white.h"
+	"black.h"
+
+1364058925 /home/matthew/Projects/Firenzina/src/low_depth.c
+	"fire.h"
+	"history.h"
+	"null_move.h"
+	"low_depth.c"
+	"white.h"
+	"black.h"
+
+1364058925 source:/home/matthew/Projects/Firenzina/src/magic_mult.c
+	"fire.h"
+
+1364058925 source:/home/matthew/Projects/Firenzina/src/main.c
+	"fire.h"
+
+1364058925 source:/home/matthew/Projects/Firenzina/src/make_move.c
+	"fire.h"
+	"make_unmake.h"
+	"material_value.h"
+
+1364058601 /home/matthew/Projects/Firenzina/src/make_unmake.h
+
+1364058601 /home/matthew/Projects/Firenzina/src/material_value.h
+
+1364058925 source:/home/matthew/Projects/Firenzina/src/material_value.c
+	"fire.h"
+
+1364058925 source:/home/matthew/Projects/Firenzina/src/mem_handler.c
+	"fire.h"
+	<sys/ipc.h>
+	<sys/shm.h>
+
+1364058925 source:/home/matthew/Projects/Firenzina/src/mobility.c
+	"fire.h"
+
+1364058925 source:/home/matthew/Projects/Firenzina/src/move_gen.c
+	"fire.h"
+	"init_gen.h"
+	"move_gen.c"
+	"white.h"
+	"black.h"
+
+1364058601 /home/matthew/Projects/Firenzina/src/init_gen.h
+
+1364058925 /home/matthew/Projects/Firenzina/src/move_gen.c
+	"fire.h"
+	"init_gen.h"
+	"move_gen.c"
+	"white.h"
+	"black.h"
+
+1364058925 source:/home/matthew/Projects/Firenzina/src/next_move.c
+	"fire.h"
+	"next_move.c"
+	"white.h"
+	"black.h"
+
+1364058925 /home/matthew/Projects/Firenzina/src/next_move.c
+	"fire.h"
+	"next_move.c"
+	"white.h"
+	"black.h"
+
+1364058925 source:/home/matthew/Projects/Firenzina/src/ok_move.c
+	"fire.h"
+	"ok_move.c"
+	"white.h"
+	"black.h"
+
+1364058925 /home/matthew/Projects/Firenzina/src/ok_move.c
+	"fire.h"
+	"ok_move.c"
+	"white.h"
+	"black.h"
+
+1364058925 source:/home/matthew/Projects/Firenzina/src/pawn_eval.c
+	"fire.h"
+	"pawn_eval.h"
+
+1364058601 /home/matthew/Projects/Firenzina/src/pawn_eval.h
+
+1364058925 source:/home/matthew/Projects/Firenzina/src/pv_node.c
+	"fire.h"
+	"history.h"
+	"control.h"
+	"pv_node.c"
+	"white.h"
+	"black.h"
+
+1364058925 /home/matthew/Projects/Firenzina/src/pv_node.c
+	"fire.h"
+	"history.h"
+	"control.h"
+	"pv_node.c"
+	"white.h"
+	"black.h"
+
+1364058925 source:/home/matthew/Projects/Firenzina/src/qsearch.c
+	"fire.h"
+	"qsearch.c"
+	"white.h"
+	"black.h"
+
+1364058925 /home/matthew/Projects/Firenzina/src/qsearch.c
+	"fire.h"
+	"qsearch.c"
+	"white.h"
+	"black.h"
+
+1364058925 source:/home/matthew/Projects/Firenzina/src/qsearch_pv.c
+	"fire.h"
+	"qsearch_pv.c"
+	"white.h"
+	"black.h"
+
+1364058925 /home/matthew/Projects/Firenzina/src/qsearch_pv.c
+	"fire.h"
+	"qsearch_pv.c"
+	"white.h"
+	"black.h"
+
+1364058925 source:/home/matthew/Projects/Firenzina/src/robbo_cache.c
+	"fire.h"
+	"robbo_totalbase.h"
+
+1364058601 /home/matthew/Projects/Firenzina/src/robbo_totalbase.h
+
+1364058925 source:/home/matthew/Projects/Firenzina/src/robbo_comp.c
+	"fire.h"
+
+1364058925 source:/home/matthew/Projects/Firenzina/src/robbo_count.c
+	"fire.h"
+	"robbo_count.c"
+	"white.h"
+	"black.h"
+
+1364058925 /home/matthew/Projects/Firenzina/src/robbo_count.c
+	"fire.h"
+	"robbo_count.c"
+	"white.h"
+	"black.h"
+
+1364058925 source:/home/matthew/Projects/Firenzina/src/robbo_decomp.c
+	"fire.h"
+
+1364058925 source:/home/matthew/Projects/Firenzina/src/robbo_glue.c
+	"fire.h"
+	"robbo_totalbase.h"
+	"robbo_triplebase.h"
+
+1364058601 /home/matthew/Projects/Firenzina/src/robbo_triplebase.h
+
+1364058925 source:/home/matthew/Projects/Firenzina/src/robbo_init.c
+	"fire.h"
+	"robbo_totalbase.h"
+
+1364058925 source:/home/matthew/Projects/Firenzina/src/robbo_init_IO.c
+	"fire.h"
+	"robbo_totalbase.h"
+	<sys/types.h>
+	<sys/stat.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<unistd.h>
+	<fcntl.h>
+	<dirent.h>
+	<string.h>
+
+1364058601 source:/home/matthew/Projects/Firenzina/src/robbo_suffix.c
+	<stdio.h>
+	<stdlib.h>
+
+1364058925 source:/home/matthew/Projects/Firenzina/src/robbo_triple.c
+	"fire.h"
+	"robbo_triplebase.h"
+	"robbo_totalbase.h"
+
+1364058925 source:/home/matthew/Projects/Firenzina/src/robbo_triple_disk.c
+	"fire.h"
+	"robbo_triplebase.h"
+	"robbo_totalbase.h"
+
+1364058926 source:/home/matthew/Projects/Firenzina/src/robbo_triple_init.c
+	"fire.h"
+	"robbo_totalbase.h"
+	"robbo_triplebase.h"
+	<fcntl.h>
+	<dirent.h>
+	<string.h>
+	<sys/types.h>
+
+1364058926 source:/home/matthew/Projects/Firenzina/src/robbo_triple_value.c
+	"fire.h"
+	"robbo_triplebase.h"
+	"robbo_totalbase.h"
+
+1364058926 source:/home/matthew/Projects/Firenzina/src/robbo_utility.c
+	"fire.h"
+	"robbo_totalbase.h"
+
+1364058926 source:/home/matthew/Projects/Firenzina/src/root_analysis.c
+	"fire.h"
+	"control.h"
+	"root_analysis.c"
+	"white.h"
+	"black.h"
+
+1364058926 /home/matthew/Projects/Firenzina/src/root_analysis.c
+	"fire.h"
+	"control.h"
+	"root_analysis.c"
+	"white.h"
+	"black.h"
+
+1364058926 source:/home/matthew/Projects/Firenzina/src/root_multipv.c
+	"fire.h"
+	"control.h"
+	"root_multipv.c"
+	"white.h"
+	"black.h"
+
+1364058926 /home/matthew/Projects/Firenzina/src/root_multipv.c
+	"fire.h"
+	"control.h"
+	"root_multipv.c"
+	"white.h"
+	"black.h"
+
+1364058926 source:/home/matthew/Projects/Firenzina/src/root_node.c
+	"fire.h"
+	"control.h"
+	"root_node.c"
+	"white.h"
+	"black.h"
+
+1364058926 /home/matthew/Projects/Firenzina/src/root_node.c
+	"fire.h"
+	"control.h"
+	"root_node.c"
+	"white.h"
+	"black.h"
+
+1364058926 source:/home/matthew/Projects/Firenzina/src/search.c
+	"fire.h"
+	"control.h"
+	"null_move.h"
+
+1364058926 source:/home/matthew/Projects/Firenzina/src/set_position.c
+	"fire.h"
+
+1364058926 source:/home/matthew/Projects/Firenzina/src/signals.c
+	"fire.h"
+	<signal.h>
+
+1364058926 source:/home/matthew/Projects/Firenzina/src/slab_memory.c
+	"fire.h"
+
+1364058926 source:/home/matthew/Projects/Firenzina/src/static.c
+	"fire.h"
+
+1364058926 source:/home/matthew/Projects/Firenzina/src/top_analysis.c
+	"fire.h"
+	"control.h"
+	"top_analysis.c"
+	"white.h"
+	"black.h"
+
+1364058926 /home/matthew/Projects/Firenzina/src/top_analysis.c
+	"fire.h"
+	"control.h"
+	"top_analysis.c"
+	"white.h"
+	"black.h"
+
+1364058926 source:/home/matthew/Projects/Firenzina/src/top_node.c
+	"fire.h"
+	"control.h"
+	"top_node.c"
+	"white.h"
+	"black.h"
+
+1364058926 /home/matthew/Projects/Firenzina/src/top_node.c
+	"fire.h"
+	"control.h"
+	"top_node.c"
+	"white.h"
+	"black.h"
+
+1364058926 source:/home/matthew/Projects/Firenzina/src/unmake_move.c
+	"fire.h"
+	"make_unmake.h"
+
+1364058926 source:/home/matthew/Projects/Firenzina/src/utility.c
+	"fire.h"
+	"material_value.h"
+	<intrin.h>
+	<unistd.h>
+	<sys/select.h>
+	<time.h>
+	<unistd.h>
+	<sys/time.h>
+	<stdarg.h>
+	<sys/sysinfo.h>
+

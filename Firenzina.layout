@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Release" />
+	<File name="src/50move.c" open="0" top="0" tabpos="0">
+		<Cursor position="1137" topLine="3" />
+	</File>
+	<File name="src/Makefile" open="0" top="0" tabpos="0">
+		<Cursor position="2409" topLine="51" />
+	</File>
+	<File name="src/SEE.c" open="0" top="0" tabpos="0">
+		<Cursor position="1581" topLine="81" />
+	</File>
+	<File name="src/SMP.c" open="0" top="0" tabpos="0">
+		<Cursor position="1137" topLine="0" />
+	</File>
+	<File name="src/SMP.h" open="0" top="0" tabpos="0">
+		<Cursor position="752" topLine="0" />
+	</File>
+	<File name="src/SMP_init.c" open="0" top="0" tabpos="0">
+		<Cursor position="1137" topLine="0" />
+	</File>
+	<File name="src/SMP_search.c" open="0" top="0" tabpos="0">
+		<Cursor position="1175" topLine="0" />
+	</File>
+	<File name="src/all_node.c" open="0" top="0" tabpos="0">
+		<Cursor position="1173" topLine="0" />
+	</File>
+	<File name="src/arrays.c" open="0" top="0" tabpos="0">
+		<Cursor position="1137" topLine="0" />
+	</File>
+	<File name="src/arrays.h" open="0" top="0" tabpos="0">
+		<Cursor position="752" topLine="0" />
+	</File>
+	<File name="src/benchmark.c" open="0" top="0" tabpos="0">
+		<Cursor position="1137" topLine="0" />
+	</File>
+	<File name="src/bits.h" open="0" top="0" tabpos="0">
+		<Cursor position="2712" topLine="0" />
+	</File>
+	<File name="src/black.h" open="0" top="0" tabpos="0">
+		<Cursor position="752" topLine="0" />
+	</File>
+	<File name="src/board.h" open="0" top="0" tabpos="0">
+		<Cursor position="752" topLine="0" />
+	</File>
+	<File name="src/common.h" open="0" top="0" tabpos="0">
+		<Cursor position="752" topLine="0" />
+	</File>
+	<File name="src/control.c" open="0" top="0" tabpos="0">
+		<Cursor position="1137" topLine="0" />
+	</File>
+	<File name="src/control.h" open="0" top="0" tabpos="0">
+		<Cursor position="752" topLine="0" />
+	</File>
+	<File name="src/cut_node.c" open="0" top="0" tabpos="0">
+		<Cursor position="1173" topLine="0" />
+	</File>
+	<File name="src/endgame.c" open="0" top="0" tabpos="0">
+		<Cursor position="1137" topLine="0" />
+	</File>
+	<File name="src/evaluation.c" open="0" top="0" tabpos="0">
+		<Cursor position="1137" topLine="0" />
+	</File>
+	<File name="src/evaluation.h" open="0" top="0" tabpos="0">
+		<Cursor position="752" topLine="0" />
+	</File>
+	<File name="src/exclude_node.c" open="0" top="0" tabpos="0">
+		<Cursor position="1181" topLine="0" />
+	</File>
+	<File name="src/fire.h" open="0" top="0" tabpos="0">
+		<Cursor position="1212" topLine="0" />
+	</File>
+	<File name="src/functions.h" open="0" top="0" tabpos="0">
+		<Cursor position="752" topLine="0" />
+	</File>
+	<File name="src/hash.h" open="0" top="0" tabpos="0">
+		<Cursor position="752" topLine="0" />
+	</File>
+	<File name="src/hash_init.c" open="0" top="0" tabpos="0">
+		<Cursor position="1137" topLine="0" />
+	</File>
+	<File name="src/hash_use.c" open="0" top="0" tabpos="0">
+		<Cursor position="1137" topLine="0" />
+	</File>
+	<File name="src/history.h" open="0" top="0" tabpos="0">
+		<Cursor position="752" topLine="0" />
+	</File>
+	<File name="src/init.c" open="0" top="0" tabpos="0">
+		<Cursor position="1137" topLine="25" />
+	</File>
+	<File name="src/init_gen.h" open="0" top="0" tabpos="0">
+		<Cursor position="752" topLine="0" />
+	</File>
+	<File name="src/input.c" open="0" top="0" tabpos="0">
+		<Cursor position="1137" topLine="25" />
+	</File>
+	<File name="src/kp_black.h" open="0" top="0" tabpos="0">
+		<Cursor position="752" topLine="0" />
+	</File>
+	<File name="src/kp_white.h" open="0" top="0" tabpos="0">
+		<Cursor position="752" topLine="0" />
+	</File>
+	<File name="src/low_depth.c" open="0" top="0" tabpos="0">
+		<Cursor position="1175" topLine="0" />
+	</File>
+	<File name="src/magic_mult.c" open="0" top="0" tabpos="0">
+		<Cursor position="1137" topLine="0" />
+	</File>
+	<File name="src/main.c" open="0" top="0" tabpos="0">
+		<Cursor position="1137" topLine="25" />
+	</File>
+	<File name="src/make_move.c" open="0" top="0" tabpos="0">
+		<Cursor position="1137" topLine="0" />
+	</File>
+	<File name="src/make_unmake.h" open="0" top="0" tabpos="0">
+		<Cursor position="752" topLine="0" />
+	</File>
+	<File name="src/material_value.c" open="0" top="0" tabpos="0">
+		<Cursor position="1137" topLine="0" />
+	</File>
+	<File name="src/material_value.h" open="0" top="0" tabpos="0">
+		<Cursor position="752" topLine="0" />
+	</File>
+	<File name="src/mem_handler.c" open="0" top="0" tabpos="0">
+		<Cursor position="1137" topLine="0" />
+	</File>
+	<File name="src/mobility.c" open="0" top="0" tabpos="0">
+		<Cursor position="1137" topLine="0" />
+	</File>
+	<File name="src/move.h" open="0" top="0" tabpos="0">
+		<Cursor position="752" topLine="0" />
+	</File>
+	<File name="src/move_gen.c" open="0" top="0" tabpos="0">
+		<Cursor position="1173" topLine="0" />
+	</File>
+	<File name="src/next_move.c" open="0" top="0" tabpos="0">
+		<Cursor position="1175" topLine="0" />
+	</File>
+	<File name="src/null_move.h" open="0" top="0" tabpos="0">
+		<Cursor position="752" topLine="0" />
+	</File>
+	<File name="src/ok_move.c" open="0" top="0" tabpos="0">
+		<Cursor position="1171" topLine="0" />
+	</File>
+	<File name="src/pawn_eval.c" open="0" top="0" tabpos="0">
+		<Cursor position="1137" topLine="0" />
+	</File>
+	<File name="src/pawn_eval.h" open="0" top="0" tabpos="0">
+		<Cursor position="752" topLine="0" />
+	</File>
+	<File name="src/pv_node.c" open="0" top="0" tabpos="0">
+		<Cursor position="1171" topLine="0" />
+	</File>
+	<File name="src/qsearch.c" open="0" top="0" tabpos="0">
+		<Cursor position="1171" topLine="0" />
+	</File>
+	<File name="src/qsearch_pv.c" open="0" top="0" tabpos="0">
+		<Cursor position="1177" topLine="0" />
+	</File>
+	<File name="src/robbo_cache.c" open="0" top="0" tabpos="0">
+		<Cursor position="1137" topLine="0" />
+	</File>
+	<File name="src/robbo_comp.c" open="0" top="0" tabpos="0">
+		<Cursor position="1137" topLine="0" />
+	</File>
+	<File name="src/robbo_count.c" open="0" top="0" tabpos="0">
+		<Cursor position="1179" topLine="0" />
+	</File>
+	<File name="src/robbo_decomp.c" open="0" top="0" tabpos="0">
+		<Cursor position="1137" topLine="0" />
+	</File>
+	<File name="src/robbo_glue.c" open="0" top="0" tabpos="0">
+		<Cursor position="1137" topLine="0" />
+	</File>
+	<File name="src/robbo_init.c" open="0" top="0" tabpos="0">
+		<Cursor position="1137" topLine="0" />
+	</File>
+	<File name="src/robbo_init_IO.c" open="0" top="0" tabpos="0">
+		<Cursor position="1137" topLine="0" />
+	</File>
+	<File name="src/robbo_suffix.c" open="0" top="0" tabpos="0">
+		<Cursor position="752" topLine="0" />
+	</File>
+	<File name="src/robbo_totalbase.h" open="0" top="0" tabpos="0">
+		<Cursor position="752" topLine="0" />
+	</File>
+	<File name="src/robbo_triple.c" open="0" top="0" tabpos="0">
+		<Cursor position="1137" topLine="0" />
+	</File>
+	<File name="src/robbo_triple_disk.c" open="0" top="0" tabpos="0">
+		<Cursor position="1137" topLine="0" />
+	</File>
+	<File name="src/robbo_triple_init.c" open="0" top="0" tabpos="0">
+		<Cursor position="1137" topLine="0" />
+	</File>
+	<File name="src/robbo_triple_value.c" open="0" top="0" tabpos="0">
+		<Cursor position="1137" topLine="0" />
+	</File>
+	<File name="src/robbo_triplebase.h" open="0" top="0" tabpos="0">
+		<Cursor position="752" topLine="0" />
+	</File>
+	<File name="src/robbo_utility.c" open="0" top="0" tabpos="0">
+		<Cursor position="1137" topLine="0" />
+	</File>
+	<File name="src/root_analysis.c" open="0" top="0" tabpos="0">
+		<Cursor position="1183" topLine="0" />
+	</File>
+	<File name="src/root_multipv.c" open="0" top="0" tabpos="0">
+		<Cursor position="1181" topLine="0" />
+	</File>
+	<File name="src/root_node.c" open="0" top="0" tabpos="0">
+		<Cursor position="1175" topLine="0" />
+	</File>
+	<File name="src/search.c" open="0" top="0" tabpos="0">
+		<Cursor position="1137" topLine="0" />
+	</File>
+	<File name="src/set_position.c" open="0" top="0" tabpos="0">
+		<Cursor position="1137" topLine="0" />
+	</File>
+	<File name="src/signals.c" open="0" top="0" tabpos="0">
+		<Cursor position="1137" topLine="0" />
+	</File>
+	<File name="src/slab_memory.c" open="0" top="0" tabpos="0">
+		<Cursor position="1137" topLine="0" />
+	</File>
+	<File name="src/slab_memory.h" open="0" top="0" tabpos="0">
+		<Cursor position="752" topLine="0" />
+	</File>
+	<File name="src/static.c" open="0" top="0" tabpos="0">
+		<Cursor position="1137" topLine="0" />
+	</File>
+	<File name="src/top_analysis.c" open="0" top="0" tabpos="0">
+		<Cursor position="1181" topLine="0" />
+	</File>
+	<File name="src/top_node.c" open="0" top="0" tabpos="0">
+		<Cursor position="1173" topLine="0" />
+	</File>
+	<File name="src/undef.h" open="0" top="0" tabpos="0">
+		<Cursor position="752" topLine="0" />
+	</File>
+	<File name="src/unmake_move.c" open="0" top="0" tabpos="0">
+		<Cursor position="1137" topLine="0" />
+	</File>
+	<File name="src/utility.c" open="0" top="0" tabpos="0">
+		<Cursor position="1137" topLine="0" />
+	</File>
+	<File name="src/white.h" open="0" top="0" tabpos="0">
+		<Cursor position="752" topLine="0" />
+	</File>
+	<File name="src/win-linux.h" open="0" top="0" tabpos="0">
+		<Cursor position="752" topLine="0" />
+	</File>
+	<File name="src/win32bits.h" open="0" top="0" tabpos="0">
+		<Cursor position="752" topLine="0" />
+	</File>
+	<File name="src/win64bits.h" open="0" top="0" tabpos="0">
+		<Cursor position="752" topLine="0" />
+	</File>
+</CodeBlocks_layout_file>
