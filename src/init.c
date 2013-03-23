@@ -28,12 +28,18 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 
 #if defined(__GNUC__) && !defined(__MINGW32__) && !defined(__MINGW64__)
 
-#include <sys/time.h>
-
-static int GetTickCount() {
-    struct timeval t;
-    gettimeofday(&t, NULL);
-    return t.tv_sec*1000 + t.tv_usec/1000;
+#include <sys/time.h>
+
+
+
+static int GetTickCount() {
+
+    struct timeval t;
+
+    gettimeofday(&t, NULL);
+
+    return t.tv_sec*1000 + t.tv_usec/1000;
+
 }
 #endif
 

@@ -29,8 +29,9 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 
 void NanoSleep(int x)
     {
-#ifdef WINDOWS
+#if defined(_WIN32) || defined(_WIN64)
     Sleep(x / 1000000);
+
 #else
     struct timespec TS[1];
     TS->tv_sec = 0;
@@ -131,7 +132,7 @@ static void SMPCleanup()
     int cpu;
     for (cpu = 0; cpu < CurrCPUS; cpu++)
         {
-#ifndef WINDOWS
+#if !defined(_WIN32) && !defined(_WIN64)
         LockDestroy(&PThreadCondMutex[cpu]);
 #endif
         if (cpu > 0)
@@ -141,7 +142,7 @@ static void SMPCleanup()
             PThreadJoin(PThread[cpu]);
             Die[cpu] = false;
             }
-#ifndef WINDOWS
+#if !defined(_WIN32) && !defined(_WIN64)
         LockInit(&PThreadCondMutex[cpu]);
 #endif
         }
@@ -151,7 +152,7 @@ static void SMPCleanup()
     while (!Destroyed) { }
 		{
 		}
-#ifndef WINDOWS
+#if !defined(_WIN32) && !defined(_WIN64)
     LockDestroy(Wakeup_Lock_IO);
 #endif
     Destroyed = false;
