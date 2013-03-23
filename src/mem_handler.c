@@ -25,7 +25,7 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 
 #include "fire.h"
 
-#undef LinuxLargePages
+
 
 #if defined(LinuxLargePages)
 #include <sys/ipc.h>

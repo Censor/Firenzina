@@ -231,7 +231,7 @@ int main()
 		}
 #endif
 
-#undef  LinuxLargePages
+
 #ifdef LinuxLargePages
     LinuxHandleSignals();
 #endif

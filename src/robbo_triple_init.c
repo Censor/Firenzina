@@ -23,6 +23,13 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see http://www.gnu.org/licenses/.
 */
 
+#if defined(__GNUC__)
+#include <fcntl.h>
+#include <string.h>
+#include <sys/types.h>
+#include <dirent.h>
+#endif
+
 #include "fire.h"
 #ifdef RobboBases
 #include "robbo_totalbase.h"
@@ -269,7 +276,7 @@ void LoadTriple(char *fnin, char *DIR)
     triple = TableTripleBases + NumTripleBases;
     TripleUtility(triple, Temp);
     strcpy(triple->DirNome, DIR);
-#ifndef WINDOWS
+#if !defined(_WIN32) && !defined(_WIN64)
     strcat(triple->DirNome, "/");
 #else
     strcat(triple->DirNome, "\\");
@@ -516,7 +523,7 @@ void TripleEmit()
 
     }
 
-#ifndef WINDOWS
+#if !defined(_WIN32) && !defined(_WIN64)
 void ReFactorDirectoryNaming(char *S)
     {
     char T[1024];
@@ -813,7 +820,7 @@ static void BlockTripleIndexRegister(char *DIR, FILE *F)
             TripleUtility(triple, NOME);
             strcpy(triple->DirNome, DIR);
 
-#ifndef WINDOWS
+#if !defined(_WIN32) && !defined(_WIN64)
             strcat(triple->DirNome, "/");
 #else
             strcat(triple->DirNome, "\\");
@@ -900,7 +907,7 @@ static bool HasTripleBlockIndex(char *DIR)
     return true;
     }
 
-#ifdef WINDOWS
+#if defined(_WIN32) || defined(_WIN64)
 void GetTripleBase(char *A)
     {
     char B[1024];
@@ -953,10 +960,7 @@ void GetTripleBase(char *A)
 		TripleEmit();
     }
 #else
-#include <fcntl.h>
-#include <dirent.h>
-#include <string.h>
-#include <sys/types.h>
+
 void GetTripleBase(char *A)
     {
     DIR *DIR;

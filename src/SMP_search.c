@@ -26,6 +26,12 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 #ifndef SMPSearch
 #define SMPSearch
 #include "fire.h"
+
+#if defined(__GNUC__)
+#define INLINE inline
+#endif
+
+
 static INLINE void SMPBadHistory(typePos *Pos, uint32 m, SplitPoint *sp)
     {
     if ((Pos->Dyn + 1)->cp == 0 && MoveHistory(m))

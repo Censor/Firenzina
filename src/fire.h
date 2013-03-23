@@ -30,7 +30,7 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 
 #define Engine "Firenzina"
 #define Vers "2.2 xTreme"
-#if defined(__GNUC__) && !defined(__MINGW32__) && !defined(__MINGW64__)
+#if defined(__GNUC__)
 #define STDIN_FileNO 0
 
 #if defined(__i386__)
@@ -41,9 +41,16 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 
 #elif  defined(_WIN64)
 #define Platform "x64"
+#ifdef(__GNUC__)
+#define INLINE inline
+#endif
 
 #else
+
 #define Platform "w32"
+#ifdef(__GNUC__)
+#define INLINE inline
+#endif
 #endif
 
 #define true 1
@@ -173,7 +180,7 @@ int OptPHashSize;
 int OptMaxThreads;
 int RandRange;
 
-#if defined(_WIN32) || defined(_WIN64)
+#if defined(_WIN32) && !defined(__GNUC__) || defined(_WIN64) && !defined(__GNUC__)
 int (*POPCNT)(uint64);
 #endif
 

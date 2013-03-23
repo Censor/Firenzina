@@ -22,11 +22,12 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see http://www.gnu.org/licenses/.
 */
-
-#if defined(_WIN32)
+#if defined(_WIN32) && defined(_MSC_VER)
 
 static int BSF(UINT64 x)
     {
+
+		
 		{
 		_asm
             {
@@ -81,5 +82,9 @@ static INLINE int PopcntEmul (UINT64 v)
 	v2 = (v2 + (v2 >> 4)) & 0x0F0F0F0F;
 	return ((v1 * 0x01010101) >> 24) + ((v2 * 0x01010101) >> 24);
 	}
+
+#else
+
+#include "bits.h"
 
 #endif

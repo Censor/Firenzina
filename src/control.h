@@ -23,7 +23,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see http://www.gnu.org/licenses/.
 */
 
-#ifdef WINDOWS
+#if defined(_WIN32) || defined(_WIN64)
 #include <setjmp.h>
 #include <time.h>
 #endif

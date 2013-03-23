@@ -2,7 +2,7 @@
 1364058925 source:/home/matthew/Projects/Firenzina/src/50move.c
 	"fire.h"
 
-1364058601 /home/matthew/Projects/Firenzina/src/fire.h
+1364066654 /home/matthew/Projects/Firenzina/src/fire.h
 	<stdio.h>
 	<stdlib.h>
 	<memory.h>
@@ -16,18 +16,20 @@
 	"functions.h"
 	"common.h"
 
-1364058602 /home/matthew/Projects/Firenzina/src/win-linux.h
+1364066486 /home/matthew/Projects/Firenzina/src/win-linux.h
 	<windows.h>
 	"win64bits.h"
 	"win32bits.h"
 	"bits.h"
 	<pthread.h>
 
-1364058595 /home/matthew/Projects/Firenzina/src/win64bits.h
+1364066153 /home/matthew/Projects/Firenzina/src/win64bits.h
+	"bits.h"
 
-1364058600 /home/matthew/Projects/Firenzina/src/win32bits.h
+1364066153 /home/matthew/Projects/Firenzina/src/win32bits.h
+	"bits.h"
 
-1364058600 /home/matthew/Projects/Firenzina/src/bits.h
+1364066153 /home/matthew/Projects/Firenzina/src/bits.h
 	<limits.h>
 	<stdint.h>
 
@@ -48,13 +50,13 @@
 
 1364058600 /home/matthew/Projects/Firenzina/src/common.h
 
-1364058925 source:/home/matthew/Projects/Firenzina/src/SEE.c
+1364059605 source:/home/matthew/Projects/Firenzina/src/SEE.c
 	"fire.h"
 	"SEE.c"
 	"white.h"
 	"black.h"
 
-1364058925 /home/matthew/Projects/Firenzina/src/SEE.c
+1364059605 /home/matthew/Projects/Firenzina/src/SEE.c
 	"fire.h"
 	"SEE.c"
 	"white.h"
@@ -67,20 +69,20 @@
 
 1364058600 /home/matthew/Projects/Firenzina/src/black.h
 
-1364058925 source:/home/matthew/Projects/Firenzina/src/SMP.c
+1364066153 source:/home/matthew/Projects/Firenzina/src/SMP.c
 	"fire.h"
 	<signal.h>
 
-1364058925 source:/home/matthew/Projects/Firenzina/src/SMP_init.c
+1364066153 source:/home/matthew/Projects/Firenzina/src/SMP_init.c
 	"fire.h"
 
-1364058925 source:/home/matthew/Projects/Firenzina/src/SMP_search.c
+1364066153 source:/home/matthew/Projects/Firenzina/src/SMP_search.c
 	"fire.h"
 	"SMP_search.c"
 	"white.h"
 	"black.h"
 
-1364058925 /home/matthew/Projects/Firenzina/src/SMP_search.c
+1364066153 /home/matthew/Projects/Firenzina/src/SMP_search.c
 	"fire.h"
 	"SMP_search.c"
 	"white.h"
@@ -96,7 +98,7 @@
 
 1364058601 /home/matthew/Projects/Firenzina/src/history.h
 
-1364058601 /home/matthew/Projects/Firenzina/src/null_move.h
+1364066153 /home/matthew/Projects/Firenzina/src/null_move.h
 
 1364058925 /home/matthew/Projects/Firenzina/src/all_node.c
 	"fire.h"
@@ -116,7 +118,7 @@
 	"fire.h"
 	"control.h"
 
-1364058601 /home/matthew/Projects/Firenzina/src/control.h
+1364066153 /home/matthew/Projects/Firenzina/src/control.h
 	<setjmp.h>
 	<time.h>
 
@@ -173,11 +175,11 @@
 1364058925 source:/home/matthew/Projects/Firenzina/src/hash_use.c
 	"fire.h"
 
-1364058925 source:/home/matthew/Projects/Firenzina/src/init.c
+1364066153 source:/home/matthew/Projects/Firenzina/src/init.c
 	"fire.h"
 	<sys/time.h>
 
-1364058925 source:/home/matthew/Projects/Firenzina/src/input.c
+1364066679 source:/home/matthew/Projects/Firenzina/src/input.c
 	"fire.h"
 	"control.h"
 	<io.h>
@@ -203,10 +205,10 @@
 1364058925 source:/home/matthew/Projects/Firenzina/src/magic_mult.c
 	"fire.h"
 
-1364058925 source:/home/matthew/Projects/Firenzina/src/main.c
+1364066153 source:/home/matthew/Projects/Firenzina/src/main.c
 	"fire.h"
 
-1364058925 source:/home/matthew/Projects/Firenzina/src/make_move.c
+1364066153 source:/home/matthew/Projects/Firenzina/src/make_move.c
 	"fire.h"
 	"make_unmake.h"
 	"material_value.h"
@@ -218,7 +220,7 @@
 1364058925 source:/home/matthew/Projects/Firenzina/src/material_value.c
 	"fire.h"
 
-1364058925 source:/home/matthew/Projects/Firenzina/src/mem_handler.c
+1364066153 source:/home/matthew/Projects/Firenzina/src/mem_handler.c
 	"fire.h"
 	<sys/ipc.h>
 	<sys/shm.h>
@@ -347,7 +349,7 @@
 	"fire.h"
 	"robbo_totalbase.h"
 
-1364058925 source:/home/matthew/Projects/Firenzina/src/robbo_init_IO.c
+1364066153 source:/home/matthew/Projects/Firenzina/src/robbo_init_IO.c
 	"fire.h"
 	"robbo_totalbase.h"
 	<sys/types.h>
@@ -373,14 +375,14 @@
 	"robbo_triplebase.h"
 	"robbo_totalbase.h"
 
-1364058926 source:/home/matthew/Projects/Firenzina/src/robbo_triple_init.c
+1364066153 source:/home/matthew/Projects/Firenzina/src/robbo_triple_init.c
+	<fcntl.h>
+	<string.h>
+	<sys/types.h>
+	<dirent.h>
 	"fire.h"
 	"robbo_totalbase.h"
 	"robbo_triplebase.h"
-	<fcntl.h>
-	<dirent.h>
-	<string.h>
-	<sys/types.h>
 
 1364058926 source:/home/matthew/Projects/Firenzina/src/robbo_triple_value.c
 	"fire.h"
@@ -441,7 +443,7 @@
 1364058926 source:/home/matthew/Projects/Firenzina/src/set_position.c
 	"fire.h"
 
-1364058926 source:/home/matthew/Projects/Firenzina/src/signals.c
+1364066153 source:/home/matthew/Projects/Firenzina/src/signals.c
 	"fire.h"
 	<signal.h>
 
@@ -479,7 +481,7 @@
 	"white.h"
 	"black.h"
 
-1364058926 source:/home/matthew/Projects/Firenzina/src/unmake_move.c
+1364066153 source:/home/matthew/Projects/Firenzina/src/unmake_move.c
 	"fire.h"
 	"make_unmake.h"
 

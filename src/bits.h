@@ -23,7 +23,47 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see http://www.gnu.org/licenses/.
 */
 
-#if defined(_WIN64)
+
+
+#if defined(__GNUC__)
+
+#include <limits.h>
+#include <stdint.h>
+
+#define INLINE inline
+
+static INLINE int BSR (uint64 w)
+	{
+	int64_t ret = sizeof(uint64) * CHAR_BIT - 1;
+
+	return w ? ret - __builtin_clzll(w) : ret;
+	}
+
+static INLINE int BSF (uint64 w)
+	{
+	return __builtin_ffsll(w) - 1;
+	}
+
+
+#if defined(HasPopCNT)
+static INLINE int POPCNT (uint64 w)
+	{
+	return __builtin_popcountll(w);
+	}
+
+#else
+
+static INLINE int POPCNT (uint64 w)
+{
+  w = w - ((w >> 1) & 0x5555555555555555ull);
+  w = (w & 0x3333333333333333ull) + ((w >> 2) & 0x3333333333333333ull);
+  w = (w + (w >> 4)) & 0x0f0f0f0f0f0f0f0full;
+  return(w * 0x0101010101010101ull) >> 56;
+}
+
+#endif
+
+#elif defined(_WIN64)
 static INLINE int BSR (uint64 w)
 	{
 	uint64 x;
@@ -89,42 +129,5 @@ static INLINE int POPCNT (uint64 w)
 	return((u * 0x01010101) >> 24) +((v * 0x01010101) >> 24);
 	}
 
-#endif
-
-#if defined(__GNUC__)
-
-#include <limits.h>
-#include <stdint.h>
-
-static INLINE int BSR (uint64 w)
-	{
-	int64_t ret = sizeof(uint64) * CHAR_BIT - 1;
-
-	return w ? ret - __builtin_clzll(w) : ret;
-	}
-
-static INLINE int BSF (uint64 w)
-	{
-	return __builtin_ffsll(w) - 1;
-	}
-
-
-#if defined(HasPopCNT)
-static INLINE int POPCNT (uint64 w)
-	{
-	return __builtin_popcountll(w);
-	}
-
-#else
-
-static INLINE int POPCNT (uint64 w)
-{
-  w = w - ((w >> 1) & 0x5555555555555555ull);
-  w = (w & 0x3333333333333333ull) + ((w >> 2) & 0x3333333333333333ull);
-  w = (w + (w >> 4)) & 0x0f0f0f0f0f0f0f0full;
-  return(w * 0x0101010101010101ull) >> 56;
-}
-
-#endif
 
 #endif

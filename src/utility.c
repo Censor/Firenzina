@@ -25,12 +25,17 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 
 #include "fire.h"
 #include "material_value.h"
-#if defined(_WIN32) || defined(_WIN64)
-#include <intrin.h>
-#else
+
+#if defined(__GNUC__)
 #include <unistd.h>
 #include <sys/select.h>
 #define FD_Zero FD_ZERO
+#else
+#include <intrin.h>
+#endif
+
+#if defined(_WIN32) && !defined(__GNUC__) || defined(_WIN64) && !defined(__GNUC__)
+#include <winsock2.h>
 #endif
 
 #define Tweak (0x74d3c012a8bf965e)
@@ -183,7 +188,7 @@ void InitBitboards(typePos *Position)
         BoardIsOk = false;
     BoardIsOk = true;
     }
-#ifdef WINDOWS
+#if defined(_WIN32) || defined(_WIN64)
 #include <time.h>
 bool TryInput()
     {

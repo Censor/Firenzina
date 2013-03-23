@@ -4,6 +4,7 @@
 
 LIBS = -lpthread
 
+
 default: fire
 
 OFILES = main.o \
@@ -73,19 +74,18 @@ clean:
 	rm -f *.o  fire
 
 .c.o:   main.c
-	gcc -c -g $*.c  -Wall -w -pipe  -s -std=c99 -DNDEBUG -Ofast -static  \
-                       -flto -fwhole-program -finline-functions -fprefetch-loop-arrays  \
-                      -Wfatal-errors -DHasPreFetch -DRobboBases  -mtune=native \
-                    
+	gcc -c -g $*.c  -Wall -w -pipe  -s -std=c99 -DNDEBUG -DHAVE_STRUCT_TIMESPEC -Ofast -static  \
+                      -flto -fwhole-program -finline-functions -fprefetch-loop-arrays  \
+                      -Wfatal-errors -mtune=native -DHasPreFetch -DRobboBases \
+                      
+                         
 
 # for popcount (AMD)          =   -march=amdfam10 -mtune=amdfam10 -mpopcnt -DHasPopCNT
 # for popcount (INTEL)        =   -msse4.2 -march=corei7 -mtune=corei7 -mpopcnt -DHasPopCNT
 
-# for RobboBase support  =  -DRobboBases
+# for RobboBase support       =  -DRobboBases
 
-# for Windows builds (otherwise Linux)  =  -DWINDOWS
-
-# for SSE cpus (and above)  =  -DHasPreFetch
+# for SSE cpus (and above)    =  -DHasPreFetch -msse
 
 
 
