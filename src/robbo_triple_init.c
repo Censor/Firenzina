@@ -1,13 +1,3 @@
-<<<<<<< HEAD:src/robbo_triple_init.c
-/*
-Firenzina is a UCI chess playing engine by Kranium (Norman Schmidt)
-Firenzina is based on Ippolit source code: http://ippolit.wikispaces.com/
-authors: Yakov Petrovich Golyadkin, Igor Igorovich Igoronov,
-and Roberto Pescatore copyright: (C) 2009 Yakov Petrovich Golyadkin
-date: 92th and 93rd year from Revolution
-owners: PUBLICDOMAIN (workers)
-dedication: To Vladimir Ilyich
-=======
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
 Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
@@ -23,7 +13,6 @@ Ippolit copyright: (C) 2009 Yakov Petrovich Golyadkin
 Ippolit date: 92th and 93rd year from Revolution
 Ippolit owners: PUBLICDOMAIN (workers)
 Ippolit dedication: To Vladimir Ilyich
->>>>>>> Linux/Housekeeping/Bug fixes/Extend xTreme/Defs:Firenzina/robbo_triple_init.c
 "This Russian chess ship is a truly glorious achievement of the
  October Revolution and Decembrists movement!"
 
@@ -39,14 +28,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program. If not, see http://www.gnu.org/licenses/.
-*/
-
-#if defined(__GNUC__)
-#include <fcntl.h>
-#include <string.h>
-#include <sys/types.h>
-#include <dirent.h>
-#endif
+*******************************************************************************/
 
 #if defined(__GNUC__)
 #include <fcntl.h>
@@ -94,7 +76,7 @@ static void RobboDynamicLoadSetUp(RobboTripleBase *rtb, FILE *F)
     if (u != 0x40)
 		{
 		if (VerboseRobboBases)
-			{
+			{		
 	        Send("Dynamic Load requires 64 byte canals. Bytes %d\n", u);
 
 #ifdef Log
@@ -112,7 +94,7 @@ static void RobboDynamicLoadSetUp(RobboTripleBase *rtb, FILE *F)
     if (u != 18)
 		{
 		if (VerboseRobboBases)
-			{
+			{		
 	        Send("Dynamic Load requires shift of 18. Shift %d\n", u);
 
 #ifdef Log
@@ -130,7 +112,7 @@ static void RobboDynamicLoadSetUp(RobboTripleBase *rtb, FILE *F)
     if (u != heaps)
 		{
 		if (VerboseRobboBases)
-			{
+			{		
         	Send("Heap count corrupted in DynamicLoad %d %d %s " Type64Bit "\n", u, heaps, rtb->string, rtb->size);
 
 #ifdef Log
@@ -267,7 +249,7 @@ void LoadTriple(char *fnin, char *DIR)
     if (F == NULL)
         {
 	    if (VerboseRobboBases)
-			{
+			{		
 	        Send("No File %s\n", FN);
 
 #ifdef Log
@@ -345,7 +327,7 @@ void LoadTriple(char *fnin, char *DIR)
 				}
 #endif
 			}
-
+			
         TrivialCount++;
         return;
         }
@@ -771,7 +753,7 @@ static void BlockTripleIndexRegister(char *DIR, FILE *F)
         if (B[0] != 0x09 || B[1] != 0x36 || B[2] != 0xf4 || B[3] != 0x2b)
             {
 		    if (VerboseRobboBases)
-				{
+				{			
 	            Send("BlockIndex mask failure!\n");
 
 #ifdef Log
@@ -914,7 +896,7 @@ static bool HasTripleBlockIndex(char *DIR)
     if (!F)
         return false;
 	if (VerboseRobboBases)
-		{
+		{		
     	Send("Using BlockTriple.Index for %s\n", DIR);
 
 #ifdef Log

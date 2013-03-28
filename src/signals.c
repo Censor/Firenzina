@@ -1,13 +1,3 @@
-<<<<<<< HEAD:src/signals.c
-/*
-Firenzina is a UCI chess playing engine by Kranium (Norman Schmidt)
-Firenzina is based on Ippolit source code: http://ippolit.wikispaces.com/
-authors: Yakov Petrovich Golyadkin, Igor Igorovich Igoronov,
-and Roberto Pescatore copyright: (C) 2009 Yakov Petrovich Golyadkin
-date: 92th and 93rd year from Revolution
-owners: PUBLICDOMAIN (workers)
-dedication: To Vladimir Ilyich
-=======
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
 Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
@@ -23,7 +13,6 @@ Ippolit copyright: (C) 2009 Yakov Petrovich Golyadkin
 Ippolit date: 92th and 93rd year from Revolution
 Ippolit owners: PUBLICDOMAIN (workers)
 Ippolit dedication: To Vladimir Ilyich
->>>>>>> Linux/Housekeeping/Bug fixes/Extend xTreme/Defs:Firenzina/signals.c
 "This Russian chess ship is a truly glorious achievement of the
  October Revolution and Decembrists movement!"
 
@@ -39,7 +28,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program. If not, see http://www.gnu.org/licenses/.
-*/
+*******************************************************************************/
 
 #include "fire.h"
 

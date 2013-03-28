@@ -1,11 +1,18 @@
-/*
-Firenzina is a UCI chess playing engine by Kranium (Norman Schmidt)
-Firenzina is based on Ippolit source code: http://ippolit.wikispaces.com/
-authors: Yakov Petrovich Golyadkin, Igor Igorovich Igoronov,
-and Roberto Pescatore copyright: (C) 2009 Yakov Petrovich Golyadkin
-date: 92th and 93rd year from Revolution
-owners: PUBLICDOMAIN (workers)
-dedication: To Vladimir Ilyich
+/*******************************************************************************
+Firenzina is a UCI chess playing engine by
+Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
+Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
+Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart.
+Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
+Firenzina is a derivative (via Fire) of FireBird by Kranium (Norman Schmidt) 
+and Sentinel (Milos Stanisavljevic). Firenzina is based (via Fire and FireBird)
+on Ippolit source code: http://ippolit.wikispaces.com/
+Ippolit authors: Yakov Petrovich Golyadkin, Igor Igorovich Igoronov,
+and Roberto Pescatore 
+Ippolit copyright: (C) 2009 Yakov Petrovich Golyadkin
+Ippolit date: 92th and 93rd year from Revolution
+Ippolit owners: PUBLICDOMAIN (workers)
+Ippolit dedication: To Vladimir Ilyich
 "This Russian chess ship is a truly glorious achievement of the
  October Revolution and Decembrists movement!"
 
@@ -21,7 +28,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program. If not, see http://www.gnu.org/licenses/.
-*/
+*******************************************************************************/
 
 #if defined(__GNUC__)
 
@@ -43,14 +50,11 @@ static INLINE int BSR(UINT64 x)
     }
 
 
-static INLINE int PopcntHard (UINT64 x)
+static INLINE long long PopcntHard (unsigned long long x)
 	{
-  	_asm
-    	{
-      	popcnt rax, x
-    	}
+  	return _mm_popcnt_u64(x);
 	}
-static INLINE int PopcntEmul (uint64 w)
+static INLINE long long PopcntEmul (unsigned long long w)
 	{
   	w = w - ((w >> 1) & 0x5555555555555555ULL);
   	w = (w & 0x3333333333333333ULL) + ((w >> 2) & 0x3333333333333333ULL);
@@ -59,3 +63,6 @@ static INLINE int PopcntEmul (uint64 w)
 	}
 
 #endif
+
+
+

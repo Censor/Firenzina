@@ -1,4 +1,4 @@
-
+// No need to include this file in the Windows Firenzina project. Yuri Censor, 3/28/2013
 
 #include "50move.c"
 #include "all_node.c"

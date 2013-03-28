@@ -1,13 +1,3 @@
-<<<<<<< HEAD:src/robbo_totalbase.h
-/*
-Firenzina is a UCI chess playing engine by Kranium (Norman Schmidt)
-Firenzina is based on Ippolit source code: http://ippolit.wikispaces.com/
-authors: Yakov Petrovich Golyadkin, Igor Igorovich Igoronov,
-and Roberto Pescatore copyright: (C) 2009 Yakov Petrovich Golyadkin
-date: 92th and 93rd year from Revolution
-owners: PUBLICDOMAIN (workers)
-dedication: To Vladimir Ilyich
-=======
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
 Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
@@ -23,7 +13,6 @@ Ippolit copyright: (C) 2009 Yakov Petrovich Golyadkin
 Ippolit date: 92th and 93rd year from Revolution
 Ippolit owners: PUBLICDOMAIN (workers)
 Ippolit dedication: To Vladimir Ilyich
->>>>>>> Linux/Housekeeping/Bug fixes/Extend xTreme/Defs:Firenzina/robbo_totalbase.h
 "This Russian chess ship is a truly glorious achievement of the
  October Revolution and Decembrists movement!"
 
@@ -39,7 +28,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program. If not, see http://www.gnu.org/licenses/.
-*/
+*******************************************************************************/
 
 uint8 SpearPawn[4][64];
 #define Triangle 0x00000000080c0e0f
@@ -47,7 +36,7 @@ uint8 SpearPawn[4][64];
 #define TriMar 0x80c0e0f0f8fcfeff
 #define MaxTables 4096
 #define TripleMax 4096
-#define MaximumFopen 64
+#define MaximumFopen 64 
 uint16 InverseNormalKing[462], InversePawnKing[1806];
 uint16 Sq2Blocked[780], Sq2Pawn[1128], Sq2Normal[2016];
 uint32 Sq3blocked[9880], Sq3Pawn[17296], Sq3normal[41664];
@@ -66,11 +55,7 @@ typedef struct
     } type_PiSq;
 int RB_CPUS;
 uint64 ListSize;
-<<<<<<< HEAD:src/robbo_totalbase.h
-#if !defined(_WIN32) && !defined(_WIN64) && !defined(__GNUC__)
-=======
 #if !defined(_WIN32) && !defined(_WIN64) && !defined(__GNUC__) 
->>>>>>> Linux/Housekeeping/Bug fixes/Extend xTreme/Defs:Firenzina/robbo_totalbase.h
 #define UseSpinLocks true
 #endif
 #ifdef UseSpinLocks

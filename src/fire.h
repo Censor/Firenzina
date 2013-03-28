@@ -1,13 +1,3 @@
-<<<<<<< HEAD:src/fire.h
-/*
-Firenzina is a UCI chess playing engine by Kranium (Norman Schmidt)
-Firenzina is based on Ippolit source code: http://ippolit.wikispaces.com/
-authors: Yakov Petrovich Golyadkin, Igor Igorovich Igoronov,
-and Roberto Pescatore copyright: (C) 2009 Yakov Petrovich Golyadkin
-date: 92th and 93rd year from Revolution
-owners: PUBLICDOMAIN (workers)
-dedication: To Vladimir Ilyich
-=======
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
 Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
@@ -23,7 +13,6 @@ Ippolit copyright: (C) 2009 Yakov Petrovich Golyadkin
 Ippolit date: 92th and 93rd year from Revolution
 Ippolit owners: PUBLICDOMAIN (workers)
 Ippolit dedication: To Vladimir Ilyich
->>>>>>> Linux/Housekeeping/Bug fixes/Extend xTreme/Defs:Firenzina/fire.h
 "This Russian chess ship is a truly glorious achievement of the
  October Revolution and Decembrists movement!"
 
@@ -39,43 +28,12 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program. If not, see http://www.gnu.org/licenses/.
-*/
+*******************************************************************************/
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <memory.h>
 
-<<<<<<< HEAD:src/fire.h
-
-#define Engine "Firenzina"
-#define Vers "2.2 xTreme"
-#if defined(__GNUC__)
-#define STDIN_FileNO 0
-
-#if defined(__i386__)
-#define Platform "Linux 32"
-#else
-#define Platform "Linux 64"
-#endif
-
-#elif  defined(_WIN64)
-#define Platform "x64"
-#ifdef(__GNUC__)
-#define INLINE inline
-#endif
-
-#else
-
-#define Platform "w32"
-#ifdef(__GNUC__)
-#define INLINE inline
-#endif
-#endif
-
-#define true 1
-#define false 0
-#define bool int
-=======
 
 #define Engine "Firenzina"
 #define Vers "2.3 xTreme"
@@ -111,20 +69,18 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 
 
 
->>>>>>> Linux/Housekeeping/Bug fixes/Extend xTreme/Defs:Firenzina/fire.h
 
+#define HasPopCNT
+#define HasPreFetch
 #define InitCFG
 
-<<<<<<< HEAD:src/fire.h
-=======
 
->>>>>>> Linux/Housekeeping/Bug fixes/Extend xTreme/Defs:Firenzina/fire.h
 #define Log
 #define MatFactors
 #define MultiplePosGain
 #define MultipleHistory
 #define OneDimensional
-
+#define RobboBases
 #define SlabMemory
 
 #ifdef SlabMemory
@@ -361,20 +317,11 @@ int OptHashSize;
 int OptPHashSize;
 int OptMaxThreads;
 int RandRange;
-<<<<<<< HEAD:src/fire.h
-
-#if defined(_WIN32) && !defined(__GNUC__) || defined(_WIN64) && !defined(__GNUC__)
-int (*POPCNT)(uint64);
-#endif
-
-uint8 HasPopcnt;
-=======
 #if defined(_WIN32) && !defined(__GNUC__) || defined(_WIN64) && !defined(__GNUC__)
 long long (*POPCNT) (unsigned long long); // Modification by Yuri Censor for Firenzina, 2/17/2013
       // Reason: To comply with types for _mm_popcnt_u64 in MS Visual Studio Ultimate 2012
 #endif
 uint8 HasPopcnt; 
->>>>>>> Linux/Housekeeping/Bug fixes/Extend xTreme/Defs:Firenzina/fire.h
 
 #ifdef Log
 bool WriteLog;
@@ -420,7 +367,7 @@ int TripleBaseHash;
 int DynamicTripleBaseCache;
 bool TotalBasesLoaded;
 bool TripleBasesLoaded;
-bool  SearchRobboBases;
+bool SearchRobboBases;
 int TripleMaxUsage;
 char BulkDirectory[1024];
 char BulkName[1024];
@@ -432,7 +379,7 @@ bool ExtendInCheck;
 int ValueCut;
 int NullReduction;
 int VerifyReduction;
-bool  VerifyNull;
+bool VerifyNull;
 int DeltaCutoff;
 int DepthRedMin;
 int HeightMultiplier;
@@ -447,11 +394,11 @@ int TopMinDepth;
 int UndoCountThreshold;
 
 //Split Depths
-bool  SplitAtCN;
+bool SplitAtCN;
 int ANSplitDepth;
 int CNSplitDepth;
 int PVSplitDepth;
-bool  SlitDepth;
+bool SlitDepth;
 
 //Time Management
 int AbsoluteFactor;
@@ -461,17 +408,17 @@ int EasyFactorPonder;
 int NormalFactor;
 
 //UCI Info Strings
-bool  CPULoadInfo;
-bool  CurrMoveInfo;
+bool CPULoadInfo;
+bool CurrMoveInfo;
 bool DepthInfo;
-bool HashFullInfo;
+bool HashFullInfo;	
 bool LowDepthPVs;
-bool  NPSInfo;
+bool NPSInfo;
 bool VerboseUCI;
 int MinPVDepth;
 
 #ifdef RobboBases
-	bool  TBHitInfo;
+	bool TBHitInfo;
 #endif
 
 #define CheckForMate(v) \
@@ -484,7 +431,7 @@ int MinPVDepth;
 FILE *log_file;
 char log_filename[256];
 #endif
-
+	
 #include "arrays.h"
 #include "functions.h"
 #include "common.h"

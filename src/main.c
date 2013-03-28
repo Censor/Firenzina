@@ -1,13 +1,3 @@
-<<<<<<< HEAD:src/main.c
-/*
-Firenzina is a UCI chess playing engine by Kranium (Norman Schmidt)
-Firenzina is based on Ippolit source code: http://ippolit.wikispaces.com/
-authors: Yakov Petrovich Golyadkin, Igor Igorovich Igoronov,
-and Roberto Pescatore copyright: (C) 2009 Yakov Petrovich Golyadkin
-date: 92th and 93rd year from Revolution
-owners: PUBLICDOMAIN (workers)
-dedication: To Vladimir Ilyich
-=======
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
 Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
@@ -23,7 +13,6 @@ Ippolit copyright: (C) 2009 Yakov Petrovich Golyadkin
 Ippolit date: 92th and 93rd year from Revolution
 Ippolit owners: PUBLICDOMAIN (workers)
 Ippolit dedication: To Vladimir Ilyich
->>>>>>> Linux/Housekeeping/Bug fixes/Extend xTreme/Defs:Firenzina/main.c
 "This Russian chess ship is a truly glorious achievement of the
  October Revolution and Decembrists movement!"
 
@@ -39,7 +28,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program. If not, see http://www.gnu.org/licenses/.
-*/
+*******************************************************************************/
 
 #include "fire.h"
 
@@ -78,7 +67,7 @@ void InitHashTables()
     PawnHash = NULL;
     CurrentPHashSize = (1 << 16);
     EvalHashSize = (1 << 15);
-
+	
 #ifdef RobboBases
     TripleHash = NULL;
     TripleHashSize = (1 << 17);
@@ -108,25 +97,6 @@ void InitGlobals()
     PSTWeight = DEFAULT_PST_WEIGHT;
 
 // Lazy Eval
-<<<<<<< HEAD:src/main.c
-	LazyEvalMin = 150;
-	LazyEvalMax = 300;
-
-// Piece Values
-	PValue = 100;
-	NValue = 320;
-	BValue = 330;
-	RValue = 510;
-	QValue = 1000;
-	BPValue = 50;
-
-// Prune Thresholds
-	PrunePawn = 160;
-	PruneMinor = 500;
-	PruneRook = 800;
-	PruneCheck = 10;
-
-=======
 	LazyEvalMin = DEFAULT_LAZY_EVAL_MIN;
 	LazyEvalMax = DEFAULT_LAZY_EVAL_MAX;
 	
@@ -144,7 +114,6 @@ void InitGlobals()
 	PruneMinor = DEFAULT_PRUNE_MINOR;
 	PruneRook = DEFAULT_PRUNE_ROOK;
 	
->>>>>>> Linux/Housekeeping/Bug fixes/Extend xTreme/Defs:Firenzina/main.c
 // Search Vars
 	AspirationWindow = DEFAULT_ASPIRATION_WINDOW; 
 	DeltaCutoff = DEFAULT_DELTA_CUTOFF;
@@ -182,17 +151,12 @@ void InitGlobals()
 	CPULoadInfo = false;
 	CurrMoveInfo = false;
 	DepthInfo = false;
-    HashFullInfo = false;
+    HashFullInfo = false;	
 	LowDepthPVs = false;
 	NPSInfo = false;
 	VerboseUCI = false;
-<<<<<<< HEAD:src/main.c
-	MinPVDepth = 15;
-
-=======
 	MinPVDepth = DEFAULT_MIN_PV_DEPTH;	
 	
->>>>>>> Linux/Housekeeping/Bug fixes/Extend xTreme/Defs:Firenzina/main.c
 #ifdef RobboBases
 	TBHitInfo = false;
 #endif
@@ -221,16 +185,16 @@ void InitGlobals()
 #ifdef RobboBases
 	AutoloadTotalBases = false;
 	AutoloadTripleBases = false;
-	TotalBaseCache = 1;
-	TripleBaseHash = 1;
+	TotalBaseCache = 1;	
+	TripleBaseHash = 1;	
 	DynamicTripleBaseCache = 1;
 	UseRobboBases = false;
 	VerboseRobboBases = false;
 	strcpy(TripleDir, "");
 	strcpy(TotalDir, "");
     TripleBasesLoaded = false;
-    TotalBasesLoaded = false;
-    SearchRobboBases = true;
+    TotalBasesLoaded = false;	
+    SearchRobboBases = true;	
 #endif
     }
 
@@ -244,13 +208,13 @@ int main()
     RPinit();
 
 #ifdef InitCFG
-    read_cfg_file("Firenzina.cfg");
+    read_cfg_file("fire.cfg");
 #endif
 
     CurrentHashSize = OptHashSize;
 	CurrentPHashSize = OptPHashSize;
     InitHash(CurrentHashSize);
-
+	
 #ifdef RobboBases
     InitTripleHash(TripleBaseHash);
 #endif
@@ -260,33 +224,25 @@ int main()
     NewGame(RootPosition0, true);
     InputBuffer = malloc(65536);
     input_ptr = InputBuffer;
-
+	
 #ifdef RobboBases
     SearchRobboBases = true;
     TotalInit();
 	if (UseRobboBases)
 		{
-        if (AutoloadTotalBases)
+        if (AutoloadTotalBases) 
             RegisterRobboTotalBases();
 		InitTotalBaseCache(TotalBaseCache);
-		if (AutoloadTripleBases)
+		if (AutoloadTripleBases) 
 			LoadRobboTripleBases();
 		}
 #endif
 
-<<<<<<< HEAD:src/main.c
-
-#ifdef LinuxLargePages
-    LinuxHandleSignals();
-#endif
-
-=======
 // Commented out by JA:
 //#ifdef LinuxLargePages
   //  LinuxHandleSignals();
 //#endif
 			
->>>>>>> Linux/Housekeeping/Bug fixes/Extend xTreme/Defs:Firenzina/main.c
 	InitSMP();
     while (1)
         Input(RootPosition0);
