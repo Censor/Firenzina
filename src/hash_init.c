@@ -158,7 +158,7 @@ int InitEvalHash(int kb)
     size = EvalHashSize * sizeof(uint64);
 	size = MAX((1 << 21), size);
 
-#ifdef LinuxLargePages
+#if defined(LinuxLargePages)
         size = MAX((1 << 21), size);
 #endif
 

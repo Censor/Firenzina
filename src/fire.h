@@ -45,7 +45,7 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 #define PLatform "Linux 32"
 #else
 #define PLatform "Linux 64"
-#define LinuxLargePages
+//#define LinuxLargePages // Commented out by ZirconiumX
 #endif
 
 #elif  defined(_WIN64) 
@@ -118,10 +118,10 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 
 // Split Depths
 #define MIN_AN_SPLIT_DEPTH 8             // Original: 12
-#define DEFAULT_AN_SPLIT_DEPTH 14        // Original: 12; Conservative: 12; Aggressive: 14
+#define DEFAULT_AN_SPLIT_DEPTH 12        // Original: 12; Conservative: 12; Aggressive: 14
 #define MAX_AN_SPLIT_DEPTH 24
 #define MIN_CN_SPLIT_DEPTH 8             // Original: 12
-#define DEFAULT_CN_SPLIT_DEPTH 16        // Original: 14; Conservative: 14; Aggressive: 16
+#define DEFAULT_CN_SPLIT_DEPTH 14        // Original: 14; Conservative: 14; Aggressive: 16
 #define MAX_CN_SPLIT_DEPTH 24
 #define MIN_PV_SPLIT_DEPTH 8             // Original: 12
 #define DEFAULT_PV_SPLIT_DEPTH 12        // Original: 12
@@ -130,13 +130,13 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 // Piece Values
 #define DEFAULT_PAWN_VALUE 100           // Original: 100; DO NOT ALTER! IT SETS THE SCALE. Yuri Censor, 03/25/2013
 #define MAX_PAWN_VALUE 200
-#define DEFAULT_KNIGHT_VALUE 317         // Original: 320
+#define DEFAULT_KNIGHT_VALUE 317         // Original: 320; Modified: 317 (03/28/2013)
 #define MAX_KNIGHT_VALUE 640
-#define DEFAULT_BISHOP_VALUE 333         // Original: 330
+#define DEFAULT_BISHOP_VALUE 333         // Original: 330; Modified: 333 (03/28/2013)
 #define MAX_BISHOP_VALUE 640
-#define DEFAULT_ROOK_VALUE 520           // Original: 510
+#define DEFAULT_ROOK_VALUE 520           // Original: 510; Modified: 520 (03/28/2013)
 #define MAX_ROOK_VALUE 1000
-#define DEFAULT_QUEEN_VALUE 960          // Original: 1000
+#define DEFAULT_QUEEN_VALUE 960          // Original: 1000; Modified: 960 (03/28/2013)
 #define MAX_QUEEN_VALUE 2000
 #define DEFAULT_BISHOP_PAIR_VALUE 50     // Original: 50
 #define MAX_BISHOP_PAIR_VALUE 200
@@ -144,27 +144,27 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 // Eval Weights
 #define DEFAULT_DRAW_WEIGHT 100          // Original: 100
 #define MAX_DRAW_WEIGHT 200
-#define DEFAULT_KING_SAFETY_WEIGHT 120   // Original: 100; Conservative: 130; Aggressive: 120
+#define DEFAULT_KING_SAFETY_WEIGHT 100   // Original: 100; Conservative: 130; Aggressive: 120
 #define MAX_KING_SAFETY_WEIGHT 200
 #define DEFAULT_MATERIAL_WEIGHT 100      // Original: 100
 #define MAX_MATERIAL_WEIGHT 200
-#define DEFAULT_MOBILITY_WEIGHT 130      // Original: 100; Conservative: 115; Aggressive: 130
+#define DEFAULT_MOBILITY_WEIGHT 100      // Original: 100; Conservative: 115; Aggressive: 130
 #define MAX_MOBILITY_WEIGHT 200
 #define DEFAULT_PAWN_WEIGHT 100          // Original: 100; DO NOT ALTER! IT SETS THE SCALE. Yuri Censor, 03/25/2013
 #define MAX_PAWN_WEIGHT 200
-#define DEFAULT_POSITIONAL_WEIGHT 110    // Original: 100; Conservative: 120; Aggressive: 110
+#define DEFAULT_POSITIONAL_WEIGHT 100    // Original: 100; Conservative: 120; Aggressive: 110
 #define MAX_POSITIONAL_WEIGHT 200
 #define DEFAULT_PST_WEIGHT 100           // Original: 100
 #define MAX_PST_WEIGHT 200
 
 // Lazy Eval
-#define DEFAULT_LAZY_EVAL_MIN 70        // Original: 150; Conservative: 90; Aggressive 70
+#define DEFAULT_LAZY_EVAL_MIN 150        // Original: 150; Conservative: 90; Aggressive 70
 #define MAX_LAZY_EVAL_MIN 300
 #define DEFAULT_LAZY_EVAL_MAX 300
 #define MAX_LAZY_EVAL_MAX 600
 
 // Search Vars
-#define DEFAULT_ASPIRATION_WINDOW 6      // Original: 8; Conservative: 8; Aggressive: 6
+#define DEFAULT_ASPIRATION_WINDOW 8      // Original: 8; Conservative: 8; Aggressive: 6
 #define MAX_ASPIRATION_WINDOW 100
 #define MIN_DELTA_CUTOFF 20000
 #define DEFAULT_DELTA_CUTOFF 25000
@@ -175,7 +175,7 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 #define MAX_HEIGHT_MULTIPLIER 128
 #define DEFAULT_HISTORY_THRESHOLD 50
 #define MAX_HISTORY_THRESHOLD 100
-#define DEFAULT_LOW_DEPTH_MARGIN 1200    // Original: 1125; Conservative: 1150; Aggressive: 1200
+#define DEFAULT_LOW_DEPTH_MARGIN 1125    // Original: 1125; Conservative: 1150; Aggressive: 1200
 #define MAX_LOW_DEPTH_MARGIN 2000
 #define DEFAULT_MIN_DEPTH_MULTIPLIER 48
 #define MAX_MIN_DEPTH_MULTIPLIER 96
@@ -197,30 +197,30 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 // More Search Vars
 #define DEFAULT_QS_ALPHA_THRESHOLD 200
 #define MAX_QS_ALPHA_THRESHOLD 400
-#define DEFAULT_SEARCH_DEPTH_MIN 22      // Original: 20; Conservative: 22; Aggressive: 22
+#define DEFAULT_SEARCH_DEPTH_MIN 20      // Original: 20; Conservative: 22; Aggressive: 22
 #define MAX_SEARCH_DEPTH_MIN 40
-#define DEFAULT_SEARCH_DEPTH_REDUCTION 8 // Original: 6; Conservative: 6; Aggressive: 8
+#define DEFAULT_SEARCH_DEPTH_REDUCTION 6 // Original: 6; Conservative: 6; Aggressive: 8
 #define MAX_SEARCH_DEPTH_REDUCTION 12
-#define DEFAULT_TOP_MIN_DEPTH 16         // Original: 14; Conservative: 14; Aggressive: 16
+#define DEFAULT_TOP_MIN_DEPTH 14         // Original: 14; Conservative: 14; Aggressive: 16
 #define MAX_TOP_MIN_DEPTH 28
-#define DEFAULT_UNDO_COUNT_THRESHOLD 17  // Original: 15; Conservative: 15; Aggressive: 17
+#define DEFAULT_UNDO_COUNT_THRESHOLD 15  // Original: 15; Conservative: 15; Aggressive: 17
 #define MAX_UNDO_COUNT_THRESHOLD 20
 #define MIN_VALUE_CUT 1000
 #define DEFAULT_VALUE_CUT 15000
 #define MAX_VALUE_CUT 30000
-#define DEFAULT_VERIFY_REDUCTION 1       // Original: 2; Conservative: 3; Aggressive: 1
+#define DEFAULT_VERIFY_REDUCTION 2       // Original: 2; Conservative: 3; Aggressive: 1
 #define MAX_VERIFY_REDUCTION 16
 
 // Time Management
-#define DEFAULT_ABSOLUTE_FACTOR 30       // Original: 25; Conservative: 25; Aggressive: 30
+#define DEFAULT_ABSOLUTE_FACTOR 25       // Original: 25; Conservative: 25; Aggressive: 30
 #define MAX_ABSOLUTE_FACTOR 100
-#define DEFAULT_BATTLE_FACTOR   75       // Original: 100; Conservative: 95; Aggressive: 75
+#define DEFAULT_BATTLE_FACTOR 100        // Original: 100; Conservative: 95; Aggressive: 75
 #define MAX_BATTLE_FACTOR 200
-#define DEFAULT_EASY_FACTOR 20           // Original: 15; Conservative: 15; Aggressive: 20
+#define DEFAULT_EASY_FACTOR 15           // Original: 15; Conservative: 15; Aggressive: 20
 #define MAX_EASY_FACTOR 100
 #define DEFAULT_EASY_FACTOR_PONDER 33    // Original: 33
 #define MAX_EASY_FACTOR_PONDER 100
-#define DEFAULT_NORMAL_FACTOR 50         // Original: 75; Conservative: 80; Aggressive: 50
+#define DEFAULT_NORMAL_FACTOR 75         // Original: 75; Conservative: 80; Aggressive: 50
 #define MAX_NORMAL_FACTOR 200
 
 // RobboBases
