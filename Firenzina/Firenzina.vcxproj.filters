@@ -1,0 +1,273 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="arrays.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bits.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="black.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="board.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="control.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="evaluation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fire.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="functions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hash.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="history.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="init_gen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="kp_black.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="kp_white.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="make_unmake.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="material_value.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="null_move.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pawn_eval.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="robbo_totalbase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="robbo_triplebase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="slab_memory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SMP.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="undef.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="white.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win-linux.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win64bits.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win32bits.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="move.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="50move.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="all_node.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="arrays.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="benchmark.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="control.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cut_node.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="endgame.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="evaluation.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="exclude_node.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hash_init.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hash_use.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="init.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="input.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="low_depth.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="magic_mult.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="make_move.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="material_value.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mem_handler.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mobility.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="move_gen.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="next_move.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ok_move.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pawn_eval.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pv_node.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qsearch.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qsearch_pv.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="robbo_cache.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="robbo_comp.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="robbo_count.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="robbo_decomp.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="robbo_glue.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="robbo_init.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="robbo_init_IO.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="robbo_suffix.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="robbo_triple.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="robbo_triple_disk.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="robbo_triple_init.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="robbo_triple_value.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="robbo_utility.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="root_analysis.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="root_multipv.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="root_node.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="search.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SEE.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="set_position.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="signals.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="slab_memory.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SMP.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SMP_init.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SMP_search.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="static.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="top_analysis.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="top_node.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="unmake_move.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="utility.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

@@ -1,3 +1,4 @@
+<<<<<<< HEAD:src/robbo_triple_init.c
 /*
 Firenzina is a UCI chess playing engine by Kranium (Norman Schmidt)
 Firenzina is based on Ippolit source code: http://ippolit.wikispaces.com/
@@ -6,6 +7,23 @@ and Roberto Pescatore copyright: (C) 2009 Yakov Petrovich Golyadkin
 date: 92th and 93rd year from Revolution
 owners: PUBLICDOMAIN (workers)
 dedication: To Vladimir Ilyich
+=======
+/*******************************************************************************
+Firenzina is a UCI chess playing engine by
+Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
+Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
+Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart.
+Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
+Firenzina is a derivative (via Fire) of FireBird by Kranium (Norman Schmidt) 
+and Sentinel (Milos Stanisavljevic). Firenzina is based (via Fire and FireBird)
+on Ippolit source code: http://ippolit.wikispaces.com/
+Ippolit authors: Yakov Petrovich Golyadkin, Igor Igorovich Igoronov,
+and Roberto Pescatore 
+Ippolit copyright: (C) 2009 Yakov Petrovich Golyadkin
+Ippolit date: 92th and 93rd year from Revolution
+Ippolit owners: PUBLICDOMAIN (workers)
+Ippolit dedication: To Vladimir Ilyich
+>>>>>>> Linux/Housekeeping/Bug fixes/Extend xTreme/Defs:Firenzina/robbo_triple_init.c
 "This Russian chess ship is a truly glorious achievement of the
  October Revolution and Decembrists movement!"
 
@@ -22,6 +40,13 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see http://www.gnu.org/licenses/.
 */
+
+#if defined(__GNUC__)
+#include <fcntl.h>
+#include <string.h>
+#include <sys/types.h>
+#include <dirent.h>
+#endif
 
 #if defined(__GNUC__)
 #include <fcntl.h>
