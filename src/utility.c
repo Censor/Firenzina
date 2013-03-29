@@ -1,4 +1,3 @@
-<<<<<<< HEAD:src/utility.c
 /*
 Firenzina is a UCI chess playing engine by Kranium (Norman Schmidt)
 Firenzina is based on Ippolit source code: http://ippolit.wikispaces.com/
@@ -7,23 +6,6 @@ and Roberto Pescatore copyright: (C) 2009 Yakov Petrovich Golyadkin
 date: 92th and 93rd year from Revolution
 owners: PUBLICDOMAIN (workers)
 dedication: To Vladimir Ilyich
-=======
-/*******************************************************************************
-Firenzina is a UCI chess playing engine by
-Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
-Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
-Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart.
-Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
-Firenzina is a derivative (via Fire) of FireBird by Kranium (Norman Schmidt) 
-and Sentinel (Milos Stanisavljevic). Firenzina is based (via Fire and FireBird)
-on Ippolit source code: http://ippolit.wikispaces.com/
-Ippolit authors: Yakov Petrovich Golyadkin, Igor Igorovich Igoronov,
-and Roberto Pescatore 
-Ippolit copyright: (C) 2009 Yakov Petrovich Golyadkin
-Ippolit date: 92th and 93rd year from Revolution
-Ippolit owners: PUBLICDOMAIN (workers)
-Ippolit dedication: To Vladimir Ilyich
->>>>>>> Linux/Housekeeping/Bug fixes/Extend xTreme/Defs:Firenzina/utility.c
 "This Russian chess ship is a truly glorious achievement of the
  October Revolution and Decembrists movement!"
 
@@ -46,26 +28,15 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 
 #if defined(__GNUC__)
 #include <unistd.h>
-<<<<<<< HEAD:src/utility.c
 #include <sys/select.h>
-=======
-#if !defined(_WIN32) && !defined(_WIN64)
-#include <sys/select.h>
-#else
-#include <winsock2.h>
-#endif
->>>>>>> Linux/Housekeeping/Bug fixes/Extend xTreme/Defs:Firenzina/utility.c
 #define FD_Zero FD_ZERO
 #else
 #include <intrin.h>
 #endif
-<<<<<<< HEAD:src/utility.c
 
 #if defined(_WIN32) && !defined(__GNUC__) || defined(_WIN64) && !defined(__GNUC__)
 #include <winsock2.h>
 #endif
-=======
->>>>>>> Linux/Housekeeping/Bug fixes/Extend xTreme/Defs:Firenzina/utility.c
 
 #define Tweak (0x74d3c012a8bf965e)
 int PreviousDepth, PreviousFast;
@@ -379,15 +350,9 @@ void NewGame(typePos *Position, bool full)
     }
 void ShowBanner()
     {
-<<<<<<< HEAD:src/utility.c
     char *startup_banner = "" Engine " " Vers " " Platform "\n"
         "by Kranium, based on Ippolit\n"
         "compiled by NS\n"
-=======
-    char *startup_banner = "" Engine " " Vers " " PLatform "\n" // Modification by Yuri Censor for Firenzina, 2/16/2013: 
-        "by Yuri Censor and ZirconiumX, a clone of Fire 2.2 xTreme by Kranium, based on Ippolit\n" // ZirconiumX added, 3/19/2013
-        "compiled by Yuri Censor\n" // Modified by Yuri Censor for Firenzina, 2/23/2013; Was: compiled by NS (i.e., Norman Schmidt)
->>>>>>> Linux/Housekeeping/Bug fixes/Extend xTreme/Defs:Firenzina/utility.c
         "" __DATE__ " " __TIME__ "\n\n";
 
     Send(startup_banner);
@@ -405,11 +370,7 @@ void ShowBanner()
 
 void GetSysInfo()
     {
-<<<<<<< HEAD:src/utility.c
 #if defined(_WIN32) || defined(_WIN64)
-=======
-#if defined(_WIN32) || defined(_WIN64)    
->>>>>>> Linux/Housekeeping/Bug fixes/Extend xTreme/Defs:Firenzina/utility.c
 SYSTEM_INFO sysinfo;
     GetSystemInfo(&sysinfo);
     NumCPUs = sysinfo.dwNumberOfProcessors;
@@ -491,13 +452,8 @@ NumCPUs = get_nprocs();
 
 void SetPOPCNT()
 	{
-<<<<<<< HEAD:src/utility.c
 
 #if defined(_WIN32) || defined(_WIN64)
-=======
-  	
-#if defined(_WIN32) && !defined(__GNUC__) || defined(_WIN64) && !defined(__GNUC__)
->>>>>>> Linux/Housekeeping/Bug fixes/Extend xTreme/Defs:Firenzina/utility.c
 int CPUInfo[4] = {-1};
   	__cpuid(CPUInfo, 0x00000001);
   	HasPopcnt = (CPUInfo[2] >> 23) & 1;
@@ -531,7 +487,7 @@ int create_log(void)
     time(&now);
     tnow = *localtime(&now);
     strftime(buf, 32, "%d%b-%H%M", &tnow);
-    sprintf(log_filename, "%s %s %s %s.txt", Engine, Vers, PLatform, buf);
+    sprintf(log_filename, "%s %s %s %s.txt", Engine, Vers, Platform, buf);
     log_file = fopen(log_filename, "wt");
 	close_log();
 	return false;
