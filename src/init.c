@@ -1,3 +1,13 @@
+<<<<<<< HEAD:src/init.c
+/*
+Firenzina is a UCI chess playing engine by Kranium (Norman Schmidt)
+Firenzina is based on Ippolit source code: http://ippolit.wikispaces.com/
+authors: Yakov Petrovich Golyadkin, Igor Igorovich Igoronov,
+and Roberto Pescatore copyright: (C) 2009 Yakov Petrovich Golyadkin
+date: 92th and 93rd year from Revolution
+owners: PUBLICDOMAIN (workers)
+dedication: To Vladimir Ilyich
+=======
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
 Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
@@ -13,6 +23,7 @@ Ippolit copyright: (C) 2009 Yakov Petrovich Golyadkin
 Ippolit date: 92th and 93rd year from Revolution
 Ippolit owners: PUBLICDOMAIN (workers)
 Ippolit dedication: To Vladimir Ilyich
+>>>>>>> Linux/Housekeeping/Bug fixes/Extend xTreme/Defs:Firenzina/init.c
 "This Russian chess ship is a truly glorious achievement of the
  October Revolution and Decembrists movement!"
 
@@ -28,7 +39,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program. If not, see http://www.gnu.org/licenses/.
-*******************************************************************************/
+*/
 
 #include "fire.h"
 
@@ -127,7 +138,7 @@ static void parse_option(const char *str)
 				Send("info string Write Log: %s\n", "true");
 			create_log();
 			log_file = fopen(log_filename, "a");
-			fprintf(log_file, "%s found:\n", "fire.cfg");
+			fprintf(log_file, "%s found:\n", "Firenzina.cfg");
 			fprintf(log_file, "Write Log: %s\n", "true");
 			close_log();
             }
@@ -386,7 +397,7 @@ static void parse_option(const char *str)
 			}
 #endif
         }
-				
+
 	// TripleBases
     if (!strcmp(arg[0], "AutoLoad_TripleBases"))
         {
@@ -489,7 +500,7 @@ static void parse_option(const char *str)
 	// Eval Weights
     if (!strcmp(arg[0], "Draw_Weight"))
         {
-		Send("\n// Eval Weights\n");		
+		Send("\n// Eval Weights\n");
         DrawWeight = atoi(arg[1]);
 		if (DrawWeight < 1)
 			DrawWeight = 1;
@@ -591,8 +602,13 @@ static void parse_option(const char *str)
         PositionalWeight = atoi(arg[1]);
 		if (PositionalWeight < 1)
 			PositionalWeight = 1;
+<<<<<<< HEAD:src/init.c
+		if (PositionalWeight > 200)
+			PositionalWeight = 200;
+=======
 		if (PositionalWeight > MAX_POSITIONAL_WEIGHT)
 			PositionalWeight = MAX_POSITIONAL_WEIGHT;		
+>>>>>>> Linux/Housekeeping/Bug fixes/Extend xTreme/Defs:Firenzina/init.c
         Send("Positional Weight: %d\n", PositionalWeight);
 		if (VerboseUCI)
 			Send("info string Positional Weight: %d\n", PositionalWeight);
@@ -603,7 +619,7 @@ static void parse_option(const char *str)
         Send("PST Weight: %d\n", PSTWeight);
 		if (VerboseUCI)
 			Send("info string PST Weight: %d\n", PSTWeight);
-        }		
+        }
     if (!strcmp(arg[0], "PST_Weight"))
         {
         PSTWeight = atoi(arg[1]);
@@ -627,7 +643,7 @@ static void parse_option(const char *str)
 	// Lazy Eval
     if (!strcmp(arg[0], "Lazy_Eval_Min"))
         {
-		Send("\n// Lazy Eval\n");		
+		Send("\n// Lazy Eval\n");
         LazyEvalMin = atoi(arg[1]);
 		if (LazyEvalMin < 1)
 			LazyEvalMin = 1;
@@ -668,7 +684,7 @@ static void parse_option(const char *str)
 	// Piece Values
     if (!strcmp(arg[0], "Pawn_Value"))
         {
-		Send("\n// Piece Values\n");		
+		Send("\n// Piece Values\n");
         PValue = atoi(arg[1]);
 		if (PValue < 1)
 			PValue = 1;
@@ -781,7 +797,7 @@ static void parse_option(const char *str)
 			}
 #endif
         }
-		
+
 	// Prune Thresholds
     if (!strcmp(arg[0], "Prune_Check"))
         {
@@ -860,7 +876,7 @@ static void parse_option(const char *str)
 			}
 #endif
         }
-		
+
 	// Search Parameters
     if (!strcmp(arg[0], "Aspiration_Window"))
         {
@@ -1708,13 +1724,13 @@ void read_cfg_file(char *file_name)
     if (cfgFile)
         {
 		CfgFound = true;
-		Send("info string %s found\n", "fire.cfg");
+		Send("info string %s found\n", "Firenzina.cfg");
 		Send("info string UCI options disabled\n");
 #ifdef Log
 			if (WriteLog)
 				{
 				log_file = fopen(log_filename, "a");
-				fprintf(log_file, "info string %s found\n", "fire.cfg");
+				fprintf(log_file, "info string %s found\n", "Firenzina.cfg");
 				fprintf(log_file, "info string UCI options disabled\n");
 				close_log();
 				}
@@ -1733,13 +1749,13 @@ void read_cfg_file(char *file_name)
     else
         {
 		CfgFound = false;
-		Send("info string %s not found\n", "fire.cfg");
+		Send("info string %s not found\n", "Firenzina.cfg");
 		Send("info string UCI options enabled\n");
 #ifdef Log
 			if (WriteLog)
 				{
 				log_file = fopen(log_filename, "a");
-				fprintf(log_file, "info string %s not found\n", "fire.cfg");
+				fprintf(log_file, "info string %s not found\n", "Firenzina.cfg");
 				fprintf(log_file, "info string UCI options enabled\n");
 				close_log();
 				}
@@ -1750,63 +1766,63 @@ void read_cfg_file(char *file_name)
 void gen_cfg_file(char *file_name)
     {
 	if (CfgFile == 0)
-		Send("writing default fire.cfg\n");
+		Send("writing default Firenzina.cfg\n");
 	else if (CfgFile == 1)
-		Send("writing random fire.cfg\n");
+		Send("writing random Firenzina.cfg\n");
 	else if (CfgFile == 2)
-		Send("writing random eval fire.cfg\n");
+		Send("writing random eval Firenzina.cfg\n");
 	else if (CfgFile == 3)
-		Send("writing random material fire.cfg\n");
+		Send("writing random material Firenzina.cfg\n");
 	else if (CfgFile == 4)
-		Send("writing random prune fire.cfg\n");
+		Send("writing random prune Firenzina.cfg\n");
 	else if (CfgFile == 5)
-		Send("writing random search fire.cfg\n");
+		Send("writing random search Firenzina.cfg\n");
 	else if (CfgFile == 6)
-		Send("writing random time fire.cfg\n");
+		Send("writing random time Firenzina.cfg\n");
 	else
-		Send("writing default fire.cfg\n");
+		Send("writing default Firenzina.cfg\n");
 
 #ifdef Log
 	if (WriteLog)
 		{
 		log_file = fopen(log_filename, "a");
 		if (CfgFile == 0)
-			fprintf(fp, "writing default fire.cfg\n");
+			fprintf(fp, "writing default Firenzina.cfg\n");
 		else if (CfgFile == 1)
-			fprintf(fp, "writing random fire.cfg\n");
+			fprintf(fp, "writing random Firenzina.cfg\n");
 		else if (CfgFile == 2)
-			fprintf(fp, "writing random eval fire.cfg\n");
+			fprintf(fp, "writing random eval Firenzina.cfg\n");
 		else if (CfgFile == 3)
-			fprintf(fp, "writing random material fire.cfg\n");
+			fprintf(fp, "writing random material Firenzina.cfg\n");
 		else if (CfgFile == 4)
-			fprintf(fp, "writing random prune fire.cfg\n");
+			fprintf(fp, "writing random prune Firenzina.cfg\n");
 		else if (CfgFile == 5)
-			fprintf(fp, "writing random search fire.cfg\n");
+			fprintf(fp, "writing random search Firenzina.cfg\n");
 		else if (CfgFile == 6)
-			fprintf(fp, "writing random time fire.cfg\n");
+			fprintf(fp, "writing random time Firenzina.cfg\n");
 		else
-			fprintf(fp, "writing default fire.cfg\n");
+			fprintf(fp, "writing default Firenzina.cfg\n");
 		close_log();
 		}
 #endif
 
     fp = fopen(file_name, "w");
 	if (CfgFile == 0)
-		fprintf(fp, "// " Engine " " Vers " default fire.cfg\n");
+		fprintf(fp, "// " Engine " " Vers " default Firenzina.cfg\n");
 	else if (CfgFile == 1)
-		fprintf(fp, "// " Engine " " Vers " random fire.cfg\n");
+		fprintf(fp, "// " Engine " " Vers " random Firenzina.cfg\n");
 	else if (CfgFile == 2)
-		fprintf(fp, "// " Engine " " Vers " random eval fire.cfg\n");
+		fprintf(fp, "// " Engine " " Vers " random eval Firenzina.cfg\n");
 	else if (CfgFile == 3)
-		fprintf(fp, "// " Engine " " Vers " random material fire.cfg\n");
+		fprintf(fp, "// " Engine " " Vers " random material Firenzina.cfg\n");
 	else if (CfgFile == 4)
-		fprintf(fp, "// " Engine " " Vers " random prune fire.cfg\n");
+		fprintf(fp, "// " Engine " " Vers " random prune Firenzina.cfg\n");
 	else if (CfgFile == 5)
-		fprintf(fp, "// " Engine " " Vers " random search fire.cfg\n");
+		fprintf(fp, "// " Engine " " Vers " random search Firenzina.cfg\n");
 	else if (CfgFile == 6)
-		fprintf(fp, "// " Engine " " Vers " random time fire.cfg\n");
+		fprintf(fp, "// " Engine " " Vers " random time Firenzina.cfg\n");
 	else
-		fprintf(fp, "// " Engine " " Vers " default fire.cfg\n");
+		fprintf(fp, "// " Engine " " Vers " default Firenzina.cfg\n");
 
     fprintf(fp, "\n// System\n");
     fprintf(fp, "Verbose_UCI %d\n", 0);
@@ -1990,7 +2006,7 @@ void gen_cfg_file(char *file_name)
     fprintf(fp, "LowDepth_PVs %d\n", 0);
 	fprintf(fp, "NPS_Info %d\n", 0);
 	fprintf(fp, "TBHit_Info %d\n", 0);
-	
+
     fclose(fp);
     Send("done\n\n");
 

@@ -1,3 +1,13 @@
+<<<<<<< HEAD:src/win-linux.h
+/*
+Firenzina is a UCI chess playing engine by Kranium (Norman Schmidt)
+Firenzina is based on Ippolit source code: http://ippolit.wikispaces.com/
+authors: Yakov Petrovich Golyadkin, Igor Igorovich Igoronov,
+and Roberto Pescatore copyright: (C) 2009 Yakov Petrovich Golyadkin
+date: 92th and 93rd year from Revolution
+owners: PUBLICDOMAIN (workers)
+dedication: To Vladimir Ilyich
+=======
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
 Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
@@ -13,6 +23,7 @@ Ippolit copyright: (C) 2009 Yakov Petrovich Golyadkin
 Ippolit date: 92th and 93rd year from Revolution
 Ippolit owners: PUBLICDOMAIN (workers)
 Ippolit dedication: To Vladimir Ilyich
+>>>>>>> Linux/Housekeeping/Bug fixes/Extend xTreme/Defs:Firenzina/win-linux.h
 "This Russian chess ship is a truly glorious achievement of the
  October Revolution and Decembrists movement!"
 
@@ -28,7 +39,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program. If not, see http://www.gnu.org/licenses/.
-*******************************************************************************/
+*/
 
 #if defined(_WIN32) || defined(_WIN64)
 #include <windows.h>
@@ -69,7 +80,11 @@ typedef unsigned __int64 uint64;
 #define MemAlign(a, b, c) a = _aligned_malloc (c, b)
 #define AlignedFree(x) _aligned_free (x)
 #define __builtin_prefetch
+<<<<<<< HEAD:src/win-linux.h
+#if defined(_WIN64)
+=======
 #if defined(_WIN64) 
+>>>>>>> Linux/Housekeeping/Bug fixes/Extend xTreme/Defs:Firenzina/win-linux.h
 #include "win64bits.h"
 #else
 #include "win32bits.h"
@@ -127,5 +142,10 @@ pthread_t PThread[MaxCPUs], PThreadIO;
 #define IvanThread(A) void* SMPThread (void* A)
 #define IOThread(A) void* io_thread (void* A)
 #define VoidStarType void*
+<<<<<<< HEAD:src/win-linux.h
+//#define LinuxLargePages true
+#endif
+=======
 //#define LinuxLargePages false
 #endif
+>>>>>>> Linux/Housekeeping/Bug fixes/Extend xTreme/Defs:Firenzina/win-linux.h

@@ -1,18 +1,11 @@
-/*******************************************************************************
-Firenzina is a UCI chess playing engine by
-Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
-Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
-Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart.
-Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
-Firenzina is a derivative (via Fire) of FireBird by Kranium (Norman Schmidt) 
-and Sentinel (Milos Stanisavljevic). Firenzina is based (via Fire and FireBird)
-on Ippolit source code: http://ippolit.wikispaces.com/
-Ippolit authors: Yakov Petrovich Golyadkin, Igor Igorovich Igoronov,
-and Roberto Pescatore 
-Ippolit copyright: (C) 2009 Yakov Petrovich Golyadkin
-Ippolit date: 92th and 93rd year from Revolution
-Ippolit owners: PUBLICDOMAIN (workers)
-Ippolit dedication: To Vladimir Ilyich
+/*
+Firenzina is a UCI chess playing engine by Kranium (Norman Schmidt)
+Firenzina is based on Ippolit source code: http://ippolit.wikispaces.com/
+authors: Yakov Petrovich Golyadkin, Igor Igorovich Igoronov,
+and Roberto Pescatore copyright: (C) 2009 Yakov Petrovich Golyadkin
+date: 92th and 93rd year from Revolution
+owners: PUBLICDOMAIN (workers)
+dedication: To Vladimir Ilyich
 "This Russian chess ship is a truly glorious achievement of the
  October Revolution and Decembrists movement!"
 
@@ -28,12 +21,13 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program. If not, see http://www.gnu.org/licenses/.
-*******************************************************************************/
+*/
 #if defined(_WIN32) && defined(_MSC_VER)
 
-#define UINT64 unsigned long long int // Added by Yuri Censor for Firenzina, 3/4/2013
-static _inline int BSF(UINT64 x) // Modified by Yuri Censor for Firenzina, 3/4/2013: _inline instead of INLINE
-    {   // Reason: Intel 13.0 compiler seems happy this way
+static int BSF(UINT64 x)
+    {
+
+		
 		{
 		_asm
             {
@@ -48,8 +42,8 @@ static _inline int BSF(UINT64 x) // Modified by Yuri Censor for Firenzina, 3/4/2
 			}
 		}
     }
-static _inline int BSR(UINT64 x) // Modified by Yuri Censor for Firenzina, 3/4/2013: _inline instead of INLINE
-    {   // Reason: Intel 13.0 compiler seems happy this way
+static int BSR(UINT64 x)
+    {
 		{
         _asm
             {
@@ -64,20 +58,19 @@ static _inline int BSR(UINT64 x) // Modified by Yuri Censor for Firenzina, 3/4/2
             }
 		}
     }
- static _inline int PopcntHard (UINT64 w) // Modified by Yuri Censor for Firenzina, 3/4/2013: _inline instead of INLINE
-	{   // Reason: Intel 13.0 compiler seems happy this way   
+static INLINE int PopcntHard (UINT64 w)
+	{
 		{
 		_asm
 			{
-			popcnt edx,dword ptr w[0] 
-			popcnt eax,dword ptr w[4] 
-			add eax,edx  
+			popcnt edx,dword ptr w[0]
+			popcnt eax,dword ptr w[4]
+			add eax,edx
 			}
 		}
 	}
-
-static _inline int PopcntEmul (UINT64 v) // Modified by Yuri Censor for Firenzina, 3/4/2013: _inline instead of INLINE
-	{    // Reason: Intel 13.0 compiler seems happy this way
+static INLINE int PopcntEmul (UINT64 v)
+	{
 	unsigned int v1, v2;
 	v1 = (unsigned int) (v & 0xFFFFFFFF);
 	v1 -= (v1 >> 1) & 0x55555555;

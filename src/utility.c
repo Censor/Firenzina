@@ -1,3 +1,13 @@
+<<<<<<< HEAD:src/utility.c
+/*
+Firenzina is a UCI chess playing engine by Kranium (Norman Schmidt)
+Firenzina is based on Ippolit source code: http://ippolit.wikispaces.com/
+authors: Yakov Petrovich Golyadkin, Igor Igorovich Igoronov,
+and Roberto Pescatore copyright: (C) 2009 Yakov Petrovich Golyadkin
+date: 92th and 93rd year from Revolution
+owners: PUBLICDOMAIN (workers)
+dedication: To Vladimir Ilyich
+=======
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
 Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
@@ -13,6 +23,7 @@ Ippolit copyright: (C) 2009 Yakov Petrovich Golyadkin
 Ippolit date: 92th and 93rd year from Revolution
 Ippolit owners: PUBLICDOMAIN (workers)
 Ippolit dedication: To Vladimir Ilyich
+>>>>>>> Linux/Housekeeping/Bug fixes/Extend xTreme/Defs:Firenzina/utility.c
 "This Russian chess ship is a truly glorious achievement of the
  October Revolution and Decembrists movement!"
 
@@ -28,22 +39,33 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program. If not, see http://www.gnu.org/licenses/.
-*******************************************************************************/
+*/
 
 #include "fire.h"
 #include "material_value.h"
 
 #if defined(__GNUC__)
 #include <unistd.h>
+<<<<<<< HEAD:src/utility.c
+#include <sys/select.h>
+=======
 #if !defined(_WIN32) && !defined(_WIN64)
 #include <sys/select.h>
 #else
 #include <winsock2.h>
 #endif
+>>>>>>> Linux/Housekeeping/Bug fixes/Extend xTreme/Defs:Firenzina/utility.c
 #define FD_Zero FD_ZERO
 #else
 #include <intrin.h>
 #endif
+<<<<<<< HEAD:src/utility.c
+
+#if defined(_WIN32) && !defined(__GNUC__) || defined(_WIN64) && !defined(__GNUC__)
+#include <winsock2.h>
+#endif
+=======
+>>>>>>> Linux/Housekeeping/Bug fixes/Extend xTreme/Defs:Firenzina/utility.c
 
 #define Tweak (0x74d3c012a8bf965e)
 int PreviousDepth, PreviousFast;
@@ -234,20 +256,20 @@ uint64 GetClock()
     {
     return(GetTickCount() * 1000ULL);
     }
-	
+
 uint64 ProcessClock()
 {
 	FILETIME ftProcCreation, ftProcExit, ftProcKernel, ftProcUser;
 	LARGE_INTEGER user_time, kernel_time;
 	uint64 x;
-	uint64 tt = 10; 
-	
+	uint64 tt = 10;
+
 	GetProcessTimes(GetCurrentProcess(), &ftProcCreation, &ftProcExit, &ftProcKernel, &ftProcUser);
 
 	user_time.LowPart = ftProcUser.dwLowDateTime;
 	user_time.HighPart = ftProcUser.dwHighDateTime;
 	kernel_time.LowPart = ftProcKernel.dwLowDateTime;
-	kernel_time.HighPart = ftProcKernel.dwHighDateTime;  	
+	kernel_time.HighPart = ftProcKernel.dwHighDateTime;
 	x = (uint64) (user_time.QuadPart + kernel_time.QuadPart) / tt;
 	return x;
 }
@@ -357,9 +379,15 @@ void NewGame(typePos *Position, bool full)
     }
 void ShowBanner()
     {
+<<<<<<< HEAD:src/utility.c
+    char *startup_banner = "" Engine " " Vers " " Platform "\n"
+        "by Kranium, based on Ippolit\n"
+        "compiled by NS\n"
+=======
     char *startup_banner = "" Engine " " Vers " " PLatform "\n" // Modification by Yuri Censor for Firenzina, 2/16/2013: 
         "by Yuri Censor and ZirconiumX, a clone of Fire 2.2 xTreme by Kranium, based on Ippolit\n" // ZirconiumX added, 3/19/2013
         "compiled by Yuri Censor\n" // Modified by Yuri Censor for Firenzina, 2/23/2013; Was: compiled by NS (i.e., Norman Schmidt)
+>>>>>>> Linux/Housekeeping/Bug fixes/Extend xTreme/Defs:Firenzina/utility.c
         "" __DATE__ " " __TIME__ "\n\n";
 
     Send(startup_banner);
@@ -377,7 +405,11 @@ void ShowBanner()
 
 void GetSysInfo()
     {
+<<<<<<< HEAD:src/utility.c
+#if defined(_WIN32) || defined(_WIN64)
+=======
 #if defined(_WIN32) || defined(_WIN64)    
+>>>>>>> Linux/Housekeeping/Bug fixes/Extend xTreme/Defs:Firenzina/utility.c
 SYSTEM_INFO sysinfo;
     GetSystemInfo(&sysinfo);
     NumCPUs = sysinfo.dwNumberOfProcessors;
@@ -418,10 +450,9 @@ NumCPUs = get_nprocs();
 #endif
 
 		}
-	    
-	NumThreads = NumCPUs<<1; // Modification by Yuri Censor for Firenzina, 2/16/2013
-	                         // Was: NumThreads = NumCPUs; 
-	                         // Problem: We couldn't have more threads than processors
+
+	NumThreads = NumCPUs;
+
     if(NumThreads > MaxCPUs)
         NumThreads = MaxCPUs;
 
@@ -460,14 +491,17 @@ NumCPUs = get_nprocs();
 
 void SetPOPCNT()
 	{
+<<<<<<< HEAD:src/utility.c
+
+#if defined(_WIN32) || defined(_WIN64)
+=======
   	
 #if defined(_WIN32) && !defined(__GNUC__) || defined(_WIN64) && !defined(__GNUC__)
+>>>>>>> Linux/Housekeeping/Bug fixes/Extend xTreme/Defs:Firenzina/utility.c
 int CPUInfo[4] = {-1};
   	__cpuid(CPUInfo, 0x00000001);
   	HasPopcnt = (CPUInfo[2] >> 23) & 1;
-	// Direction by Yuri Censor for Firenzina, 03/19/2013.
-	// Comment out the section below to disable hardware POPCNT support:
-  	/**/if(HasPopcnt)
+  	if(HasPopcnt)
   		{
     	POPCNT = &PopcntHard;
     	Send("Hardware POPCNT supported\n\n");
@@ -481,7 +515,7 @@ int CPUInfo[4] = {-1};
 			}
 #endif
   		}
-  	else/**/
+  	else
 		POPCNT = &PopcntEmul;
 
 #endif

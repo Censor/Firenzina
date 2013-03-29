@@ -1,3 +1,13 @@
+<<<<<<< HEAD:src/control.c
+/*
+Firenzina is a UCI chess playing engine by Kranium (Norman Schmidt)
+Firenzina is based on Ippolit source code: http://ippolit.wikispaces.com/
+authors: Yakov Petrovich Golyadkin, Igor Igorovich Igoronov,
+and Roberto Pescatore copyright: (C) 2009 Yakov Petrovich Golyadkin
+date: 92th and 93rd year from Revolution
+owners: PUBLICDOMAIN (workers)
+dedication: To Vladimir Ilyich
+=======
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
 Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
@@ -13,6 +23,7 @@ Ippolit copyright: (C) 2009 Yakov Petrovich Golyadkin
 Ippolit date: 92th and 93rd year from Revolution
 Ippolit owners: PUBLICDOMAIN (workers)
 Ippolit dedication: To Vladimir Ilyich
+>>>>>>> Linux/Housekeeping/Bug fixes/Extend xTreme/Defs:Firenzina/control.c
 "This Russian chess ship is a truly glorious achievement of the
  October Revolution and Decembrists movement!"
 
@@ -28,7 +39,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program. If not, see http://www.gnu.org/licenses/.
-*******************************************************************************/
+*/
 
 #include "fire.h"
 #include "control.h"
@@ -83,7 +94,7 @@ void Info(sint64 x)
     uint64 t, nps, Nodes = 0;
 	int cpu, rp, hash_full = 0;
     clock_t u;
-	
+
 #ifdef RobboBases
     uint64 TBHits = 0;
 #endif
@@ -106,7 +117,7 @@ void Info(sint64 x)
 #endif
 
     u = clock();
-	
+
     if (HashFullInfo)
 		hash_full = DoHashFull (((sint64) u) + x + Nodes);
     t = x / 1000;
@@ -119,7 +130,7 @@ void Info(sint64 x)
 
 	if (NPSInfo)
 		Send("info time " Type64Bit " nodes " Type64Bit " nps " Type64Bit"\n", t, Nodes, nps * 1000);
-		
+
 	if (HashFullInfo && hash_full)
 		Send ("info hashfull %d\n", hash_full);
 
@@ -141,7 +152,7 @@ void Info(sint64 x)
 
 		if (NPSInfo)
 			fprintf(log_file, "info time " Type64Bit " nodes " Type64Bit " nps " Type64Bit"\n", t, Nodes, nps * 1000);
-			
+
 		if (HashFullInfo && hash_full)
 			fprintf(log_file, "info hashfull %d\n", hash_full);
 

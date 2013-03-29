@@ -1,3 +1,13 @@
+<<<<<<< HEAD:src/input.c
+/*
+Firenzina is a UCI chess playing engine by Kranium (Norman Schmidt)
+Firenzina is based on Ippolit source code: http://ippolit.wikispaces.com/
+authors: Yakov Petrovich Golyadkin, Igor Igorovich Igoronov,
+and Roberto Pescatore copyright: (C) 2009 Yakov Petrovich Golyadkin
+date: 92th and 93rd year from Revolution
+owners: PUBLICDOMAIN (workers)
+dedication: To Vladimir Ilyich
+=======
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
 Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
@@ -13,6 +23,7 @@ Ippolit copyright: (C) 2009 Yakov Petrovich Golyadkin
 Ippolit date: 92th and 93rd year from Revolution
 Ippolit owners: PUBLICDOMAIN (workers)
 Ippolit dedication: To Vladimir Ilyich
+>>>>>>> Linux/Housekeeping/Bug fixes/Extend xTreme/Defs:Firenzina/input.c
 "This Russian chess ship is a truly glorious achievement of the
  October Revolution and Decembrists movement!"
 
@@ -28,7 +39,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program. If not, see http://www.gnu.org/licenses/.
-*******************************************************************************/
+*/
 
 #include "fire.h"
 #include "control.h"
@@ -97,11 +108,19 @@ UCItype UCIOptions[256] =
 #endif
 
     { "Max_Threads", "SMP", UCISpin, 1, MaxCPUs, MaxCPUs, &OptMaxThreads, &InitSMP },
+<<<<<<< HEAD:src/input.c
+    { "MultiPV", "System", UCISpin, 1, 250, 1, &MultiPV, NULL },
+// Split Depths
+    { "AN_Split_Depth", "SMP", UCISpin, 12, 24, 12, &ANSplitDepth, NULL },
+    { "CN_Split_Depth", "SMP", UCISpin, 12, 24, 14, &CNSplitDepth, NULL },
+    { "PV_Split_Depth", "SMP", UCISpin, 12, 24, 12, &PVSplitDepth, NULL },
+=======
     { "MultiPV", "System", UCISpin, 1, MAX_MULTIPV, DEFAULT_MULTIPV, &MultiPV, NULL },
 // Split Depths	
     { "AN_Split_Depth", "SMP", UCISpin, MIN_AN_SPLIT_DEPTH, MAX_AN_SPLIT_DEPTH, DEFAULT_AN_SPLIT_DEPTH, &ANSplitDepth, NULL },
     { "CN_Split_Depth", "SMP", UCISpin, MIN_CN_SPLIT_DEPTH, MAX_CN_SPLIT_DEPTH, DEFAULT_CN_SPLIT_DEPTH, &CNSplitDepth, NULL },
     { "PV_Split_Depth", "SMP", UCISpin, MIN_PV_SPLIT_DEPTH, MAX_PV_SPLIT_DEPTH, DEFAULT_PV_SPLIT_DEPTH, &PVSplitDepth, NULL },
+>>>>>>> Linux/Housekeeping/Bug fixes/Extend xTreme/Defs:Firenzina/input.c
 // Piece Values
     { "Pawn_Value", "Eval", UCISpin, 1, MAX_PAWN_VALUE, DEFAULT_PAWN_VALUE, &PValue, &InitMaterialValue },
     { "Knight_Value", "Eval", UCISpin, 1, MAX_KNIGHT_VALUE, DEFAULT_KNIGHT_VALUE, &NValue, &InitMaterialValue },
@@ -207,15 +226,25 @@ static void uci()
         {
 		"spin", "check", "button", "string", "combo"
         };
+<<<<<<< HEAD:src/input.c
+	Send("id name %s %s %s\n", Engine, Vers, Platform);
+    Send("id author Kranium\n");
+=======
 	Send("id name %s %s %s\n", Engine, Vers, PLatform);
     Send("id author %s\n", Author);
+>>>>>>> Linux/Housekeeping/Bug fixes/Extend xTreme/Defs:Firenzina/input.c
 
 #ifdef Log
 	if (WriteLog)
 		{
 		log_file = fopen(log_filename, "a");
+<<<<<<< HEAD:src/input.c
+		fprintf(log_file, "id name %s %s %s\n", Engine, Vers, Platform);
+		fprintf(log_file, "id author Kranium\n");
+=======
 		fprintf(log_file, "id name %s %s %s\n", Engine, Vers, PLatform);
 		fprintf(log_file, "id author %s\n", Author);
+>>>>>>> Linux/Housekeeping/Bug fixes/Extend xTreme/Defs:Firenzina/input.c
 		close_log();
 		}
 #endif
@@ -632,46 +661,46 @@ static void ParseInput(typePos *Position, char *I)
         SetOption(I + 15);
     if (!strcmp(I, "uci"))
         uci();
-		
+
 #ifdef InitCFG
     if (!strcmp(I, "default"))
     if (!strcmp(I, "default"))
 		{
         CfgFile = 0;
-		gen_cfg_file("fire.cfg");
+		gen_cfg_file("Firenzina.cfg");
 		}
     if (!strcmp(I, "random"))
 		{
         CfgFile = 1;
-		gen_cfg_file("fire.cfg");
+		gen_cfg_file("Firenzina.cfg");
 		}
     if (!strcmp(I, "rand_eval"))
 		{
         CfgFile = 2;
-		gen_cfg_file("fire.cfg");
+		gen_cfg_file("Firenzina.cfg");
 		}
     if (!strcmp(I, "rand_material"))
 		{
         CfgFile = 3;
-		gen_cfg_file("fire.cfg");
+		gen_cfg_file("Firenzina.cfg");
 		}
     if (!strcmp(I, "rand_prune"))
 		{
         CfgFile = 4;
-		gen_cfg_file("fire.cfg");
+		gen_cfg_file("Firenzina.cfg");
 		}
     if (!strcmp(I, "rand_search"))
 		{
         CfgFile = 5;
-		gen_cfg_file("fire.cfg");
+		gen_cfg_file("Firenzina.cfg");
 		}
     if (!strcmp(I, "rand_time"))
 		{
         CfgFile = 6;
-		gen_cfg_file("fire.cfg");
+		gen_cfg_file("Firenzina.cfg");
 		}
-#endif	
-	
+#endif
+
     SuppressInput = false;
     }
 
