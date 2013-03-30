@@ -109,7 +109,7 @@ static int InitFlags(int wP, int wN, int wB, int wBL, int wBD, int wR, int wQ, i
         Flags |= WhiteMinorOnly << 2;
     if (bN == 1 && !bQ && !bR && !bB)
         Flags |= BlackMinorOnly << 2;
-    if (!wN && !wB && !wR && !wQ && !bN && !bB && !bQ && !bQ && wP + bP == 1)
+    if (!wN && !wB && !wR && !wQ && !bN && !bB && !bQ && !bR && wP + bP == 1)
         Flags |= PawnEnding << 2;
     if (wN == 1 && wB == 1 && !wR && !wQ && !wP && !bQ && !bR && !bB && !bN && !bP)
         Flags |= BishopKnightMate << 2;
@@ -402,6 +402,8 @@ static int WhiteWeight(int wP, int wN, int wB, int wBL, int wBD, int wR, int wQ,
         if (bPhase == 4 && bQ == 1 && wPhase == bPhase)
             wWeight = 7;
         }
+	if (wQ == 1 && wPhase == 4 && bPhase >= 2 && bP >= 1) // Added on 3/29/2013, recommended by Jose Maria Velasco
+		wWeight = 5;
     return wWeight;
     }
 static int BlackWeight(int wP, int wN, int wB, int wBL, int wBD, int wR, int wQ, int bP, int bN, int bB, int bBL,
@@ -663,6 +665,8 @@ static int BlackWeight(int wP, int wN, int wB, int wBL, int wBD, int wR, int wQ,
         if (wPhase == 4 && wQ == 1 && bPhase == wPhase)
             bWeight = 7;
         }
+	if (bQ == 1 && bPhase == 4 && wPhase >= 2 && wP >= 1) // Added on 3/29/2013, recommended by Jose Maria Velasco
+		bWeight = 5;
     return bWeight;
     }
 
