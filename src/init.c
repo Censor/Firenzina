@@ -1,11 +1,18 @@
-/*
-Firenzina is a UCI chess playing engine by Kranium (Norman Schmidt)
-Firenzina is based on Ippolit source code: http://ippolit.wikispaces.com/
-authors: Yakov Petrovich Golyadkin, Igor Igorovich Igoronov,
-and Roberto Pescatore copyright: (C) 2009 Yakov Petrovich Golyadkin
-date: 92th and 93rd year from Revolution
-owners: PUBLICDOMAIN (workers)
-dedication: To Vladimir Ilyich
+/*******************************************************************************
+Firenzina is a UCI chess playing engine by
+Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
+Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
+Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart.
+Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
+Firenzina is a derivative (via Fire) of FireBird by Kranium (Norman Schmidt) 
+and Sentinel (Milos Stanisavljevic). Firenzina is based (via Fire and FireBird)
+on Ippolit source code: http://ippolit.wikispaces.com/
+Ippolit authors: Yakov Petrovich Golyadkin, Igor Igorovich Igoronov,
+and Roberto Pescatore 
+Ippolit copyright: (C) 2009 Yakov Petrovich Golyadkin
+Ippolit date: 92th and 93rd year from Revolution
+Ippolit owners: PUBLICDOMAIN (workers)
+Ippolit dedication: To Vladimir Ilyich
 "This Russian chess ship is a truly glorious achievement of the
  October Revolution and Decembrists movement!"
 
@@ -21,7 +28,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program. If not, see http://www.gnu.org/licenses/.
-*/
+*******************************************************************************/
 
 #include "fire.h"
 
@@ -120,7 +127,7 @@ static void parse_option(const char *str)
 				Send("info string Write Log: %s\n", "true");
 			create_log();
 			log_file = fopen(log_filename, "a");
-			fprintf(log_file, "%s found:\n", "Firenzina.cfg");
+			fprintf(log_file, "%s found:\n", "fire.cfg");
 			fprintf(log_file, "Write Log: %s\n", "true");
 			close_log();
             }
@@ -139,7 +146,7 @@ static void parse_option(const char *str)
         int input = atoi(arg[1]);
 		OptHashSize = input;
 		if (OptHashSize == 0)
-			OptHashSize = 128;
+			OptHashSize = DEFAULT_HASH_SIZE;
 		Send("Hash: %d Mb\n", OptHashSize);
 		if (VerboseUCI)
 			Send("info string Hash: %d Mb\n", OptHashSize);
@@ -158,7 +165,7 @@ static void parse_option(const char *str)
         int input = atoi(arg[1]);
 		OptPHashSize = input;
 		if (OptPHashSize == 0)
-			OptPHashSize = 32;
+			OptPHashSize = DEFAULT_PAWN_HASH_SIZE;
 		Send("Pawn Hash: %d Mb\n", OptPHashSize);
 		if (VerboseUCI)
 			Send("info string Pawn Hash: %d Mb\n", OptPHashSize);
@@ -363,8 +370,8 @@ static void parse_option(const char *str)
 		TotalBaseCache = input;
 		if (TotalBaseCache < 1)
 			TotalBaseCache = 1;
-		if (TotalBaseCache > 1024)
-			TotalBaseCache = 1024;
+		if (TotalBaseCache > MAX_TOTAL_BASE_CACHE)
+			TotalBaseCache = MAX_TOTAL_BASE_CACHE;
 		InitTotalBaseCache(TotalBaseCache);
 		Send("TotalBase Cache: %d Mb\n", TotalBaseCache);
 		if (VerboseUCI)
@@ -379,7 +386,7 @@ static void parse_option(const char *str)
 			}
 #endif
         }
-
+				
 	// TripleBases
     if (!strcmp(arg[0], "AutoLoad_TripleBases"))
         {
@@ -440,8 +447,8 @@ static void parse_option(const char *str)
         TripleBaseHash = atoi(arg[1]);
 		if (TripleBaseHash < 1)
 			TripleBaseHash = 1;
-		if (TripleBaseHash > 4096)
-			TripleBaseHash = 4096;
+		if (TripleBaseHash > MAX_TRIPLE_BASE_HASH)
+			TripleBaseHash = MAX_TRIPLE_BASE_HASH;
         Send("TripleBase Hash: %d Mb\n", TripleBaseHash);
 		if (VerboseUCI)
 			Send("info string TripleBase Hash: %d Mb\n", TripleBaseHash);
@@ -461,8 +468,8 @@ static void parse_option(const char *str)
         DynamicTripleBaseCache = atoi(arg[1]);
 		if (DynamicTripleBaseCache < 1)
 			DynamicTripleBaseCache = 1;
-		if (DynamicTripleBaseCache > 65536)
-			DynamicTripleBaseCache = 65536;
+		if (DynamicTripleBaseCache > MAX_DYNAMIC_TRIPLE_BASE_CACHE)
+			DynamicTripleBaseCache = MAX_DYNAMIC_TRIPLE_BASE_CACHE;
         Send("Dynamic TripleBase Cache: %d Mb\n", DynamicTripleBaseCache);
 		if (VerboseUCI)
 			Send("info string Dynamic TripleBase Cache: %d Mb\n", DynamicTripleBaseCache);
@@ -482,12 +489,12 @@ static void parse_option(const char *str)
 	// Eval Weights
     if (!strcmp(arg[0], "Draw_Weight"))
         {
-		Send("\n// Eval Weights\n");
+		Send("\n// Eval Weights\n");		
         DrawWeight = atoi(arg[1]);
 		if (DrawWeight < 1)
 			DrawWeight = 1;
-		if (DrawWeight > 200)
-			DrawWeight = 200;
+		if (DrawWeight > MAX_DRAW_WEIGHT)
+			DrawWeight = MAX_DRAW_WEIGHT;
         Send("Draw Weight: %d\n", DrawWeight);
 		if (VerboseUCI)
 			Send("info string Draw Weight: %d\n", DrawWeight);
@@ -506,8 +513,8 @@ static void parse_option(const char *str)
         KingSafetyWeight = atoi(arg[1]);
 		if (KingSafetyWeight < 1)
 			KingSafetyWeight = 1;
-		if (KingSafetyWeight > 200)
-			KingSafetyWeight = 200;
+		if (KingSafetyWeight > MAX_KING_SAFETY_WEIGHT)
+			KingSafetyWeight = MAX_KING_SAFETY_WEIGHT;
         Send("King Safety Weight: %d\n", KingSafetyWeight);
 		if (VerboseUCI)
 			Send("info string King Safety Weight: %d\n", KingSafetyWeight);
@@ -523,6 +530,12 @@ static void parse_option(const char *str)
     if (!strcmp(arg[0], "Material_Weight"))
         {
         MaterialWeight = atoi(arg[1]);
+		// Addition by Yuri Censor for Firenzina (3/26/2013) begins here:
+		if (MaterialWeight < 1) // bracketing was missing here,
+			MaterialWeight = 1; // Yuri Censor added it.
+		if (MaterialWeight > MAX_MATERIAL_WEIGHT)
+			MaterialWeight = MAX_MATERIAL_WEIGHT;
+        // Addition by Yuri Censor for Firenzina (3/26/2013) ends here.
         Send("Material Weight: %d\n", MaterialWeight);
 		if (VerboseUCI)
 			Send("info string Material Weight: %d\n", MaterialWeight);
@@ -540,8 +553,8 @@ static void parse_option(const char *str)
         MobilityWeight = atoi(arg[1]);
 		if (MobilityWeight < 1)
 			MobilityWeight = 1;
-		if (MobilityWeight > 200)
-			MobilityWeight = 200;
+		if (MobilityWeight > MAX_MOBILITY_WEIGHT)
+			MobilityWeight = MAX_MOBILITY_WEIGHT;
         Send("Mobility Weight: %d\n", MobilityWeight);
 		if (VerboseUCI)
 			Send("info string Mobility Weight: %d\n", MobilityWeight);
@@ -559,8 +572,8 @@ static void parse_option(const char *str)
         PawnWeight = atoi(arg[1]);
 		if (PawnWeight < 1)
 			PawnWeight = 1;
-		if (PawnWeight > 200)
-			PawnWeight = 200;
+		if (PawnWeight > MAX_PAWN_WEIGHT)
+			PawnWeight = MAX_PAWN_WEIGHT;
         Send("Pawn Weight: %d\n", PawnWeight);
 		if (VerboseUCI)
 			Send("info string Pawn Weight: %d\n", PawnWeight);
@@ -578,8 +591,8 @@ static void parse_option(const char *str)
         PositionalWeight = atoi(arg[1]);
 		if (PositionalWeight < 1)
 			PositionalWeight = 1;
-		if (PositionalWeight > 200)
-			PositionalWeight = 200;
+		if (PositionalWeight > MAX_POSITIONAL_WEIGHT)
+			PositionalWeight = MAX_POSITIONAL_WEIGHT;		
         Send("Positional Weight: %d\n", PositionalWeight);
 		if (VerboseUCI)
 			Send("info string Positional Weight: %d\n", PositionalWeight);
@@ -590,14 +603,14 @@ static void parse_option(const char *str)
         Send("PST Weight: %d\n", PSTWeight);
 		if (VerboseUCI)
 			Send("info string PST Weight: %d\n", PSTWeight);
-        }
+        }		
     if (!strcmp(arg[0], "PST_Weight"))
         {
         PSTWeight = atoi(arg[1]);
 		if (PSTWeight < 1)
 			PSTWeight = 1;
-		if (PSTWeight > 200)
-			PSTWeight = 200;
+		if (PSTWeight > MAX_PST_WEIGHT)
+			PSTWeight = MAX_PST_WEIGHT;
         Send("PST Weight: %d\n", PSTWeight);
 		if (VerboseUCI)
 			Send("info string PST Weight: %d\n", PSTWeight);
@@ -614,12 +627,12 @@ static void parse_option(const char *str)
 	// Lazy Eval
     if (!strcmp(arg[0], "Lazy_Eval_Min"))
         {
-		Send("\n// Lazy Eval\n");
+		Send("\n// Lazy Eval\n");		
         LazyEvalMin = atoi(arg[1]);
 		if (LazyEvalMin < 1)
 			LazyEvalMin = 1;
-		if (LazyEvalMin > 300)
-			LazyEvalMin = 300;
+		if (LazyEvalMin > MAX_LAZY_EVAL_MIN)
+			LazyEvalMin = MAX_LAZY_EVAL_MIN;
         Send("Lazy Eval Min: %d\n", LazyEvalMin);
 		if (VerboseUCI)
 			Send("info string Lazy Eval Min: %d\n", LazyEvalMin);
@@ -637,8 +650,8 @@ static void parse_option(const char *str)
         LazyEvalMax = atoi(arg[1]);
 		if (LazyEvalMax < 1)
 			LazyEvalMax = 1;
-		if (LazyEvalMax > 600)
-			LazyEvalMax = 600;
+		if (LazyEvalMax > MAX_LAZY_EVAL_MAX)
+			LazyEvalMax = MAX_LAZY_EVAL_MAX;
         Send("Lazy Eval Max: %d\n", LazyEvalMax);
 		if (VerboseUCI)
 			Send("info string Lazy Eval Max: %d\n", LazyEvalMax);
@@ -655,12 +668,12 @@ static void parse_option(const char *str)
 	// Piece Values
     if (!strcmp(arg[0], "Pawn_Value"))
         {
-		Send("\n// Piece Values\n");
+		Send("\n// Piece Values\n");		
         PValue = atoi(arg[1]);
 		if (PValue < 1)
 			PValue = 1;
-		if (PValue > 200)
-			PValue = 200;
+		if (PValue > MAX_PAWN_VALUE)
+			PValue = MAX_PAWN_VALUE;
         Send("Pawn Value: %d\n", PValue);
 		if (VerboseUCI)
 			Send("info string Pawn Value: %d\n", PValue);
@@ -678,8 +691,8 @@ static void parse_option(const char *str)
         NValue = atoi(arg[1]);
 		if (NValue < 1)
 			NValue = 1;
-		if (NValue > 640)
-			NValue = 640;
+		if (NValue > MAX_KNIGHT_VALUE)
+			NValue = MAX_KNIGHT_VALUE;
         Send("Knight Value: %d\n", NValue);
 		if (VerboseUCI)
 			Send("info string Knight Value: %d\n", NValue);
@@ -697,8 +710,8 @@ static void parse_option(const char *str)
         BValue = atoi(arg[1]);
 		if (BValue < 1)
 			BValue = 1;
-		if (BValue > 640)
-			BValue = 640;
+		if (BValue > MAX_BISHOP_VALUE)
+			BValue = MAX_BISHOP_VALUE;
         Send("Bishop Value: %d\n", BValue);
 		if (VerboseUCI)
 			Send("info string Bishop Value: %d\n", BValue);
@@ -716,8 +729,8 @@ static void parse_option(const char *str)
         RValue = atoi(arg[1]);
 		if (RValue < 1)
 			RValue = 1;
-		if (RValue > 1000)
-			RValue = 1000;
+		if (RValue > MAX_ROOK_VALUE)
+			RValue = MAX_ROOK_VALUE;
         Send("Rook Value: %d\n", RValue);
 		if (VerboseUCI)
 			Send("info string Rook Value: %d\n", RValue);
@@ -735,8 +748,8 @@ static void parse_option(const char *str)
         QValue = atoi(arg[1]);
 		if (QValue < 1)
 			QValue = 1;
-		if (QValue > 2000)
-			QValue = 2000;
+		if (QValue > MAX_QUEEN_VALUE)
+			QValue = MAX_QUEEN_VALUE;
         Send("Queen Value: %d\n", QValue);
 		if (VerboseUCI)
 			Send("info string Queen Value: %d\n", QValue);
@@ -754,8 +767,8 @@ static void parse_option(const char *str)
         BPValue = atoi(arg[1]);
 		if (BPValue < 1)
 			BPValue = 1;
-		if (BPValue > 200)
-			BPValue = 200;
+		if (BPValue > MAX_BISHOP_PAIR_VALUE)
+			BPValue = MAX_BISHOP_PAIR_VALUE;
         Send("Bishop Pair Value: %d\n", BPValue);
 		if (VerboseUCI)
 			Send("info string Bishop Pair Value: %d\n", BPValue);
@@ -768,7 +781,7 @@ static void parse_option(const char *str)
 			}
 #endif
         }
-
+		
 	// Prune Thresholds
     if (!strcmp(arg[0], "Prune_Check"))
         {
@@ -776,8 +789,8 @@ static void parse_option(const char *str)
         PruneCheck = atoi(arg[1]);
 		if (PruneCheck < 1)
 			PruneCheck = 1;
-		if (PruneCheck > 30)
-			PruneCheck = 30;
+		if (PruneCheck > MAX_PRUNE_CHECK)
+			PruneCheck = MAX_PRUNE_CHECK;
         Send("Prune Check: %d\n", PruneCheck);
 		if (VerboseUCI)
 			Send("info string Prune Check: %d\n", PruneCheck);
@@ -793,10 +806,10 @@ static void parse_option(const char *str)
     if (!strcmp(arg[0], "Prune_Pawn"))
         {
         PrunePawn = atoi(arg[1]);
-		if (PruneCheck < 1)
-			PruneCheck = 1;
-		if (PruneCheck > 320)
-			PruneCheck = 320;
+		if (PrunePawn < 1) // Bug fix by Yuri Censor for Firenzina, 3/27/2013:
+			PrunePawn = 1; // Was: PruneCheck
+		if (PrunePawn > MAX_PRUNE_PAWN)
+			PrunePawn = MAX_PRUNE_PAWN;
         Send("Prune Pawn: %d\n", PrunePawn);
 		if (VerboseUCI)
 			Send("info string Prune Pawn: %d\n", PrunePawn);
@@ -812,10 +825,10 @@ static void parse_option(const char *str)
     if (!strcmp(arg[0], "Prune_Minor"))
         {
         PruneMinor = atoi(arg[1]);
-		if (PruneCheck < 1)
-			PruneCheck = 1;
-		if (PruneCheck > 1000)
-			PruneCheck = 1000;
+		if (PruneMinor < 1) // Bug fix by Yuri Censor for Firenzina, 3/27/2013:
+			PruneMinor = 1; // Was: PruneCheck
+		if (PruneMinor > MAX_PRUNE_MINOR)
+			PruneMinor = MAX_PRUNE_MINOR;
         Send("Prune Minor: %d\n", PruneMinor);
 		if (VerboseUCI)
 			Send("info string Prune Minor: %d\n", PruneMinor);
@@ -831,10 +844,10 @@ static void parse_option(const char *str)
     if (!strcmp(arg[0], "Prune_Rook"))
         {
         PruneRook = atoi(arg[1]);
-		if (PruneCheck < 1)
-			PruneCheck = 1;
-		if (PruneCheck > 1600)
-			PruneCheck = 1600;
+		if (PruneRook < 1) // Bug fix by Yuri Censor for Firenzina, 3/27/2013:
+			PruneRook = 1; // Was: PruneCheck
+		if (PruneRook > MAX_PRUNE_ROOK)
+			PruneRook = MAX_PRUNE_ROOK;
         Send("Prune Rook: %d\n", PruneRook);
 		if (VerboseUCI)
 			Send("info string Prune Rook: %d\n", PruneRook);
@@ -847,7 +860,7 @@ static void parse_option(const char *str)
 			}
 #endif
         }
-
+		
 	// Search Parameters
     if (!strcmp(arg[0], "Aspiration_Window"))
         {
@@ -855,8 +868,8 @@ static void parse_option(const char *str)
         AspirationWindow = atoi(arg[1]);
 		if (AspirationWindow < 1)
 			AspirationWindow = 1;
-		if (AspirationWindow > 100)
-			AspirationWindow = 100;
+		if (AspirationWindow > MAX_ASPIRATION_WINDOW)
+			AspirationWindow = MAX_ASPIRATION_WINDOW;
         Send("Aspiration Window: %d\n", AspirationWindow);
 		if (VerboseUCI)
 			Send("info string Aspiration Window: %d\n", AspirationWindow);
@@ -872,10 +885,10 @@ static void parse_option(const char *str)
    if (!strcmp(arg[0], "Delta_Cutoff"))
         {
         DeltaCutoff = atoi(arg[1]);
-		if (DeltaCutoff < 20000)
-			DeltaCutoff = 20000;
-		if (DeltaCutoff > 28000)
-			DeltaCutoff = 28000;
+		if (DeltaCutoff < MIN_DELTA_CUTOFF)
+			DeltaCutoff = MIN_DELTA_CUTOFF;
+		if (DeltaCutoff > MAX_DELTA_CUTOFF) 
+			DeltaCutoff = MAX_DELTA_CUTOFF; 
         Send("Delta Cutoff: %d\n", DeltaCutoff);
 		if (VerboseUCI)
 			Send("info string Delta Cutoff: %d\n", DeltaCutoff);
@@ -893,8 +906,8 @@ static void parse_option(const char *str)
         DepthRedMin = atoi(arg[1]);
 		if (DepthRedMin < 1)
 			DepthRedMin = 1;
-		if (DepthRedMin > 30)
-			DepthRedMin = 30;
+		if (DepthRedMin > MAX_DEPTH_RED_MIN) 
+			DepthRedMin = MAX_DEPTH_RED_MIN; 
         Send("DepthRed Min: %d\n", DepthRedMin);
 		if (VerboseUCI)
 			Send("info string DepthRed Min: %d\n", DepthRedMin);
@@ -949,8 +962,8 @@ static void parse_option(const char *str)
         HeightMultiplier = atoi(arg[1]);
 		if (HeightMultiplier < 1)
 			HeightMultiplier = 1;
-		if (HeightMultiplier > 128)
-			HeightMultiplier = 128;
+		if (HeightMultiplier > MAX_HEIGHT_MULTIPLIER)
+			HeightMultiplier = MAX_HEIGHT_MULTIPLIER;
         Send("Height Multiplier: %d\n", HeightMultiplier);
 		if (VerboseUCI)
 			Send("info string Height Multiplier: %d\n", HeightMultiplier);
@@ -968,8 +981,8 @@ static void parse_option(const char *str)
         HistoryThreshold = atoi(arg[1]);
 		if (HistoryThreshold < 1)
 			HistoryThreshold = 1;
-		if (HistoryThreshold > 100)
-			HistoryThreshold = 100;
+		if (HistoryThreshold > MAX_HISTORY_THRESHOLD)
+			HistoryThreshold = MAX_HISTORY_THRESHOLD;
         Send("History Threshold: %d\n", HistoryThreshold);
 		if (VerboseUCI)
 			Send("info string History Threshold: %d\n", HistoryThreshold);
@@ -987,8 +1000,8 @@ static void parse_option(const char *str)
         LowDepthMargin = atoi(arg[1]);
 		if (LowDepthMargin < 1)
 			LowDepthMargin = 1;
-		if (LowDepthMargin > 2000)
-			LowDepthMargin = 2000;
+		if (LowDepthMargin > MAX_LOW_DEPTH_MARGIN)
+			LowDepthMargin = MAX_LOW_DEPTH_MARGIN;
         Send("Low Depth CutOff: %d\n", LowDepthMargin);
 		if (VerboseUCI)
 			Send("info string Low Depth CutOff: %d\n", LowDepthMargin);
@@ -1006,8 +1019,8 @@ static void parse_option(const char *str)
         MinDepthMultiplier = atoi(arg[1]);
 		if (MinDepthMultiplier < 1)
 			MinDepthMultiplier = 1;
-		if (MinDepthMultiplier > 80)
-			MinDepthMultiplier = 80;
+		if (MinDepthMultiplier > MAX_MIN_DEPTH_MULTIPLIER) 
+			MinDepthMultiplier = MAX_MIN_DEPTH_MULTIPLIER; 
         Send("Min Depth Multiplier: %d\n", MinDepthMultiplier);
 		if (VerboseUCI)
 			Send("info string Min Depth Multiplier: %d\n", MinDepthMultiplier);
@@ -1025,8 +1038,8 @@ static void parse_option(const char *str)
         MinTransMoveDepth = atoi(arg[1]);
 		if (MinTransMoveDepth < 1)
 			MinTransMoveDepth = 1;
-		if (MinTransMoveDepth > 24)
-			MinTransMoveDepth = 24;
+		if (MinTransMoveDepth > MAX_MIN_TRANS_MOVE_DEPTH) 
+			MinTransMoveDepth = MAX_MIN_TRANS_MOVE_DEPTH; 
         Send("Min Trans Move Depth: %d\n", MinTransMoveDepth);
 		if (VerboseUCI)
 			Send("info string Min Trans Move Depth: %d\n", MinTransMoveDepth);
@@ -1044,8 +1057,8 @@ static void parse_option(const char *str)
         NullReduction = atoi(arg[1]);
 		if (NullReduction < 1)
 			NullReduction = 1;
-		if (NullReduction > 16)
-			NullReduction = 16;
+		if (NullReduction > MAX_NULL_REDUCTION)
+			NullReduction = MAX_NULL_REDUCTION;
         Send("Null Reduction: %d\n", NullReduction);
 		if (VerboseUCI)
 			Send("info string Null Reduction: %d\n", NullReduction);
@@ -1063,8 +1076,8 @@ static void parse_option(const char *str)
         QSAlphaThreshold = atoi(arg[1]);
 		if (QSAlphaThreshold < 1)
 			QSAlphaThreshold = 1;
-		if (QSAlphaThreshold > 280)
-			QSAlphaThreshold = 280;
+		if (QSAlphaThreshold > MAX_QS_ALPHA_THRESHOLD) 
+			QSAlphaThreshold = MAX_QS_ALPHA_THRESHOLD; 
         Send("QS Alpha Threshold: %d\n", QSAlphaThreshold);
 		if (VerboseUCI)
 			Send("info string QS Alpha Threshold: %d\n", QSAlphaThreshold);
@@ -1082,8 +1095,8 @@ static void parse_option(const char *str)
         SearchDepthMin = atoi(arg[1]);
 		if (SearchDepthMin < 1)
 			SearchDepthMin = 1;
-		if (SearchDepthMin > 40)
-			SearchDepthMin = 40;
+		if (SearchDepthMin > MAX_SEARCH_DEPTH_MIN)
+			SearchDepthMin = MAX_SEARCH_DEPTH_MIN;
         Send("Search Depth Min: %d\n", SearchDepthMin);
 		if (VerboseUCI)
 			Send("info string Search Depth Min: %d\n", SearchDepthMin);
@@ -1101,8 +1114,8 @@ static void parse_option(const char *str)
         SearchDepthReduction = atoi(arg[1]);
 		if (SearchDepthReduction < 1)
 			SearchDepthReduction = 1;
-		if (SearchDepthReduction > 12)
-			SearchDepthReduction = 12;
+		if (SearchDepthReduction > MAX_SEARCH_DEPTH_REDUCTION)
+			SearchDepthReduction = MAX_SEARCH_DEPTH_REDUCTION;
         Send("Search Depth Reduction: %d\n", SearchDepthReduction);
 		if (VerboseUCI)
 			Send("info string Search Depth Reduction: %d\n", SearchDepthReduction);
@@ -1120,8 +1133,8 @@ static void parse_option(const char *str)
         TopMinDepth = atoi(arg[1]);
 		if (TopMinDepth < 1)
 			TopMinDepth = 1;
-		if (TopMinDepth > 20)
-			TopMinDepth = 20;
+		if (TopMinDepth > MAX_TOP_MIN_DEPTH) 
+			TopMinDepth = MAX_TOP_MIN_DEPTH; 
         Send("Top Min Depth: %d\n", TopMinDepth);
 		if (VerboseUCI)
 			Send("info string Top Min Depth: %d\n", TopMinDepth);
@@ -1139,8 +1152,8 @@ static void parse_option(const char *str)
         UndoCountThreshold = atoi(arg[1]);
 		if (UndoCountThreshold < 1)
 			UndoCountThreshold = 1;
-		if (UndoCountThreshold > 22)
-			UndoCountThreshold = 22;
+		if (UndoCountThreshold > MAX_UNDO_COUNT_THRESHOLD) 
+			UndoCountThreshold = MAX_UNDO_COUNT_THRESHOLD; 
         Send("Undo Count Threshold: %d\n", UndoCountThreshold);
 		if (VerboseUCI)
 			Send("info string Undo Count Threshold: %d\n", UndoCountThreshold);
@@ -1157,10 +1170,10 @@ static void parse_option(const char *str)
         {
         ValueCut = atoi(arg[1]);
         Send("Value Cut: %d\n", ValueCut);
-		if (ValueCut < 1000)
-			ValueCut = 1000;
-		if (ValueCut > 30000)
-			ValueCut = 30000;
+		if (ValueCut < MIN_VALUE_CUT)
+			ValueCut = MIN_VALUE_CUT;
+		if (ValueCut > MAX_VALUE_CUT)
+			ValueCut = MAX_VALUE_CUT;
 		if (VerboseUCI)
 			Send("info string Value Cut: %d\n", ValueCut);
 #ifdef Log
@@ -1213,8 +1226,8 @@ static void parse_option(const char *str)
         VerifyReduction = atoi(arg[1]);
 		if (VerifyReduction < 1)
 			VerifyReduction = 1;
-		if (VerifyReduction > 16)
-			VerifyReduction = 16;
+		if (VerifyReduction > MAX_VERIFY_REDUCTION)
+			VerifyReduction = MAX_VERIFY_REDUCTION;
         Send("Verify Reduction: %d\n", VerifyReduction);
 		if (VerboseUCI)
 			Send("info string Verify Reduction: %d\n", VerifyReduction);
@@ -1269,10 +1282,10 @@ static void parse_option(const char *str)
     if (!strcmp(arg[0], "AN_Split_Depth"))
         {
         ANSplitDepth = atoi(arg[1]);
-		if (ANSplitDepth < 12)
-			ANSplitDepth = 12;
-		if (ANSplitDepth > 24)
-			ANSplitDepth = 24;
+		if (ANSplitDepth < MIN_AN_SPLIT_DEPTH) 
+			ANSplitDepth = MIN_AN_SPLIT_DEPTH; 
+		if (ANSplitDepth > MAX_AN_SPLIT_DEPTH)
+			ANSplitDepth = MAX_AN_SPLIT_DEPTH;
         Send("AN Split Depth: %d\n", ANSplitDepth);
 		if (VerboseUCI)
 			Send("info string AN Split Depth: %d\n", ANSplitDepth);
@@ -1288,10 +1301,10 @@ static void parse_option(const char *str)
     if (!strcmp(arg[0], "CN_Split_Depth"))
         {
         CNSplitDepth = atoi(arg[1]);
-		if (CNSplitDepth < 12)
-			CNSplitDepth = 12;
-		if (CNSplitDepth > 24)
-			CNSplitDepth = 24;
+		if (CNSplitDepth < MIN_CN_SPLIT_DEPTH) 
+			CNSplitDepth = MIN_CN_SPLIT_DEPTH; 
+		if (CNSplitDepth > MAX_CN_SPLIT_DEPTH)
+			CNSplitDepth = MAX_CN_SPLIT_DEPTH;
         Send("CN Split Depth: %d\n", CNSplitDepth);
 		if (VerboseUCI)
 			Send("info string CN Split Depth: %d\n", CNSplitDepth);
@@ -1307,10 +1320,10 @@ static void parse_option(const char *str)
     if (!strcmp(arg[0], "PV_Split_Depth"))
         {
         PVSplitDepth = atoi(arg[1]);
-		if (PVSplitDepth < 12)
-			PVSplitDepth = 12;
-		if (PVSplitDepth > 24)
-			PVSplitDepth = 24;
+		if (PVSplitDepth < MIN_PV_SPLIT_DEPTH) 
+			PVSplitDepth = MIN_PV_SPLIT_DEPTH; 
+		if (PVSplitDepth > MAX_PV_SPLIT_DEPTH)
+			PVSplitDepth = MAX_PV_SPLIT_DEPTH;
         Send("PV Split Depth: %d\n", PVSplitDepth);
 		if (VerboseUCI)
 			Send("info string PV Split Depth: %d\n", PVSplitDepth);
@@ -1331,8 +1344,8 @@ static void parse_option(const char *str)
         AbsoluteFactor = atoi(arg[1]);
 		if (AbsoluteFactor < 1)
 			AbsoluteFactor = 1;
-		if (AbsoluteFactor > 100)
-			AbsoluteFactor = 100;
+		if (AbsoluteFactor > MAX_ABSOLUTE_FACTOR)
+			AbsoluteFactor = MAX_ABSOLUTE_FACTOR;
         Send("Absolute Factor: %d\n", AbsoluteFactor);
 		if (VerboseUCI)
 			Send("info string Absolute Factor: %d\n", AbsoluteFactor);
@@ -1350,8 +1363,8 @@ static void parse_option(const char *str)
         BattleFactor = atoi(arg[1]);
 		if (BattleFactor < 1)
 			BattleFactor = 1;
-		if (BattleFactor > 200)
-			BattleFactor = 200;
+		if (BattleFactor > MAX_BATTLE_FACTOR)
+			BattleFactor = MAX_BATTLE_FACTOR;
         Send("Battle Factor: %d\n", BattleFactor);
 		if (VerboseUCI)
 			Send("info string Battle Factor: %d\n", BattleFactor);
@@ -1369,8 +1382,8 @@ static void parse_option(const char *str)
         EasyFactor = atoi(arg[1]);
 		if (EasyFactor < 1)
 			EasyFactor = 1;
-		if (EasyFactor > 100)
-			EasyFactor = 100;
+		if (EasyFactor > MAX_EASY_FACTOR)
+			EasyFactor = MAX_EASY_FACTOR;
         Send("Easy Factor: %d\n", EasyFactor);
 		if (VerboseUCI)
 			Send("info string Easy Factor: %d\n", EasyFactor);
@@ -1388,8 +1401,8 @@ static void parse_option(const char *str)
         EasyFactorPonder = atoi(arg[1]);
 		if (EasyFactorPonder < 1)
 			EasyFactorPonder = 1;
-		if (EasyFactorPonder > 100)
-			EasyFactorPonder = 100;
+		if (EasyFactorPonder > MAX_EASY_FACTOR_PONDER)
+			EasyFactorPonder = MAX_EASY_FACTOR_PONDER;
         Send("Easy Factor Ponder: %d\n", EasyFactorPonder);
 		if (VerboseUCI)
 			Send("info string Easy Factor Ponder: %d\n", EasyFactorPonder);
@@ -1407,8 +1420,8 @@ static void parse_option(const char *str)
         NormalFactor = atoi(arg[1]);
 		if (NormalFactor < 1)
 			NormalFactor = 1;
-		if (NormalFactor > 200)
-			NormalFactor = 200;
+		if (NormalFactor > MAX_NORMAL_FACTOR)
+			NormalFactor = MAX_NORMAL_FACTOR;
         Send("Normal Factor: %d\n", NormalFactor);
 		if (VerboseUCI)
 			Send("info string Normal Factor: %d\n", NormalFactor);
@@ -1695,13 +1708,13 @@ void read_cfg_file(char *file_name)
     if (cfgFile)
         {
 		CfgFound = true;
-		Send("info string %s found\n", "Firenzina.cfg");
+		Send("info string %s found\n", "fire.cfg");
 		Send("info string UCI options disabled\n");
 #ifdef Log
 			if (WriteLog)
 				{
 				log_file = fopen(log_filename, "a");
-				fprintf(log_file, "info string %s found\n", "Firenzina.cfg");
+				fprintf(log_file, "info string %s found\n", "fire.cfg");
 				fprintf(log_file, "info string UCI options disabled\n");
 				close_log();
 				}
@@ -1720,13 +1733,13 @@ void read_cfg_file(char *file_name)
     else
         {
 		CfgFound = false;
-		Send("info string %s not found\n", "Firenzina.cfg");
+		Send("info string %s not found\n", "fire.cfg");
 		Send("info string UCI options enabled\n");
 #ifdef Log
 			if (WriteLog)
 				{
 				log_file = fopen(log_filename, "a");
-				fprintf(log_file, "info string %s not found\n", "Firenzina.cfg");
+				fprintf(log_file, "info string %s not found\n", "fire.cfg");
 				fprintf(log_file, "info string UCI options enabled\n");
 				close_log();
 				}
@@ -1737,71 +1750,71 @@ void read_cfg_file(char *file_name)
 void gen_cfg_file(char *file_name)
     {
 	if (CfgFile == 0)
-		Send("writing default Firenzina.cfg\n");
+		Send("writing default fire.cfg\n");
 	else if (CfgFile == 1)
-		Send("writing random Firenzina.cfg\n");
+		Send("writing random fire.cfg\n");
 	else if (CfgFile == 2)
-		Send("writing random eval Firenzina.cfg\n");
+		Send("writing random eval fire.cfg\n");
 	else if (CfgFile == 3)
-		Send("writing random material Firenzina.cfg\n");
+		Send("writing random material fire.cfg\n");
 	else if (CfgFile == 4)
-		Send("writing random prune Firenzina.cfg\n");
+		Send("writing random prune fire.cfg\n");
 	else if (CfgFile == 5)
-		Send("writing random search Firenzina.cfg\n");
+		Send("writing random search fire.cfg\n");
 	else if (CfgFile == 6)
-		Send("writing random time Firenzina.cfg\n");
+		Send("writing random time fire.cfg\n");
 	else
-		Send("writing default Firenzina.cfg\n");
+		Send("writing default fire.cfg\n");
 
 #ifdef Log
 	if (WriteLog)
 		{
 		log_file = fopen(log_filename, "a");
 		if (CfgFile == 0)
-			fprintf(fp, "writing default Firenzina.cfg\n");
+			fprintf(fp, "writing default fire.cfg\n");
 		else if (CfgFile == 1)
-			fprintf(fp, "writing random Firenzina.cfg\n");
+			fprintf(fp, "writing random fire.cfg\n");
 		else if (CfgFile == 2)
-			fprintf(fp, "writing random eval Firenzina.cfg\n");
+			fprintf(fp, "writing random eval fire.cfg\n");
 		else if (CfgFile == 3)
-			fprintf(fp, "writing random material Firenzina.cfg\n");
+			fprintf(fp, "writing random material fire.cfg\n");
 		else if (CfgFile == 4)
-			fprintf(fp, "writing random prune Firenzina.cfg\n");
+			fprintf(fp, "writing random prune fire.cfg\n");
 		else if (CfgFile == 5)
-			fprintf(fp, "writing random search Firenzina.cfg\n");
+			fprintf(fp, "writing random search fire.cfg\n");
 		else if (CfgFile == 6)
-			fprintf(fp, "writing random time Firenzina.cfg\n");
+			fprintf(fp, "writing random time fire.cfg\n");
 		else
-			fprintf(fp, "writing default Firenzina.cfg\n");
+			fprintf(fp, "writing default fire.cfg\n");
 		close_log();
 		}
 #endif
 
     fp = fopen(file_name, "w");
 	if (CfgFile == 0)
-		fprintf(fp, "// " Engine " " Vers " default Firenzina.cfg\n");
+		fprintf(fp, "// " Engine " " Vers " default fire.cfg\n");
 	else if (CfgFile == 1)
-		fprintf(fp, "// " Engine " " Vers " random Firenzina.cfg\n");
+		fprintf(fp, "// " Engine " " Vers " random fire.cfg\n");
 	else if (CfgFile == 2)
-		fprintf(fp, "// " Engine " " Vers " random eval Firenzina.cfg\n");
+		fprintf(fp, "// " Engine " " Vers " random eval fire.cfg\n");
 	else if (CfgFile == 3)
-		fprintf(fp, "// " Engine " " Vers " random material Firenzina.cfg\n");
+		fprintf(fp, "// " Engine " " Vers " random material fire.cfg\n");
 	else if (CfgFile == 4)
-		fprintf(fp, "// " Engine " " Vers " random prune Firenzina.cfg\n");
+		fprintf(fp, "// " Engine " " Vers " random prune fire.cfg\n");
 	else if (CfgFile == 5)
-		fprintf(fp, "// " Engine " " Vers " random search Firenzina.cfg\n");
+		fprintf(fp, "// " Engine " " Vers " random search fire.cfg\n");
 	else if (CfgFile == 6)
-		fprintf(fp, "// " Engine " " Vers " random time Firenzina.cfg\n");
+		fprintf(fp, "// " Engine " " Vers " random time fire.cfg\n");
 	else
-		fprintf(fp, "// " Engine " " Vers " default Firenzina.cfg\n");
+		fprintf(fp, "// " Engine " " Vers " default fire.cfg\n");
 
     fprintf(fp, "\n// System\n");
     fprintf(fp, "Verbose_UCI %d\n", 0);
     fprintf(fp, "Write_Log %d\n", 0);
-    fprintf(fp, "Hash %d\n", 128);
-    fprintf(fp, "Pawn_Hash %d\n", 32);
+    fprintf(fp, "Hash %d\n", DEFAULT_HASH_SIZE);
+    fprintf(fp, "Pawn_Hash %d\n", DEFAULT_PAWN_HASH_SIZE);
     fprintf(fp, "Max_Threads %d\n", OptMaxThreads);
-    fprintf(fp, "MultiPV %d\n", 1);
+    fprintf(fp, "MultiPV %d\n", DEFAULT_MULTIPV);
     fprintf(fp, "Random_Range %d\n", RandRange);
 
 #ifdef RobboBases
@@ -1834,13 +1847,13 @@ void gen_cfg_file(char *file_name)
 		}
 		else
 		{
-		fprintf(fp, "Draw_Weight %d\n", 100);
-		fprintf(fp, "King_Safety_Weight %d\n", 100);
-		fprintf(fp, "Material_Weight %d\n", 100);
-		fprintf(fp, "Mobility_Weight %d\n", 100);
-		fprintf(fp, "Pawn_Weight %d\n", 100);
-		fprintf(fp, "Positional_Weight %d\n", 100);
-		fprintf(fp, "PST_Weight %d\n", 100);
+		fprintf(fp, "Draw_Weight %d\n", DEFAULT_DRAW_WEIGHT);
+		fprintf(fp, "King_Safety_Weight %d\n", DEFAULT_KING_SAFETY_WEIGHT);
+		fprintf(fp, "Material_Weight %d\n", DEFAULT_MATERIAL_WEIGHT);
+		fprintf(fp, "Mobility_Weight %d\n", DEFAULT_MOBILITY_WEIGHT);
+		fprintf(fp, "Pawn_Weight %d\n", DEFAULT_PAWN_WEIGHT);
+		fprintf(fp, "Positional_Weight %d\n", DEFAULT_POSITIONAL_WEIGHT);
+		fprintf(fp, "PST_Weight %d\n", DEFAULT_PST_WEIGHT);
 		}
 
 	fprintf(fp, "\n// Lazy Eval\n");
@@ -1851,8 +1864,8 @@ void gen_cfg_file(char *file_name)
 		}
 	else
 		{
-		fprintf(fp, "Lazy_Eval_Min %d\n", 150);
-		fprintf(fp, "Lazy_Eval_Max %d\n", 300);
+		fprintf(fp, "Lazy_Eval_Min %d\n", DEFAULT_LAZY_EVAL_MIN);
+		fprintf(fp, "Lazy_Eval_Max %d\n", DEFAULT_LAZY_EVAL_MAX);
 		}
 
 	fprintf(fp, "\n// Piece Values\n");
@@ -1867,12 +1880,12 @@ void gen_cfg_file(char *file_name)
 		}
 		else
 		{
-		fprintf(fp, "Pawn_Value %d\n", 100);
-		fprintf(fp, "Knight_Value %d\n", 320);
-		fprintf(fp, "Bishop_Value %d\n", 330);
-		fprintf(fp, "Rook_Value %d\n", 510);
-		fprintf(fp, "Queen_Value %d\n", 1000);
-		fprintf(fp, "Bishop_Pair_Value %d\n", 50);
+		fprintf(fp, "Pawn_Value %d\n", DEFAULT_PAWN_VALUE);
+		fprintf(fp, "Knight_Value %d\n", DEFAULT_KNIGHT_VALUE);
+		fprintf(fp, "Bishop_Value %d\n", DEFAULT_BISHOP_VALUE);
+		fprintf(fp, "Rook_Value %d\n", DEFAULT_ROOK_VALUE);
+		fprintf(fp, "Queen_Value %d\n", DEFAULT_QUEEN_VALUE);
+		fprintf(fp, "Bishop_Pair_Value %d\n", DEFAULT_BISHOP_PAIR_VALUE);
 		}
 
 	fprintf(fp, "\n// Prune Thresholds\n");
@@ -1885,10 +1898,10 @@ void gen_cfg_file(char *file_name)
 		}
 	else
 		{
-		fprintf(fp, "Prune_Check %d\n", 10);
-		fprintf(fp, "Prune_Pawn %d\n", 160);
-		fprintf(fp, "Prune_Minor %d\n", 500);
-		fprintf(fp, "Prune_Rook %d\n", 800);
+		fprintf(fp, "Prune_Check %d\n", DEFAULT_PRUNE_CHECK);
+		fprintf(fp, "Prune_Pawn %d\n", DEFAULT_PRUNE_PAWN);
+		fprintf(fp, "Prune_Minor %d\n", DEFAULT_PRUNE_MINOR);
+		fprintf(fp, "Prune_Rook %d\n", DEFAULT_PRUNE_ROOK);
 		}
 
 	fprintf(fp, "\n// Search Parameters\n");
@@ -1915,24 +1928,24 @@ void gen_cfg_file(char *file_name)
 		}
 	else
 		{
-		fprintf(fp, "Aspiration_Window %d\n", 8);
-		fprintf(fp, "Delta_Cutoff %d\n", 25000);
-		fprintf(fp, "DepthRed_Min %d\n", 12);
+		fprintf(fp, "Aspiration_Window %d\n", DEFAULT_ASPIRATION_WINDOW);
+		fprintf(fp, "Delta_Cutoff %d\n", DEFAULT_DELTA_CUTOFF);
+		fprintf(fp, "DepthRed_Min %d\n", DEFAULT_DEPTH_RED_MIN);
 		fprintf(fp, "Extend_In_Check %d\n", 0);
-		fprintf(fp, "Height_Multiplier %d\n", 64);
-		fprintf(fp, "History_Threshold %d\n", 50);
-		fprintf(fp, "Low_Depth_Margin %d\n", 1125);
-		fprintf(fp, "Min_Depth_Multiplier %d\n", 48);
-		fprintf(fp, "Min_Trans_Move_Depth %d\n", 16);
-		fprintf(fp, "Null_Reduction %d\n", 8);
-		fprintf(fp, "QS_Alpha_Threshold %d\n", 200);
-		fprintf(fp, "Search_Depth_Min %d\n", 20);
-		fprintf(fp, "Search_Depth_Reduction %d\n", 6);
-		fprintf(fp, "Top_Min_Depth %d\n", 14);
-		fprintf(fp, "Undo_Count_Threshold %d\n", 15);
-		fprintf(fp, "Value_Cut %d\n", 15000);
+		fprintf(fp, "Height_Multiplier %d\n", DEFAULT_HEIGHT_MULTIPLIER);
+		fprintf(fp, "History_Threshold %d\n", DEFAULT_HISTORY_THRESHOLD);
+		fprintf(fp, "Low_Depth_Margin %d\n", DEFAULT_LOW_DEPTH_MARGIN);
+		fprintf(fp, "Min_Depth_Multiplier %d\n", DEFAULT_MIN_DEPTH_MULTIPLIER);
+		fprintf(fp, "Min_Trans_Move_Depth %d\n", DEFAULT_MIN_TRANS_MOVE_DEPTH);
+		fprintf(fp, "Null_Reduction %d\n", DEFAULT_NULL_REDUCTION);
+		fprintf(fp, "QS_Alpha_Threshold %d\n", DEFAULT_QS_ALPHA_THRESHOLD);
+		fprintf(fp, "Search_Depth_Min %d\n", DEFAULT_SEARCH_DEPTH_MIN);
+		fprintf(fp, "Search_Depth_Reduction %d\n", DEFAULT_SEARCH_DEPTH_REDUCTION);
+		fprintf(fp, "Top_Min_Depth %d\n", DEFAULT_TOP_MIN_DEPTH);
+		fprintf(fp, "Undo_Count_Threshold %d\n", DEFAULT_UNDO_COUNT_THRESHOLD);
+		fprintf(fp, "Value_Cut %d\n", DEFAULT_VALUE_CUT);
 		fprintf(fp, "Verify_Null %d\n", 1);
-		fprintf(fp, "Verify_Reduction %d\n", 2);
+		fprintf(fp, "Verify_Reduction %d\n", DEFAULT_VERIFY_REDUCTION);
 		}
 
 	fprintf(fp, "\n// Split Depths\n");
@@ -1946,9 +1959,9 @@ void gen_cfg_file(char *file_name)
 		else
 		{
 		fprintf(fp, "Split_At_CN %d\n", 1);
-		fprintf(fp, "AN_Split_Depth %d\n", 12);
-		fprintf(fp, "CN_Split_Depth %d\n", 14);
-		fprintf(fp, "PV_Split_Depth %d\n", 12);
+		fprintf(fp, "AN_Split_Depth %d\n", DEFAULT_AN_SPLIT_DEPTH);
+		fprintf(fp, "CN_Split_Depth %d\n", DEFAULT_CN_SPLIT_DEPTH);
+		fprintf(fp, "PV_Split_Depth %d\n", DEFAULT_PV_SPLIT_DEPTH);
 		}
 
 	fprintf(fp, "\n// Time Management\n");
@@ -1962,11 +1975,11 @@ void gen_cfg_file(char *file_name)
 		}
 		else
 		{
-		fprintf(fp, "Absolute_Factor %d\n", 25);
-		fprintf(fp, "Battle_Factor %d\n", 100);
-		fprintf(fp, "Easy_Factor %d\n", 15);
-		fprintf(fp, "Easy_Factor_Ponder %d\n", 33);
-		fprintf(fp, "Normal_Factor %d\n", 75);
+		fprintf(fp, "Absolute_Factor %d\n", DEFAULT_ABSOLUTE_FACTOR);
+		fprintf(fp, "Battle_Factor %d\n", DEFAULT_BATTLE_FACTOR);
+		fprintf(fp, "Easy_Factor %d\n", DEFAULT_EASY_FACTOR);
+		fprintf(fp, "Easy_Factor_Ponder %d\n", DEFAULT_EASY_FACTOR_PONDER);
+		fprintf(fp, "Normal_Factor %d\n", DEFAULT_NORMAL_FACTOR);
 		}
 
 	fprintf(fp, "\n// UCI Info strings\n");
@@ -1977,7 +1990,7 @@ void gen_cfg_file(char *file_name)
     fprintf(fp, "LowDepth_PVs %d\n", 0);
 	fprintf(fp, "NPS_Info %d\n", 0);
 	fprintf(fp, "TBHit_Info %d\n", 0);
-
+	
     fclose(fp);
     Send("done\n\n");
 

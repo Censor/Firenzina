@@ -1,11 +1,18 @@
-/*
-Firenzina is a UCI chess playing engine by Kranium (Norman Schmidt)
-Firenzina is based on Ippolit source code: http://ippolit.wikispaces.com/
-authors: Yakov Petrovich Golyadkin, Igor Igorovich Igoronov,
-and Roberto Pescatore copyright: (C) 2009 Yakov Petrovich Golyadkin
-date: 92th and 93rd year from Revolution
-owners: PUBLICDOMAIN (workers)
-dedication: To Vladimir Ilyich
+/*******************************************************************************
+Firenzina is a UCI chess playing engine by
+Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
+Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
+Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart.
+Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
+Firenzina is a derivative (via Fire) of FireBird by Kranium (Norman Schmidt) 
+and Sentinel (Milos Stanisavljevic). Firenzina is based (via Fire and FireBird)
+on Ippolit source code: http://ippolit.wikispaces.com/
+Ippolit authors: Yakov Petrovich Golyadkin, Igor Igorovich Igoronov,
+and Roberto Pescatore 
+Ippolit copyright: (C) 2009 Yakov Petrovich Golyadkin
+Ippolit date: 92th and 93rd year from Revolution
+Ippolit owners: PUBLICDOMAIN (workers)
+Ippolit dedication: To Vladimir Ilyich
 "This Russian chess ship is a truly glorious achievement of the
  October Revolution and Decembrists movement!"
 
@@ -21,7 +28,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program. If not, see http://www.gnu.org/licenses/.
-*/
+*******************************************************************************/
 
 #include "fire.h"
 #include "control.h"
@@ -80,68 +87,68 @@ char SubClassList[NumSubClasses][16] =
 UCItype UCIOptions[256] =
     {
 // System
-    { "Hash", "System", UCISpin, 1, 65536, 128, &CurrentHashSize, &InitHash },
-    { "Pawn_Hash", "System", UCISpin, 1, 1024, 32, &CurrentPHashSize, &InitPawnHashWrapper },
+    { "Hash", "System", UCISpin, 1, MAX_HASH_SIZE, DEFAULT_HASH_SIZE, &CurrentHashSize, &InitHash },
+    { "Pawn_Hash", "System", UCISpin, 1, MAX_PAWN_HASH_SIZE, DEFAULT_PAWN_HASH_SIZE, &CurrentPHashSize, &InitPawnHashWrapper },
 
 #ifdef RobboBases
-	{ "TripleBase_Hash", "RobboBases", UCISpin, 1, 4096, 1, NULL, &InitTripleHash },
-	{ "TotalBase_Cache", "RobboBases", UCISpin, 1, 1024, 1, NULL, &SetTotalBaseCache },
-	{ "Dynamic_TripleBase_Cache", "RobboBases", UCISpin, 1, 65536, 1, NULL, &SetTripleBaseCache },
+	{ "TripleBase_Hash", "RobboBases", UCISpin, 1, MAX_TRIPLE_BASE_HASH, 1, NULL, &InitTripleHash },
+	{ "TotalBase_Cache", "RobboBases", UCISpin, 1, MAX_TOTAL_BASE_CACHE, 1, NULL, &SetTotalBaseCache },
+	{ "Dynamic_TripleBase_Cache", "RobboBases", UCISpin, 1, MAX_DYNAMIC_TRIPLE_BASE_CACHE, 1, NULL, &SetTripleBaseCache },
 #endif
 
     { "Max_Threads", "SMP", UCISpin, 1, MaxCPUs, MaxCPUs, &OptMaxThreads, &InitSMP },
-    { "MultiPV", "System", UCISpin, 1, 250, 1, &MultiPV, NULL },
-// Split Depths
-    { "AN_Split_Depth", "SMP", UCISpin, 12, 24, 12, &ANSplitDepth, NULL },
-    { "CN_Split_Depth", "SMP", UCISpin, 12, 24, 14, &CNSplitDepth, NULL },
-    { "PV_Split_Depth", "SMP", UCISpin, 12, 24, 12, &PVSplitDepth, NULL },
+    { "MultiPV", "System", UCISpin, 1, MAX_MULTIPV, DEFAULT_MULTIPV, &MultiPV, NULL },
+// Split Depths	
+    { "AN_Split_Depth", "SMP", UCISpin, MIN_AN_SPLIT_DEPTH, MAX_AN_SPLIT_DEPTH, DEFAULT_AN_SPLIT_DEPTH, &ANSplitDepth, NULL },
+    { "CN_Split_Depth", "SMP", UCISpin, MIN_CN_SPLIT_DEPTH, MAX_CN_SPLIT_DEPTH, DEFAULT_CN_SPLIT_DEPTH, &CNSplitDepth, NULL },
+    { "PV_Split_Depth", "SMP", UCISpin, MIN_PV_SPLIT_DEPTH, MAX_PV_SPLIT_DEPTH, DEFAULT_PV_SPLIT_DEPTH, &PVSplitDepth, NULL },
 // Piece Values
-    { "Pawn_Value", "Eval", UCISpin, 1, 200, 100, &PValue, &InitMaterialValue },
-    { "Knight_Value", "Eval", UCISpin, 1, 640, 320, &NValue, &InitMaterialValue },
-    { "Bishop_Value", "Eval", UCISpin, 1, 640, 330, &BValue, &InitMaterialValue },
-    { "Rook_Value", "Eval", UCISpin, 1, 1000, 510, &RValue, &InitMaterialValue },
-    { "Queen_Value", "Eval", UCISpin, 1, 2000, 1000, &QValue, &InitMaterialValue },
-    { "Bishop_Pair_Value", "Eval", UCISpin, 1, 200, 50, &BPValue, &InitMaterialValue },
+    { "Pawn_Value", "Eval", UCISpin, 1, MAX_PAWN_VALUE, DEFAULT_PAWN_VALUE, &PValue, &InitMaterialValue },
+    { "Knight_Value", "Eval", UCISpin, 1, MAX_KNIGHT_VALUE, DEFAULT_KNIGHT_VALUE, &NValue, &InitMaterialValue },
+    { "Bishop_Value", "Eval", UCISpin, 1, MAX_BISHOP_VALUE, DEFAULT_BISHOP_VALUE, &BValue, &InitMaterialValue },
+    { "Rook_Value", "Eval", UCISpin, 1, MAX_ROOK_VALUE, DEFAULT_ROOK_VALUE, &RValue, &InitMaterialValue },
+    { "Queen_Value", "Eval", UCISpin, 1, MAX_QUEEN_VALUE, DEFAULT_QUEEN_VALUE, &QValue, &InitMaterialValue },
+    { "Bishop_Pair_Value", "Eval", UCISpin, 1, MAX_BISHOP_PAIR_VALUE, DEFAULT_BISHOP_PAIR_VALUE, &BPValue, &InitMaterialValue },
 // Eval Weights
-    { "Draw_Weight", "Eval", UCISpin, 1, 200, 100, &DrawWeight, NULL },
-    { "King_Safety_Weight", "Eval", UCISpin, 1, 200, 100, &KingSafetyWeight, NULL },
-    { "Material_Weight", "Eval", UCISpin, 1, 200, 100, &MaterialWeight, NULL },
-    { "Mobility_Weight", "Eval", UCISpin, 1, 200, 100, &MobilityWeight, NULL },
-    { "Pawn_Weight", "Eval", UCISpin, 1, 200, 100, &PawnWeight, &PawnHashReset },
-    { "Positional_Weight", "Eval", UCISpin, 1, 200, 100, &PositionalWeight, NULL },
-    { "PST_Weight", "Eval", UCISpin, 1, 200, 100, &PSTWeight, NULL },
+    { "Draw_Weight", "Eval", UCISpin, 1, MAX_DRAW_WEIGHT, DEFAULT_DRAW_WEIGHT, &DrawWeight, NULL },
+    { "King_Safety_Weight", "Eval", UCISpin, 1, MAX_KING_SAFETY_WEIGHT, DEFAULT_KING_SAFETY_WEIGHT, &KingSafetyWeight, NULL },
+    { "Material_Weight", "Eval", UCISpin, 1, MAX_MATERIAL_WEIGHT, DEFAULT_MATERIAL_WEIGHT, &MaterialWeight, NULL },
+    { "Mobility_Weight", "Eval", UCISpin, 1, MAX_MOBILITY_WEIGHT, DEFAULT_MOBILITY_WEIGHT, &MobilityWeight, NULL },
+    { "Pawn_Weight", "Eval", UCISpin, 1, MAX_PAWN_WEIGHT, DEFAULT_PAWN_WEIGHT, &PawnWeight, &PawnHashReset },
+    { "Positional_Weight", "Eval", UCISpin, 1, MAX_POSITIONAL_WEIGHT, DEFAULT_POSITIONAL_WEIGHT, &PositionalWeight, NULL },
+    { "PST_Weight", "Eval", UCISpin, 1, MAX_PST_WEIGHT, DEFAULT_PST_WEIGHT, &PSTWeight, NULL },
 // Lazy Eval
-	{ "Lazy_Eval_Min", "Search", UCISpin, 1, 300, 150, &LazyEvalMin, NULL },
-	{ "Lazy_Eval_Max", "Search", UCISpin, 1, 600, 300, &LazyEvalMax, NULL },
+	{ "Lazy_Eval_Min", "Search", UCISpin, 1, MAX_LAZY_EVAL_MIN, DEFAULT_LAZY_EVAL_MIN, &LazyEvalMin, NULL },
+	{ "Lazy_Eval_Max", "Search", UCISpin, 1, MAX_LAZY_EVAL_MAX, DEFAULT_LAZY_EVAL_MAX, &LazyEvalMax, NULL },
 // Search Vars
-    { "Aspiration_Window", "Search", UCISpin, 1, 100, 8, &AspirationWindow, NULL },
-    { "Delta_Cutoff", "Search", UCISpin, 20000, 30000, 25000, &DeltaCutoff, NULL },
-    { "Depth_Red_Min", "Search", UCISpin, 1, 24, 12, &DepthRedMin, NULL },
-    { "Height_Multiplier", "Search", UCISpin, 1, 128, 64, &HeightMultiplier, NULL },
-    { "History_Threshold", "Search", UCISpin, 1, 100, 50, &HistoryThreshold, NULL },
-    { "Low_Depth_Margin", "Search", UCISpin, 1, 2000, 1125, &LowDepthMargin, NULL },
-    { "Min_Depth_Multiplier", "Search", UCISpin, 1, 96, 48, &MinDepthMultiplier, NULL },
-    { "Min_Trans_Move_Depth", "Search", UCISpin, 1, 32, 16, &MinTransMoveDepth, NULL },
-	{ "Null_Reduction", "Search", UCISpin, 1, 16, 8, &NullReduction, NULL },
+    { "Aspiration_Window", "Search", UCISpin, 1, MAX_ASPIRATION_WINDOW, DEFAULT_ASPIRATION_WINDOW, &AspirationWindow, NULL },
+    { "Delta_Cutoff", "Search", UCISpin, MIN_DELTA_CUTOFF, MAX_DELTA_CUTOFF, DEFAULT_DELTA_CUTOFF, &DeltaCutoff, NULL },
+    { "Depth_Red_Min", "Search", UCISpin, 1, MAX_DEPTH_RED_MIN, DEFAULT_DEPTH_RED_MIN, &DepthRedMin, NULL },
+    { "Height_Multiplier", "Search", UCISpin, 1, MAX_HEIGHT_MULTIPLIER, DEFAULT_HEIGHT_MULTIPLIER, &HeightMultiplier, NULL },
+    { "History_Threshold", "Search", UCISpin, 1, MAX_HISTORY_THRESHOLD, DEFAULT_HISTORY_THRESHOLD, &HistoryThreshold, NULL },
+    { "Low_Depth_Margin", "Search", UCISpin, 1, MAX_LOW_DEPTH_MARGIN, DEFAULT_LOW_DEPTH_MARGIN, &LowDepthMargin, NULL },
+    { "Min_Depth_Multiplier", "Search", UCISpin, 1, MAX_MIN_DEPTH_MULTIPLIER, DEFAULT_MIN_DEPTH_MULTIPLIER, &MinDepthMultiplier, NULL },
+    { "Min_Trans_Move_Depth", "Search", UCISpin, 1, MAX_MIN_TRANS_MOVE_DEPTH, DEFAULT_MIN_TRANS_MOVE_DEPTH, &MinTransMoveDepth, NULL },
+	{ "Null_Reduction", "Search", UCISpin, 1, MAX_NULL_REDUCTION, DEFAULT_NULL_REDUCTION, &NullReduction, NULL },
 // Prune Thresholds
-    { "Prune_Check", "Search", UCISpin, 1, 30, 10, &PruneCheck, NULL },
-    { "Prune_Pawn", "Search", UCISpin, 1, 320, 160, &PrunePawn, NULL },
-    { "Prune_Minor", "Search", UCISpin, 1, 1000, 500, &PruneMinor, NULL },
-    { "Prune_Rook", "Search", UCISpin, 1, 1600, 800, &PruneRook, NULL },
-// Search Vars
-    { "QS_Alpha_Threshold", "Search", UCISpin, 1, 400, 200, &QSAlphaThreshold, NULL },
-    { "Search_Depth_Min", "Search", UCISpin, 1, 40, 20, &SearchDepthMin, NULL },
-    { "Search_Depth_Reduction", "Search", UCISpin, 1, 12, 6, &SearchDepthReduction, NULL },
-    { "Top_Min_Depth", "Search", UCISpin, 1, 28, 14, &TopMinDepth, NULL },
-    { "Undo_Count_Threshold", "Search", UCISpin, 1, 20, 15, &UndoCountThreshold, NULL },
-	{ "Value_Cut", "Search", UCISpin, 1000, 30000, 15000, &ValueCut, NULL },
-	{ "Verify_Reduction", "Search", UCISpin, 1, 16, 2, &VerifyReduction, NULL },
+    { "Prune_Check", "Search", UCISpin, 1, MAX_PRUNE_CHECK, DEFAULT_PRUNE_CHECK, &PruneCheck, NULL },
+    { "Prune_Pawn", "Search", UCISpin, 1, MAX_PRUNE_PAWN, DEFAULT_PRUNE_PAWN, &PrunePawn, NULL },
+    { "Prune_Minor", "Search", UCISpin, 1, MAX_PRUNE_MINOR, DEFAULT_PRUNE_MINOR, &PruneMinor, NULL },
+    { "Prune_Rook", "Search", UCISpin, 1, MAX_PRUNE_ROOK, DEFAULT_PRUNE_ROOK, &PruneRook, NULL },
+// More Search Vars
+    { "QS_Alpha_Threshold", "Search", UCISpin, 1, MAX_QS_ALPHA_THRESHOLD, DEFAULT_QS_ALPHA_THRESHOLD, &QSAlphaThreshold, NULL },
+    { "Search_Depth_Min", "Search", UCISpin, 1, MAX_SEARCH_DEPTH_MIN, DEFAULT_SEARCH_DEPTH_MIN, &SearchDepthMin, NULL },
+    { "Search_Depth_Reduction", "Search", UCISpin, 1, MAX_SEARCH_DEPTH_REDUCTION, DEFAULT_SEARCH_DEPTH_REDUCTION, &SearchDepthReduction, NULL },
+    { "Top_Min_Depth", "Search", UCISpin, 1, MAX_TOP_MIN_DEPTH, DEFAULT_TOP_MIN_DEPTH, &TopMinDepth, NULL },
+    { "Undo_Count_Threshold", "Search", UCISpin, 1, MAX_UNDO_COUNT_THRESHOLD, DEFAULT_UNDO_COUNT_THRESHOLD, &UndoCountThreshold, NULL },
+	{ "Value_Cut", "Search", UCISpin, MIN_VALUE_CUT, MAX_VALUE_CUT, DEFAULT_VALUE_CUT, &ValueCut, NULL },
+	{ "Verify_Reduction", "Search", UCISpin, 1, MAX_VERIFY_REDUCTION, DEFAULT_VERIFY_REDUCTION, &VerifyReduction, NULL },
 // Time Management
-    { "Absolute_Factor", "Time", UCISpin, 1, 100, 25, &AbsoluteFactor, NULL },
-    { "Battle_Factor", "Time", UCISpin, 1, 200, 100, &BattleFactor, NULL },
-    { "Easy_Factor", "Time", UCISpin, 1, 100, 15, &EasyFactor, NULL },
-    { "Easy_Factor_Ponder", "Time", UCISpin, 1, 100, 33, &EasyFactorPonder, NULL },
-    { "Normal_Factor", "Time", UCISpin, 1, 200, 75, &NormalFactor, NULL},
+    { "Absolute_Factor", "Time", UCISpin, 1, MAX_ABSOLUTE_FACTOR, DEFAULT_ABSOLUTE_FACTOR, &AbsoluteFactor, NULL },
+    { "Battle_Factor", "Time", UCISpin, 1, MAX_BATTLE_FACTOR, DEFAULT_BATTLE_FACTOR, &BattleFactor, NULL },
+    { "Easy_Factor", "Time", UCISpin, 1, MAX_EASY_FACTOR, DEFAULT_EASY_FACTOR, &EasyFactor, NULL },
+    { "Easy_Factor_Ponder", "Time", UCISpin, 1, MAX_EASY_FACTOR_PONDER, DEFAULT_EASY_FACTOR_PONDER, &EasyFactorPonder, NULL },
+    { "Normal_Factor", "Time", UCISpin, 1, MAX_NORMAL_FACTOR, DEFAULT_NORMAL_FACTOR, &NormalFactor, NULL},
 //UCI Info Strings
     { "CPU_Load_Info", "Info", UCICheck, 0, 0, false, &CPULoadInfo, NULL },
     { "Current_Move_Info", "Info", UCICheck, 0, 0, false, &CurrMoveInfo, NULL },
@@ -184,10 +191,10 @@ UCItype UCIOptions[256] =
 UCItype BaseUCIOptions[256] =
     {
 // System
-    { "Hash", "System", UCISpin, 1, 65536, 128, &CurrentHashSize, &InitHash },
-    { "Pawn_Hash", "System", UCISpin, 1, 1024, 32, &CurrentPHashSize, &InitPawnHashWrapper },
+    { "Hash", "System", UCISpin, 1, MAX_HASH_SIZE, DEFAULT_HASH_SIZE, &CurrentHashSize, &InitHash },
+    { "Pawn_Hash", "System", UCISpin, 1, MAX_PAWN_HASH_SIZE, DEFAULT_PAWN_HASH_SIZE, &CurrentPHashSize, &InitPawnHashWrapper },
     { "Max_Threads", "SMP", UCISpin, 1, MaxCPUs, MaxCPUs, &OptMaxThreads, &InitSMP },
-    { "MultiPV", "System", UCISpin, 1, 250, 1, &MultiPV, NULL },
+    { "MultiPV", "System", UCISpin, 1, MAX_MULTIPV, DEFAULT_MULTIPV, &MultiPV, NULL },
     { "", "", -1, 0, 0, false, NULL, NULL }
     };
 
@@ -201,14 +208,14 @@ static void uci()
 		"spin", "check", "button", "string", "combo"
         };
 	Send("id name %s %s %s\n", Engine, Vers, Platform);
-    Send("id author Kranium\n");
+    Send("id author %s\n", Author);
 
 #ifdef Log
 	if (WriteLog)
 		{
 		log_file = fopen(log_filename, "a");
 		fprintf(log_file, "id name %s %s %s\n", Engine, Vers, Platform);
-		fprintf(log_file, "id author Kranium\n");
+		fprintf(log_file, "id author %s\n", Author);
 		close_log();
 		}
 #endif
@@ -625,46 +632,46 @@ static void ParseInput(typePos *Position, char *I)
         SetOption(I + 15);
     if (!strcmp(I, "uci"))
         uci();
-
+		
 #ifdef InitCFG
     if (!strcmp(I, "default"))
     if (!strcmp(I, "default"))
 		{
         CfgFile = 0;
-		gen_cfg_file("Firenzina.cfg");
+		gen_cfg_file("fire.cfg");
 		}
     if (!strcmp(I, "random"))
 		{
         CfgFile = 1;
-		gen_cfg_file("Firenzina.cfg");
+		gen_cfg_file("fire.cfg");
 		}
     if (!strcmp(I, "rand_eval"))
 		{
         CfgFile = 2;
-		gen_cfg_file("Firenzina.cfg");
+		gen_cfg_file("fire.cfg");
 		}
     if (!strcmp(I, "rand_material"))
 		{
         CfgFile = 3;
-		gen_cfg_file("Firenzina.cfg");
+		gen_cfg_file("fire.cfg");
 		}
     if (!strcmp(I, "rand_prune"))
 		{
         CfgFile = 4;
-		gen_cfg_file("Firenzina.cfg");
+		gen_cfg_file("fire.cfg");
 		}
     if (!strcmp(I, "rand_search"))
 		{
         CfgFile = 5;
-		gen_cfg_file("Firenzina.cfg");
+		gen_cfg_file("fire.cfg");
 		}
     if (!strcmp(I, "rand_time"))
 		{
         CfgFile = 6;
-		gen_cfg_file("Firenzina.cfg");
+		gen_cfg_file("fire.cfg");
 		}
-#endif
-
+#endif	
+	
     SuppressInput = false;
     }
 

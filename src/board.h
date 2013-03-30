@@ -106,7 +106,7 @@ struct TP
     {
     uint8 sq[64];
     uint64 bitboard[16];
-    uint64 OccupiedBW, _0, _1, _2;
+    uint64 OccupiedBW,  _0, _1, _2;
     uint8 XrayW[64], XrayB[64];
     uint8 wtm, wKsq, bKsq, height;
     typeDynamic *Dyn, *DynRoot;
