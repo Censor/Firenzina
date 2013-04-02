@@ -28,7 +28,11 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 
 #if defined(__GNUC__)
 #include <unistd.h>
+#if !defined(_WIN32) && !defined(_WIN64)
 #include <sys/select.h>
+#else
+#include <winsock2.h>
+#endif
 #define FD_Zero FD_ZERO
 #else
 #include <intrin.h>
