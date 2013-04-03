@@ -50,7 +50,7 @@ int InitEvalHash(int);
 int EvalEnding(typePos *Position, int Value, uint64 wPatt, uint64 bPatt);
 void SetValueArray();
 void InitRandom32(uint64);
-void SetPOPCNT(); 
+void SetPOPCNT();
 
 #ifdef RobboBases
 void TripleHashClear();

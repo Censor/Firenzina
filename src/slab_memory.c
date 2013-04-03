@@ -61,7 +61,7 @@ void DeleteSlab()
     }
 void InitSlab(int mb)
     {
-	
+
 #ifdef SlabMemory
     if (SlabRootLoc)
         DeleteSlab();
@@ -129,7 +129,7 @@ static void FillSlab()
     SlabAlloc1(uint64, HashCastling, 16);
     SlabAlloc1(uint64, HashEP, 8);
     SlabAlloc1(uint64, HashRev, 16);
-	
+
 #ifdef MultiplePosGain
     SlabAlloc2(sint16, MaxPositionalGain, MaxCPUs * 0x10 * 010000);
 #else

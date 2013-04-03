@@ -52,7 +52,7 @@ int MyAll(typePos *Position, int value, int depth)
     uint64 zob = Position->Dyn->Hash;
     int to, fr;
     bool Split;
-	
+
 	CheckForMate (value);
 
     (Pos0 + 1)->move = 0;
@@ -104,7 +104,7 @@ int MyAll(typePos *Position, int value, int depth)
     NextMove->trans_move = trans_move;
     if (Pos0->Value >= value && MyNull)
         {
-		new_depth = depth - NullReduction;	
+		new_depth = depth - NullReduction;
         new_depth -= ScoreReduction(Pos0->Value - value);
         new_depth += KingDangerAdjust(Pos0->wKdanger, Pos0->bKdanger);
         v = value;
@@ -270,7 +270,7 @@ int MyAllCheck(typePos *Position, int value, int depth)
     int best_value;
     typeDynamic *Pos0 = Position->Dyn;
     bool Gen;
-	
+
 	CheckForMate (value);
 
     (Pos0 + 1)->move = MoveNone;

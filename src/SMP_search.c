@@ -197,7 +197,7 @@ void MyAllSMP(typePos *Position)
             int to = To(m);
             int extend = 0;
             if (PassedPawnPush(to, SixthRank(to)))
-                extend = 1;			
+                extend = 1;
             if (ph == Ordinary_Moves && !extend)
                 {
                 int Reduction = 2 + BSR(2 + c);
@@ -266,7 +266,7 @@ void MyCutSMP(typePos *Position)
             int to = To(m);
             int extend = 0;
             if (PassedPawnPush(to, SixthRank(to)))
-				extend = 1;						
+				extend = 1;
             if (ph == Ordinary_Moves && !extend)
                 {
                 int Reduction = 4 + BSR(5 + c);

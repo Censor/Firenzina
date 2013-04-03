@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
-	<File name="src/50move.c" open="0" top="0" tabpos="0">
-		<Cursor position="1137" topLine="3" />
+	<File name="src/50move.c" open="0" top="0" tabpos="2">
+		<Cursor position="0" topLine="0" />
 	</File>
 	<File name="src/Makefile" open="0" top="0" tabpos="0">
 		<Cursor position="2409" topLine="51" />
@@ -11,7 +11,7 @@
 		<Cursor position="1581" topLine="81" />
 	</File>
 	<File name="src/SMP.c" open="0" top="0" tabpos="0">
-		<Cursor position="1137" topLine="0" />
+		<Cursor position="8354" topLine="241" />
 	</File>
 	<File name="src/SMP.h" open="0" top="0" tabpos="0">
 		<Cursor position="752" topLine="0" />
@@ -52,8 +52,8 @@
 	<File name="src/control.h" open="0" top="0" tabpos="0">
 		<Cursor position="752" topLine="0" />
 	</File>
-	<File name="src/cut_node.c" open="0" top="0" tabpos="0">
-		<Cursor position="1173" topLine="0" />
+	<File name="src/cut_node.c" open="0" top="0" tabpos="4">
+		<Cursor position="1173" topLine="42" />
 	</File>
 	<File name="src/endgame.c" open="0" top="0" tabpos="0">
 		<Cursor position="1137" topLine="0" />
@@ -67,26 +67,26 @@
 	<File name="src/exclude_node.c" open="0" top="0" tabpos="0">
 		<Cursor position="1181" topLine="0" />
 	</File>
-	<File name="src/fire.h" open="0" top="0" tabpos="0">
-		<Cursor position="1533" topLine="21" />
+	<File name="src/fire.h" open="1" top="1" tabpos="0">
+		<Cursor position="345" topLine="6" />
 	</File>
-	<File name="src/functions.h" open="0" top="0" tabpos="0">
-		<Cursor position="752" topLine="0" />
+	<File name="src/functions.h" open="0" top="0" tabpos="3">
+		<Cursor position="1235" topLine="9" />
 	</File>
-	<File name="src/hash.h" open="0" top="0" tabpos="0">
-		<Cursor position="752" topLine="0" />
+	<File name="src/hash.h" open="0" top="0" tabpos="2">
+		<Cursor position="752" topLine="27" />
 	</File>
-	<File name="src/hash_init.c" open="0" top="0" tabpos="0">
-		<Cursor position="1137" topLine="0" />
+	<File name="src/hash_init.c" open="0" top="0" tabpos="5">
+		<Cursor position="4248" topLine="101" />
 	</File>
-	<File name="src/hash_use.c" open="0" top="0" tabpos="0">
-		<Cursor position="1137" topLine="0" />
+	<File name="src/hash_use.c" open="0" top="0" tabpos="6">
+		<Cursor position="1137" topLine="36" />
 	</File>
 	<File name="src/history.h" open="0" top="0" tabpos="0">
 		<Cursor position="752" topLine="0" />
 	</File>
 	<File name="src/init.c" open="0" top="0" tabpos="0">
-		<Cursor position="1137" topLine="25" />
+		<Cursor position="1972" topLine="0" />
 	</File>
 	<File name="src/init_gen.h" open="0" top="0" tabpos="0">
 		<Cursor position="752" topLine="0" />
@@ -121,8 +121,8 @@
 	<File name="src/material_value.h" open="0" top="0" tabpos="0">
 		<Cursor position="752" topLine="0" />
 	</File>
-	<File name="src/mem_handler.c" open="0" top="0" tabpos="0">
-		<Cursor position="1137" topLine="0" />
+	<File name="src/mem_handler.c" open="0" top="0" tabpos="1">
+		<Cursor position="1938" topLine="29" />
 	</File>
 	<File name="src/mobility.c" open="0" top="0" tabpos="0">
 		<Cursor position="1137" topLine="0" />
@@ -172,8 +172,8 @@
 	<File name="src/robbo_glue.c" open="0" top="0" tabpos="0">
 		<Cursor position="1137" topLine="0" />
 	</File>
-	<File name="src/robbo_init.c" open="0" top="0" tabpos="0">
-		<Cursor position="1137" topLine="0" />
+	<File name="src/robbo_init.c" open="0" top="0" tabpos="7">
+		<Cursor position="6650" topLine="194" />
 	</File>
 	<File name="src/robbo_init_IO.c" open="0" top="0" tabpos="0">
 		<Cursor position="1137" topLine="0" />
@@ -214,8 +214,8 @@
 	<File name="src/search.c" open="0" top="0" tabpos="0">
 		<Cursor position="1137" topLine="0" />
 	</File>
-	<File name="src/set_position.c" open="0" top="0" tabpos="0">
-		<Cursor position="1137" topLine="0" />
+	<File name="src/set_position.c" open="0" top="0" tabpos="8">
+		<Cursor position="6012" topLine="158" />
 	</File>
 	<File name="src/signals.c" open="0" top="0" tabpos="0">
 		<Cursor position="1137" topLine="0" />

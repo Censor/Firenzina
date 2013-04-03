@@ -38,6 +38,7 @@ void NanoSleep(int x)
     {
 #if defined(_WIN32) || defined(_WIN64)
     Sleep(x / 1000000);
+
 #else
     struct timespec TS[1];
     TS->tv_sec = 0;

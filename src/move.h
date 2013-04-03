@@ -28,8 +28,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program. If not, see http://www.gnu.org/licenses/.
-*******************************************************************************/
-// Apparently, this file is not needed, at least for the Windows project. Yuri Censor for Firenzina, 3/25/2013 
+*****************************************************************************/
 
 #define WhiteInCheck (Position->Dyn->bAtt & wBitboardK)
 #define BlackInCheck (Position->Dyn->wAtt & bBitboardK)

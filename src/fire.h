@@ -34,21 +34,20 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 #include <stdlib.h>
 #include <memory.h>
 
-
 #define Engine "Firenzina"
 #define Vers "2.3 xTreme"
 #define Author "Yuri Censor and ZirconiumX, a clone of Fire 2.2 xTreme by Kranium"
-#if defined(__GNUC__) 
+#if defined(__GNUC__)
 #define STDIN_FileNO 0
 
 #if defined(__i386__)
 #define PLatform "Linux 32"
 #else
 #define PLatform "Linux 64"
-//#define LinuxLargePages // Commented out by ZirconiumX
+//#define LinuxLargePages
 #endif
 
-#elif  defined(_WIN64) 
+#elif  defined(_WIN64)
 #define PLatform "x64"
 #define LargePages
 #if defined(__GNUC__)
@@ -65,15 +64,11 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 
 #define true 1
 #define false 0
-#define bool int
-
-
-
+#define bool uint8
 
 #define HasPopCNT
 #define HasPreFetch
 #define InitCFG
-
 
 #define Log
 #define MatFactors
@@ -101,6 +96,7 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 #define SlabDeclare3 SlabDeclare1
 #define SlabAlloc3 SlabAlloc1
 #endif
+
 //*******************************************************************************//
 // Define default settings here (comment by Yuri Censor for Firenzina, 3/25/2013)//
 //*******************************************************************************//
@@ -130,13 +126,13 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 // Piece Values
 #define DEFAULT_PAWN_VALUE 100           // Original: 100; DO NOT ALTER! IT SETS THE SCALE. Yuri Censor, 03/25/2013
 #define MAX_PAWN_VALUE 200
-#define DEFAULT_KNIGHT_VALUE 317         // Original: 320; Modified: 317 (03/28/2013)
+#define DEFAULT_KNIGHT_VALUE 320         // Original: 320; Modified: 317 (03/28/2013)
 #define MAX_KNIGHT_VALUE 640
-#define DEFAULT_BISHOP_VALUE 333         // Original: 330; Modified: 333 (03/28/2013)
+#define DEFAULT_BISHOP_VALUE 330         // Original: 330; Modified: 333 (03/28/2013)
 #define MAX_BISHOP_VALUE 640
-#define DEFAULT_ROOK_VALUE 520           // Original: 510; Modified: 520 (03/28/2013)
+#define DEFAULT_ROOK_VALUE 510           // Original: 510; Modified: 520 (03/28/2013)
 #define MAX_ROOK_VALUE 1000
-#define DEFAULT_QUEEN_VALUE 960          // Original: 1000; Modified: 960 (03/28/2013)
+#define DEFAULT_QUEEN_VALUE 1000          // Original: 1000; Modified: 960 (03/28/2013)
 #define MAX_QUEEN_VALUE 2000
 #define DEFAULT_BISHOP_PAIR_VALUE 50     // Original: 50
 #define MAX_BISHOP_PAIR_VALUE 200
@@ -214,7 +210,7 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 // Time Management
 #define DEFAULT_ABSOLUTE_FACTOR 25       // Original: 25; Conservative: 25; Aggressive: 30
 #define MAX_ABSOLUTE_FACTOR 100
-#define DEFAULT_BATTLE_FACTOR 100        // Original: 100; Conservative: 95; Aggressive: 75
+#define DEFAULT_BATTLE_FACTOR   100      // Original: 100; Conservative: 95; Aggressive: 75
 #define MAX_BATTLE_FACTOR 200
 #define DEFAULT_EASY_FACTOR 15           // Original: 15; Conservative: 15; Aggressive: 20
 #define MAX_EASY_FACTOR 100
@@ -317,6 +313,7 @@ int OptHashSize;
 int OptPHashSize;
 int OptMaxThreads;
 int RandRange;
+
 #if defined(_WIN32) && !defined(__GNUC__) || defined(_WIN64) && !defined(__GNUC__)
 long long (*POPCNT) (unsigned long long); // Modification by Yuri Censor for Firenzina, 2/17/2013
       // Reason: To comply with types for _mm_popcnt_u64 in MS Visual Studio Ultimate 2012
@@ -367,7 +364,7 @@ int TripleBaseHash;
 int DynamicTripleBaseCache;
 bool TotalBasesLoaded;
 bool TripleBasesLoaded;
-bool SearchRobboBases;
+bool  SearchRobboBases;
 int TripleMaxUsage;
 char BulkDirectory[1024];
 char BulkName[1024];
@@ -379,7 +376,7 @@ bool ExtendInCheck;
 int ValueCut;
 int NullReduction;
 int VerifyReduction;
-bool VerifyNull;
+bool  VerifyNull;
 int DeltaCutoff;
 int DepthRedMin;
 int HeightMultiplier;
@@ -394,11 +391,11 @@ int TopMinDepth;
 int UndoCountThreshold;
 
 //Split Depths
-bool SplitAtCN;
+bool  SplitAtCN;
 int ANSplitDepth;
 int CNSplitDepth;
 int PVSplitDepth;
-bool SlitDepth;
+bool  SlitDepth;
 
 //Time Management
 int AbsoluteFactor;
@@ -408,17 +405,17 @@ int EasyFactorPonder;
 int NormalFactor;
 
 //UCI Info Strings
-bool CPULoadInfo;
-bool CurrMoveInfo;
+bool  CPULoadInfo;
+bool  CurrMoveInfo;
 bool DepthInfo;
-bool HashFullInfo;	
+bool HashFullInfo;
 bool LowDepthPVs;
-bool NPSInfo;
+bool  NPSInfo;
 bool VerboseUCI;
 int MinPVDepth;
 
 #ifdef RobboBases
-	bool TBHitInfo;
+	bool  TBHitInfo;
 #endif
 
 #define CheckForMate(v) \
@@ -431,7 +428,7 @@ int MinPVDepth;
 FILE *log_file;
 char log_filename[256];
 #endif
-	
+
 #include "arrays.h"
 #include "functions.h"
 #include "common.h"

@@ -36,7 +36,7 @@ uint8 SpearPawn[4][64];
 #define TriMar 0x80c0e0f0f8fcfeff
 #define MaxTables 4096
 #define TripleMax 4096
-#define MaximumFopen 64 
+#define MaximumFopen 64
 uint16 InverseNormalKing[462], InversePawnKing[1806];
 uint16 Sq2Blocked[780], Sq2Pawn[1128], Sq2Normal[2016];
 uint32 Sq3blocked[9880], Sq3Pawn[17296], Sq3normal[41664];
@@ -55,7 +55,7 @@ typedef struct
     } type_PiSq;
 int RB_CPUS;
 uint64 ListSize;
-#if !defined(_WIN32) && !defined(_WIN64) && !defined(__GNUC__) 
+#if !defined(_WIN32) && !defined(_WIN64) && !defined(__GNUC__)
 #define UseSpinLocks true
 #endif
 #ifdef UseSpinLocks

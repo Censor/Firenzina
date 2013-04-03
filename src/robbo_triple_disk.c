@@ -240,7 +240,7 @@ bool DemandDynamicTripleCache(RobboTripleBase *rtb, int heap, int slice, TripleB
         e &= 3;
         }
     Lock(TripleBaseUsage);
-	
+
 #define TripleConditionDisk      \
 	(!TripleCache[e][h[e]].user && TripleCacheNotE[e][h[e]] != 0xffffbad0)
 	while (!TripleConditionDisk)

@@ -263,7 +263,7 @@ int MyPV(typePos *Position, int Alpha, int Beta, int depth, int check)
         if (see && (Pos1->cp || move_is_check))
             extend = 1;
 		if (PassedPawnPush (to, FourthRank (to)))
-			extend = 1;	
+			extend = 1;
 		if (see && Pos1->cp && Pos1->cp != EnumOppP)
 			extend = 2;
         if (Pos1->cp && (Pos1->material & 0xff) == 0 && Pos1->cp != EnumOppP)

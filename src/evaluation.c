@@ -1266,7 +1266,7 @@ void Eval(typePos *Position, int min, int max, int move, int depth)
         Value -= ((PawnInfo->wDrawWeight * MIN(Value, 100)) >> 6) * DrawWeight / 100;
     else
         Value += ((PawnInfo->bDrawWeight * MIN(-Value, 100)) >> 6) * DrawWeight / 100;
-		
+
     Value = EvalEnding(Position, Value, wPatt, bPatt);
     if (RandomCount)
         {

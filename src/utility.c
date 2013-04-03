@@ -44,7 +44,11 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 #else
 #include <intrin.h>
 #endif
-
+/*
+#if defined(_WIN32) && !defined(__GNUC__) || defined(_WIN64) && !defined(__GNUC__)
+#include <winsock2.h>
+#endif
+*/
 #define Tweak (0x74d3c012a8bf965e)
 int PreviousDepth, PreviousFast;
 
@@ -234,20 +238,20 @@ uint64 GetClock()
     {
     return(GetTickCount() * 1000ULL);
     }
-	
+
 uint64 ProcessClock()
 {
 	FILETIME ftProcCreation, ftProcExit, ftProcKernel, ftProcUser;
 	LARGE_INTEGER user_time, kernel_time;
 	uint64 x;
-	uint64 tt = 10; 
-	
+	uint64 tt = 10;
+
 	GetProcessTimes(GetCurrentProcess(), &ftProcCreation, &ftProcExit, &ftProcKernel, &ftProcUser);
 
 	user_time.LowPart = ftProcUser.dwLowDateTime;
 	user_time.HighPart = ftProcUser.dwHighDateTime;
 	kernel_time.LowPart = ftProcKernel.dwLowDateTime;
-	kernel_time.HighPart = ftProcKernel.dwHighDateTime;  	
+	kernel_time.HighPart = ftProcKernel.dwHighDateTime;
 	x = (uint64) (user_time.QuadPart + kernel_time.QuadPart) / tt;
 	return x;
 }
@@ -377,7 +381,7 @@ void ShowBanner()
 
 void GetSysInfo()
     {
-#if defined(_WIN32) || defined(_WIN64)    
+#if defined(_WIN32) || defined(_WIN64)
 SYSTEM_INFO sysinfo;
     GetSystemInfo(&sysinfo);
     NumCPUs = sysinfo.dwNumberOfProcessors;
@@ -460,14 +464,12 @@ NumCPUs = get_nprocs();
 
 void SetPOPCNT()
 	{
-  	
-#if defined(_WIN32) && !defined(__GNUC__) || defined(_WIN64) && !defined(__GNUC__)
+
+#if defined(_WIN32) || defined(_WIN64)
 int CPUInfo[4] = {-1};
   	__cpuid(CPUInfo, 0x00000001);
   	HasPopcnt = (CPUInfo[2] >> 23) & 1;
-	// Direction by Yuri Censor for Firenzina, 03/19/2013.
-	// Comment out the section below to disable hardware POPCNT support:
-  	/**/if(HasPopcnt)
+  	if(HasPopcnt)
   		{
     	POPCNT = &PopcntHard;
     	Send("Hardware POPCNT supported\n\n");
@@ -481,7 +483,7 @@ int CPUInfo[4] = {-1};
 			}
 #endif
   		}
-  	else/**/
+  	else
 		POPCNT = &PopcntEmul;
 
 #endif

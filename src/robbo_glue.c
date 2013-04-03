@@ -191,7 +191,7 @@ int LoadRobboTripleBases()
     sprintf(DIR, "%s/6Z", TripleBaseDir);
     GetTripleBase(DIR);
     TripleStatistics();
-    TripleBasesLoaded = true;	
+    TripleBasesLoaded = true;
     return true;
     }
 bool RobboMove(typePos *Position, uint32 *am, int *v, int *cap)

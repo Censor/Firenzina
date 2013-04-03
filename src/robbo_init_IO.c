@@ -965,7 +965,7 @@ static void BlockTotalIndexRegister(char *DIR, FILE *F)
             {
             if (String[0] == 'K')
                 UnWindows(String);
-            else                           
+            else
                 hack_windows_total(String);
             sprintf(NomeFile, "%s/%s%s", DIR, CompressPrefix + 1, String);
             if (Stat(NomeFile) == -1)
@@ -1122,7 +1122,7 @@ void GetTotalBase(char *A)
 			}
 #endif
 		}
-		
+
     dir = opendir(A);
     if (!dir)
         {

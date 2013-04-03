@@ -36,7 +36,7 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 	(Position->Dyn->bAtt & wBitboardK) : \
 	(Position->Dyn->wAtt & bBitboardK))
 		  
-static const char StartPosition[80] = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+static char StartPosition[80] = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
 char *EmitFen(typePos *Position, char *ARR)
     {

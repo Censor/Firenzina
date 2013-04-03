@@ -45,3 +45,5 @@ along with this program. If not, see http://www.gnu.org/licenses/.
   { int sv = HistoryValue (Position, move);                                  \
     if (Pos0->Value > Alpha - HistoryThreshold)                                             \
       HistoryValue (Position, move) = sv - ((sv * depth) >> Shift); }
+
+

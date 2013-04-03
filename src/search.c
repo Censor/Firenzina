@@ -96,7 +96,7 @@ static void OutputBestMove(typePos *Position)
     Undo(Position, RootBestMove);
     Send("bestmove %s ponder %s\n", Notate(RootBestMove, String1[Position->cpu]),
 		Notate(PonderMove, String2[Position->cpu]));
-	   
+
 #ifdef Log
 	if (WriteLog)
 		{
@@ -334,10 +334,10 @@ void Search(typePos *Position)
         GlobalAge = 0;
     else
         IncrementAge();
-		
+
     for (i = 0; i < 256; i++)
         (Position->DynRoot + i)->age = GlobalAge;
-		
+
 #ifdef RobboBases
 	if (UseRobboBases)
 		{

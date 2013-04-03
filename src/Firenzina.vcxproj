@@ -26,19 +26,19 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>Intel C++ Compiler XE 13.0</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>Intel C++ Compiler XE 13.0</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>Intel C++ Compiler XE 13.0</PlatformToolset>
     <WholeProgramOptimization>PGInstrument</WholeProgramOptimization>
     <CharacterSet>NotSet</CharacterSet>
     <ProfileGuidedOptimization>PGOOptimize</ProfileGuidedOptimization>
@@ -48,13 +48,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>Intel C++ Compiler XE 13.0</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>NotSet</CharacterSet>
-    <InterproceduralOptimization>true</InterproceduralOptimization>
-    <UseIntelIPP>Sequential</UseIntelIPP>
+    <InterproceduralOptimization>false</InterproceduralOptimization>
+    <UseIntelIPP>false</UseIntelIPP>
     <UseIntelMKL>No</UseIntelMKL>
-    <ProfileGuidedOptimization>PGOOptimize</ProfileGuidedOptimization>
+    <ProfileGuidedOptimization>Disabled</ProfileGuidedOptimization>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -119,36 +119,40 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
-      <C99Support>true</C99Support>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
+      <EnableFiberSafeOptimizations>false</EnableFiberSafeOptimizations>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <C99Support>false</C99Support>
       <FloatingPointModel>Precise</FloatingPointModel>
-      <VectorizerDiagnosticLevel>LoopsSuccessUnsuccessVect2</VectorizerDiagnosticLevel>
-      <PreprocessorDefinitions>WIN64;NDEBUG;_CONSOLE;_MBCS;%(PreprocessorDefinitions);NOALIAS</PreprocessorDefinitions>
+      <VectorizerDiagnosticLevel>NoInformation0</VectorizerDiagnosticLevel>
+      <PreprocessorDefinitions>_WIN64;_MBCS;%(PreprocessorDefinitions);NOALIAS</PreprocessorDefinitions>
       <Parallelization>false</Parallelization>
-      <UseIntelOptimizedHeaders>true</UseIntelOptimizedHeaders>
+      <UseIntelOptimizedHeaders>false</UseIntelOptimizedHeaders>
       <GenerateAlternateCodePaths>None</GenerateAlternateCodePaths>
-      <UseProcessorExtensions>SSE42</UseProcessorExtensions>
-      <EnableAnsiAliasing>true</EnableAnsiAliasing>
-      <StringPooling>true</StringPooling>
+      <UseProcessorExtensions>None</UseProcessorExtensions>
+      <EnableAnsiAliasing>false</EnableAnsiAliasing>
+      <StringPooling>false</StringPooling>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <CheckUndimensionedArrays>false</CheckUndimensionedArrays>
-      <DisableIntelLangExtensions>true</DisableIntelLangExtensions>
-      <OptimizeForWindowsApplication>true</OptimizeForWindowsApplication>
-      <StructMemberAlignment>16Bytes</StructMemberAlignment>
-      <DisableSpecificWarnings>4996;4820;4711;4668;</DisableSpecificWarnings>
+      <DisableIntelLangExtensions>false</DisableIntelLangExtensions>
+      <OptimizeForWindowsApplication>false</OptimizeForWindowsApplication>
+      <StructMemberAlignment>Default</StructMemberAlignment>
+      <DisableSpecificWarnings>
+      </DisableSpecificWarnings>
       <OmitFramePointers>true</OmitFramePointers>
       <CallingConvention>FastCall</CallingConvention>
+      <Optimization>Disabled</Optimization>
+      <ExceptionHandling>false</ExceptionHandling>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>false</EnableCOMDATFolding>
+      <OptimizeReferences>false</OptimizeReferences>
       <SubSystem>Console</SubSystem>
+      <InterproceduralOptimization>false</InterproceduralOptimization>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

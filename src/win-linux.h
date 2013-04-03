@@ -69,7 +69,7 @@ typedef unsigned __int64 uint64;
 #define MemAlign(a, b, c) a = _aligned_malloc (c, b)
 #define AlignedFree(x) _aligned_free (x)
 #define __builtin_prefetch
-#if defined(_WIN64) 
+#if defined(_WIN64)
 #include "win64bits.h"
 #else
 #include "win32bits.h"
@@ -127,5 +127,5 @@ pthread_t PThread[MaxCPUs], PThreadIO;
 #define IvanThread(A) void* SMPThread (void* A)
 #define IOThread(A) void* io_thread (void* A)
 #define VoidStarType void*
-//#define LinuxLargePages false
+//#define LinuxLargePages true
 #endif

@@ -402,8 +402,8 @@ static int WhiteWeight(int wP, int wN, int wB, int wBL, int wBD, int wR, int wQ,
         if (bPhase == 4 && bQ == 1 && wPhase == bPhase)
             wWeight = 7;
         }
-	if (wQ == 1 && wPhase == 4 && bPhase >= 2 && bP >= 1) // Added on 3/29/2013, recommended by Jose Maria Velasco
-		wWeight = 5;
+    if (wQ == 1 && wPhase == 4 && bPhase >= 2 && bP >= 1) // Added on 3/29/2013, recommended by Jose Maria Velasco
+        wWeight = 5;
     return wWeight;
     }
 static int BlackWeight(int wP, int wN, int wB, int wBL, int wBD, int wR, int wQ, int bP, int bN, int bB, int bBL,

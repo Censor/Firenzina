@@ -52,7 +52,7 @@ int MyExclude(typePos *Position, int value, int depth, uint32 Move)
     uint64 zob = Position->Dyn->Hash;
     int to, fr;
     int Reduction;
- 	
+
 	CheckForMate (value);
 
     (Pos0 + 1)->move = 0;

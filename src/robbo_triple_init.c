@@ -76,7 +76,7 @@ static void RobboDynamicLoadSetUp(RobboTripleBase *rtb, FILE *F)
     if (u != 0x40)
 		{
 		if (VerboseRobboBases)
-			{		
+			{
 	        Send("Dynamic Load requires 64 byte canals. Bytes %d\n", u);
 
 #ifdef Log
@@ -112,7 +112,7 @@ static void RobboDynamicLoadSetUp(RobboTripleBase *rtb, FILE *F)
     if (u != heaps)
 		{
 		if (VerboseRobboBases)
-			{		
+			{
         	Send("Heap count corrupted in DynamicLoad %d %d %s " Type64Bit "\n", u, heaps, rtb->string, rtb->size);
 
 #ifdef Log
@@ -249,7 +249,7 @@ void LoadTriple(char *fnin, char *DIR)
     if (F == NULL)
         {
 	    if (VerboseRobboBases)
-			{		
+			{
 	        Send("No File %s\n", FN);
 
 #ifdef Log
@@ -327,7 +327,7 @@ void LoadTriple(char *fnin, char *DIR)
 				}
 #endif
 			}
-			
+
         TrivialCount++;
         return;
         }
@@ -753,7 +753,7 @@ static void BlockTripleIndexRegister(char *DIR, FILE *F)
         if (B[0] != 0x09 || B[1] != 0x36 || B[2] != 0xf4 || B[3] != 0x2b)
             {
 		    if (VerboseRobboBases)
-				{			
+				{
 	            Send("BlockIndex mask failure!\n");
 
 #ifdef Log
@@ -896,7 +896,7 @@ static bool HasTripleBlockIndex(char *DIR)
     if (!F)
         return false;
 	if (VerboseRobboBases)
-		{		
+		{
     	Send("Using BlockTriple.Index for %s\n", DIR);
 
 #ifdef Log

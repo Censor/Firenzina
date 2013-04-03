@@ -93,10 +93,10 @@
     <ClInclude Include="win64bits.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="win32bits.h">
+    <ClInclude Include="move.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="move.h">
+    <ClInclude Include="win32bits.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

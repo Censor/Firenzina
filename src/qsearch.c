@@ -47,7 +47,7 @@ int MyQsearch(typePos *Position, int value, int depth)
     typeMoveList List[256], *list, *p, *q;
     typeDynamic *Pos0 = Position->Dyn;
     TransDeclare();
-	
+
 	CheckForMate (value);
 
     CheckRepetition(false);

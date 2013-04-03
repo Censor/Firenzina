@@ -64,7 +64,7 @@ void CreateMem(void ** A, int align, uint64 size, int *w, bool *use, char *strin
 #endif
 
             }
-        
+
     if ((*w) == -1)
        (*use) = false;
     }

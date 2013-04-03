@@ -514,4 +514,4 @@ void TripleUtility(RobboTripleBase *rtb, char *iNOME)
     rtb->efgh[file] = NumTripleBases;
     NumTripleBases++;
     }
-#endif	
+#endif

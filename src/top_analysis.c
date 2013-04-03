@@ -58,7 +58,7 @@ void MyTopAnalysis(typePos *Position)
         0, 1, 3, 0, 3, 3, 5, 9, 0, 1, 3, 0, 3, 3, 5, 9
         };
     int sm = 0;
-	
+
     bool TriplePeek = false;
     int TriplePeekValue = -ValueInfinity;
 
@@ -96,7 +96,7 @@ void MyTopAnalysis(typePos *Position)
         RootMoveList[i].move = ML[i].move;
     RootMoveList[ml - ML].move = MoveNone;
     list = RootMoveList + (ml - ML);
-	
+
 #ifdef RobboBases
 		if (UseRobboBases)
 			{
@@ -162,7 +162,7 @@ void MyTopAnalysis(typePos *Position)
         }
     q->move = 0;
     list = q;
-	
+
 #ifdef RobboBases
 	if (UseRobboBases)
 		{

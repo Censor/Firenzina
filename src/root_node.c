@@ -96,7 +96,7 @@ int MyRootNode(typePos *Position, int Alpha, int Beta, int depth)
         if (Pos1->cp || move_is_check)
             extend = 1;
 		if (PassedPawnPush (to, FourthRank (to)))
-			extend = 1;	
+			extend = 1;
         LMR = 0;
         if (!extend && cnt >= 3 && depth >= 10)
             LMR = 1;

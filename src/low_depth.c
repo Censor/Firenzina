@@ -89,7 +89,7 @@ int MyLowDepth(typePos *Position, int value, int depth)
         }
 	v = Pos0->Value + LowDepthMargin;
 	if (v < value)
-		return (value - 1);		
+		return (value - 1);
     v = Pos0->Value - (70 + 10 * depth);
 	if (v >= value && value >= -10000)
         return(Pos0->Value);

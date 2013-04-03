@@ -102,8 +102,8 @@ int MyAnalysis(typePos *Position, int Alpha, int Beta, int depth)
         if (Pos1->cp || move_is_check)
             extend = 1;
 		if (PassedPawnPush (to, FourthRank (to)))
-			extend = 1;	
-						
+			extend = 1;
+
         new_depth = depth - 2 + extend;
         if (DoOutput && CurrMoveInfo && Analysing && depth >= 24)
 			{
@@ -189,7 +189,7 @@ int MyAnalysis(typePos *Position, int Alpha, int Beta, int depth)
 					if (v > Alpha && v < Beta)
 						Information(Position, GetClock() - StartClock, origAlpha, v, Beta);
 					}
-                else 
+                else
 					if (depth > MinPVDepth)
                     {
 					if (v > Alpha && v < Beta)

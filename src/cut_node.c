@@ -55,7 +55,7 @@ int MyCut(typePos *Position, int value, int depth)
     uint64 zob = Position->Dyn->Hash;
     int to, fr;
     bool Split;
-	
+
 	CheckForMate (value);
 
     (Pos0 + 1)->move = 0;
@@ -312,7 +312,7 @@ int MyCutCheck(typePos *Position, int value, int depth)
     int best_value, singular;
     typeDynamic *Pos0 = Position->Dyn;
     bool Gen;
-	
+
 	CheckForMate (value);
 
     (Pos0 + 1)->move = MoveNone;

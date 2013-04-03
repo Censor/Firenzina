@@ -144,12 +144,12 @@ int MyMultiPV(typePos *Position, int depth)
         move_is_check = (MoveIsCheck != 0);
         extend = 0;
         to = To(move);
-			
+
         if (Pos1->cp || move_is_check)
 			extend = 1;
 		if (PassedPawnPush (to, FourthRank (to)))
-			extend = 1;	
-			
+			extend = 1;
+
         LMR = 0;
         if (!extend && cnt >= (GoodMoves << 1) + 3 && depth >= 10)
             LMR = 1;
@@ -301,7 +301,7 @@ int MyMultiPV(typePos *Position, int depth)
             	Information(Position, GetClock() - StartClock, -ValueMate, MPV[0].Value, ValueMate);
 			else
 				{
-				if (depth > MinPVDepth)			
+				if (depth > MinPVDepth)
             		Information(Position, GetClock() - StartClock, -ValueMate, MPV[0].Value, ValueMate);
 				}
             }
