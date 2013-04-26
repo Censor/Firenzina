@@ -2,7 +2,7 @@
 Firenzina is a UCI chess playing engine by
 Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
 Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
-Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart.
+Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart, Andrey Chilantiev, Quoc Vuong.
 Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
 Firenzina is a derivative (via Fire) of FireBird by Kranium (Norman Schmidt) 
 and Sentinel (Milos Stanisavljevic). Firenzina is based (via Fire and FireBird)
@@ -151,257 +151,340 @@ static int WhiteWeight(int wP, int wN, int wB, int wBL, int wBD, int wR, int wQ,
     bMinor = bB + bN;
     wPhase = wMinor + (wR << 1) + (wQ << 2);
     bPhase = bMinor + (bR << 1) + (bQ << 2);
-    wValue = 3 * (wB + wN) + 5 * wR + 9 * wQ;
-    bValue = 3 * (bB + bN) + 5 * bR + 9 * bQ;
+	// Yuri Censor eliminated unnecessary multiplication, 4/24/2013:
+    // wValue = 3 * (wB + wN) + 5 * wR + 9 * wQ;
+    // bValue = 3 * (bB + bN) + 5 * bR + 9 * bQ;
+	// Capablanca weights are used here, irrespective of the UCI piece weight settings! Yuri Censor.
+	wValue = wMinor + wR + wQ + (wPhase << 1); // Optimized by Yuri Censor, 4/24/2013
+	bValue = bMinor + bR + bQ + (bPhase << 1); // Optimized by Yuri Censor, 4/24/2013
     wWeight = 10;
     if (!wP)
-        {
+    {
         if (wPhase == 1)
             wWeight = 0;
-        if (wPhase == 2)
+        else if (wPhase == 2)
+		{
+			if (bPhase == 0)
+			{
+				if (wN == 2)
+				{
+					if (bP >= 1)
+						wWeight = 3;
+					else
+						wWeight = 0;
+				}
+			}
+			else if (bPhase == 1)
+			{
+				wWeight = 1;
+				if (bN == 1)
+				{
+					if (wB == 2)
+						wWeight = 8;
+					else if (wR == 1)
+						wWeight = 2;
+				}
+            }
+			else if (bPhase == 2)
+				wWeight = 1;
+        }
+        else if (wPhase == 3)
+		{
+			if (wR == 1)
+			{
+				if (bPhase == 2)
+				{
+					if (bR == 1)
+					{
+						if (wN == 1)
+							wWeight = 1;
+						if (wB == 1)
+							wWeight = 1;
+					}
+					else if (bR == 0)
+					{
+						wWeight = 2;
+						if (wB == 1 && bN == 2)
+							wWeight = 6;
+						else if (bN == 1)
+						{
+							if ((wBL == 1 && bBL == 1) || (wBD == 1 && bBD == 1))
+								wWeight = 2;
+							if ((wBD == 1 && bBL == 1) || (wBL == 1 && bBD == 1))
+								wWeight = 7;
+						}
+					}
+				}
+				else if (bPhase == 3)
+					wWeight = 2;
+			}
+			else if (wR == 0)
+			{
+				if (bPhase == 2)
+				{
+					if (bR == 1)
+					{
+						if (wN == 2)
+							wWeight = 2;
+						if (wB == 2)
+							wWeight = 7;
+					}
+					else if (bR == 0)
+					{
+						wWeight = 2;
+						if (wB == 2 && bN == 2)
+							wWeight = 4;
+					}
+				}
+				else if (bPhase == 3)
+					wWeight = 2;
+            }
+		}
+        else if (wPhase == 4)
+		{
+			if (wQ)
             {
-            if (bPhase == 0)
+				if (bPhase == 2)
+				{
+					if (bN == 2)
+						wWeight = 2;
+					else if (bN == 1)
+						wWeight = 8;
+					else if (bN == 0)
+						wWeight = 7;
+				}
+				else if (bPhase == 3)
+					wWeight = 1;
+				else if (bPhase == 4)
+					wWeight = 1;
+            }
+            if (wR == 2)
+            {
+				if (bPhase == 2 && bR == 0)
+					wWeight = 7;
+				else if (bPhase == 3)
+					wWeight = 2;
+				else if (bPhase == 4)
+					wWeight = 1;
+            }
+			if (wR == 1)
+            {
+				if (bPhase == 3)
+				{
+					if (bR == 1)
+						wWeight = 3;
+					else if (bR == 0)
+						wWeight = 2;
+				}
+				else if (bPhase == 4)
+					wWeight = 2;
+            }
+			else if (wR == 0 && wQ == 0)
+            {
+				if (bPhase == 3)
+				{
+					if (bR == 1)
+						wWeight = 4;
+					else if (bR == 0)
+						wWeight = 2;
+				}
+				else if (bPhase == 4)
+				{
+					if (bQ)
+						wWeight = 8;
+					else 
+						wWeight = 1;
+				}
+            }
+		}
+        else if (wPhase == 5)
+		{
+			if (wQ)
+            {
+				if (bPhase == 4)
+					wWeight = 2;
+				else if (bPhase == 5)
+					wWeight = 1;
+				if (bPhase == 4 && bR == 2)
                 {
-                if (wN == 2)
-                    {
-                    if (bP >= 1)
-                        wWeight = 3;
-                    else
-                        wWeight = 0;
-                    }
+					if (wN)
+						wWeight = 3;
+					if (wB)
+						wWeight = 7;
                 }
-            if (bPhase == 1)
-                {
-                wWeight = 1;
-                if (wB == 2 && bN == 1)
-                    wWeight = 8;
-                if (wR == 1 && bN == 1)
-                    wWeight = 2;
-                }
-            if (bPhase == 2)
-                wWeight = 1;
+				else if (bPhase == 5)
+					wWeight = 1;
             }
-        if (wPhase == 3 && wR == 1)
+			if (wR == 1)
             {
-            if (bPhase == 2 && bR == 1)
-                {
-                if (wN == 1)
-                    wWeight = 1;
-                if (wB == 1)
-                    wWeight = 1;
-                }
-            if (bPhase == 2 && bR == 0)
-                {
-                wWeight = 2;
-                if (wB == 1 && bN == 2)
-                    wWeight = 6;
-                if (bN == 1 && ((wBL == 1 && bBL == 1) || (wBD == 1 && bBD == 1)))
-                    wWeight = 2;
-                if (bN == 1 && ((wBD == 1 && bBL == 1) || (wBL == 1 && bBD == 1)))
-                    wWeight = 7;
-                }
-            if (bPhase == 3)
-                wWeight = 2;
+				if (bPhase == 4)
+				{
+					if (bQ)
+						wWeight = 9;
+					if (bR == 2)
+						wWeight = 7;
+					else if (bR == 1)
+						wWeight = 3;
+					else if (bQ == 0 && bR == 0)
+						wWeight = 1;
+				}
+				else if (bPhase == 5)
+					wWeight = 2;
             }
-        if (wPhase == 3 && wR == 0)
+			else if (wR == 2)
             {
-            if (bPhase == 2 && bR == 1)
-                {
-                if (wN == 2)
-                    wWeight = 2;
-                if (wB == 2)
-                    wWeight = 7;
-                }
-            if (bPhase == 2 && bR == 0)
-                {
-                wWeight = 2;
-                if (wB == 2 && bN == 2)
-                    wWeight = 4;
-                }
-            if (bPhase == 3)
-                wWeight = 2;
+				if (bPhase == 4)
+				{
+					if (bQ) 
+					{
+						if (wB == 1)
+							wWeight = 8;
+						if (wN == 1)
+							wWeight = 7;
+					}
+					if (bR == 2)
+						wWeight = 3;
+					else if (bR == 1)
+						wWeight = 2;
+					else if (bQ == 0 && bR == 0)
+						wWeight = 1;
+				}
+				else if (bPhase == 5)
+					wWeight = 1;
             }
-        if (wPhase == 4 && wQ)
-            {
-            if (bPhase == 2 && bN == 2)
-                wWeight = 2;
-            if (bPhase == 2 && bN == 1)
-                wWeight = 8;
-            if (bPhase == 2 && bN == 0)
-                wWeight = 7;
-            if (bPhase == 3)
-                wWeight = 1;
-            if (bPhase == 4)
-                wWeight = 1;
+		}
+        else if (wPhase == 6)
+		{
+			if (wQ) 
+			{
+				if (wR)
+				{
+					if (bPhase == 4 && bQ == 0 && bR == 0)
+						wWeight = 2;
+					else if (bPhase == 5 && bQ)
+						wWeight = 1;
+					if (bPhase == 4)
+					{
+						if (bR == 1)
+							wWeight = 6;
+						else if (bR == 2)
+							wWeight = 3;
+					}
+					else if (bPhase == 5 && bR)
+						wWeight = 1;
+					else if (bPhase == 6)
+						wWeight = 1;
+				}
+				else if (wR == 0)
+				{
+					if (bPhase == 4 && bQ == 0 && bR == 0)
+						wWeight = 5;
+					else if (bPhase == 5)
+					{
+						if (bQ)
+							wWeight = 2;
+						if (bR == 2)
+							wWeight = 2;
+						else if (bR == 1)
+							wWeight = 1;
+					}
+					else if (bPhase == 6)
+						wWeight = 1;
+				}
             }
-        if (wPhase == 4 && wR == 2)
-            {
-            if (bPhase == 2 && bR == 0)
-                wWeight = 7;
-            if (bPhase == 3)
-                wWeight = 2;
-            if (bPhase == 4)
-                wWeight = 1;
+			else if (wQ == 0)
+			{
+				if (wR == 2)
+				{
+					if (bPhase == 5)
+					{
+						if (bQ)
+							wWeight = 7;
+						if (bR == 1)
+							wWeight = 1;
+						else if (bR == 2)
+							wWeight = 2;
+					}
+					else if (bPhase == 6)
+						wWeight = 1;
+				}
+				else if (wR == 1)
+				{
+					if (bPhase == 5)
+					{
+						if (bQ)
+							wWeight = 9;
+						if (bR == 2)
+							wWeight = 3;
+						else if (bR == 1)
+							wWeight = 2;
+					}
+					else if (bPhase == 6)
+					{
+						wWeight = 1;
+						if (bQ)
+						{
+							wWeight = 2;
+							if (bR)
+								wWeight = 4;
+						}
+					}
+				}
             }
-        if (wPhase == 4 && wR == 1)
-            {
-            if (bPhase == 3 && bR == 1)
-                wWeight = 3;
-            if (bPhase == 3 && bR == 0)
-                wWeight = 2;
-            if (bPhase == 4)
-                wWeight = 2;
-            }
-        if (wPhase == 4 && wR == 0 && wQ == 0)
-            {
-            if (bPhase == 3 && bR == 1)
-                wWeight = 4;
-            if (bPhase == 3 && bR == 0)
-                wWeight = 2;
-            if (bPhase == 4 && bQ)
-                wWeight = 8;
-            if (bPhase == 4 && bQ == 0)
-                wWeight = 1;
-            }
-        if (wPhase == 5 && wQ)
-            {
-            if (bPhase == 4)
-                wWeight = 2;
-            if (bPhase == 5)
-                wWeight = 1;
-            if (bPhase == 4 && bR == 2)
-                {
-                if (wN)
-                    wWeight = 3;
-                if (wB)
-                    wWeight = 7;
-                }
-            if (bPhase == 5)
-                wWeight = 1;
-            }
-        if (wPhase == 5 && wR == 1)
-            {
-            if (bPhase == 4 && bQ)
-                wWeight = 9;
-            if (bPhase == 4 && bR == 2)
-                wWeight = 7;
-            if (bPhase == 4 && bR == 1)
-                wWeight = 3;
-            if (bPhase == 4 && bQ == 0 && bR == 0)
-                wWeight = 1;
-            if (bPhase == 5)
-                wWeight = 2;
-            }
-        if (wPhase == 5 && wR == 2)
-            {
-            if (bPhase == 4 && bQ && wB == 1)
-                wWeight = 8;
-            if (bPhase == 4 && bQ && wN == 1)
-                wWeight = 7;
-            if (bPhase == 4 && bR == 2)
-                wWeight = 3;
-            if (bPhase == 4 && bR == 1)
-                wWeight = 2;
-            if (bPhase == 4 && bQ == 0 && bR == 0)
-                wWeight = 1;
-            if (bPhase == 5)
-                wWeight = 1;
-            }
-        if (wPhase == 6 && wQ && wR)
-            {
-            if (bPhase == 4 && bQ == 0 && bR == 0)
-                wWeight = 2;
-            if (bPhase == 5 && bQ)
-                wWeight = 1;
-            if (bPhase == 4 && bR == 1)
-                wWeight = 6;
-            if (bPhase == 4 && bR == 2)
-                wWeight = 3;
-            if (bPhase == 5 && bR)
-                wWeight = 1;
-            if (bPhase == 6)
-                wWeight = 1;
-            }
-        if (wPhase == 6 && wQ && wR == 0)
-            {
-            if (bPhase == 4 && bQ == 0 && bR == 0)
-                wWeight = 5;
-            if (bPhase == 5 && bQ)
-                wWeight = 2;
-            if (bPhase == 5 && bR == 2)
-                wWeight = 2;
-            if (bPhase == 5 && bR == 1)
-                wWeight = 1;
-            if (bPhase == 6)
-                wWeight = 1;
-            }
-        if (wPhase == 6 && wQ == 0 && wR == 2)
-            {
-            if (bPhase == 5 && bQ)
-                wWeight = 7;
-            if (bPhase == 5 && bR == 1)
-                wWeight = 1;
-            if (bPhase == 5 && bR == 2)
-                wWeight = 2;
-            if (bPhase == 6)
-                wWeight = 1;
-            }
-        if (wPhase == 6 && wQ == 0 && wR == 1)
-            {
-            if (bPhase == 5 && bQ)
-                wWeight = 9;
-            if (bPhase == 5 && bR == 2)
-                wWeight = 3;
-            if (bPhase == 5 && bR == 1)
-                wWeight = 2;
-            if (bPhase == 6)
-                wWeight = 1;
-            if (bPhase == 6 && bQ)
-                wWeight = 2;
-            if (bPhase == 6 && bQ && bR)
-                wWeight = 4;
-            }
-        if (wPhase >= 7)
-            {
+		}
+        else if (wPhase >= 7)
+		{
             if (wValue > bValue + 4)
                 wWeight = 9;
-            if (wValue == bValue + 4)
+            else if (wValue == bValue + 4)
                 wWeight = 7;
-            if (wValue == bValue + 3)
+            else if (wValue == bValue + 3)
                 wWeight = 4;
-            if (wValue == bValue + 2)
+            else if (wValue == bValue + 2)
                 wWeight = 2;
-            if (wValue < bValue + 2)
+            else if (wValue < bValue + 2)
                 wWeight = 1;
-            }
         }
-    if (wP == 1)
-        {
+    }
+    else if (wP == 1)
+    {
         if (bPhase == 1)
-            {
-            if (wPhase == 1)
-                wWeight = 3;
-            if (wPhase == 2 && wN == 2)
-                {
-                if (bP == 0)
-                    wWeight = 3;
-                else
-                    wWeight = 5;
-                }
-            if (wPhase == 2 && wR == 1)
-                wWeight = 7;
-            }
-        if (bPhase == 2 && bR == 1 && wPhase == 2 && wR == 1)
-            wWeight = 8;
-        if (bPhase == 2 && bR == 0 && wPhase == 2)
-            wWeight = 4;
-        if (bPhase >= 3 && bMinor > 0 && wPhase == bPhase)
-            wWeight = 3;
-        if (bPhase >= 3 && bMinor == 0 && wPhase == bPhase)
-            wWeight = 5;
-        if (bPhase == 4 && bQ == 1 && wPhase == bPhase)
-            wWeight = 7;
+		{
+			if (wPhase == 1)
+				wWeight = 3;
+			else if (wPhase == 2)
+			{
+				if (wN == 2)
+				{
+					if (bP == 0)
+						wWeight = 3;
+					else
+						wWeight = 5;
+				}
+				if (wR == 1)
+					wWeight = 7;
+			}
+		}
+        else if (bPhase == 2)
+		{
+			if (bR == 1 && wPhase == 2 && wR == 1)
+				wWeight = 8;
+			else if (bR == 0 && wPhase == 2)
+				wWeight = 4;
+		}
+        else if (bPhase >= 3)
+		{
+			if (wPhase == bPhase)
+			{
+				if (bMinor > 0)
+					wWeight = 3;
+				else if (bMinor == 0)
+					wWeight = 5;
+				if (bPhase == 4 && bQ == 1)
+					wWeight = 7;
+			}
         }
+	}
     if (wQ == 1 && wPhase == 4 && bPhase >= 2 && bP >= 1) // Added on 3/29/2013, recommended by Jose Maria Velasco
         wWeight = 5;
     return wWeight;
@@ -414,257 +497,340 @@ static int BlackWeight(int wP, int wN, int wB, int wBL, int wBD, int wR, int wQ,
     bMinor = bB + bN;
     wPhase = wMinor + (wR << 1) + (wQ << 2);
     bPhase = bMinor + (bR << 1) + (bQ << 2);
-    wValue = 3 * (wB + wN) + 5 * wR + 9 * wQ;
-    bValue = 3 * (bB + bN) + 5 * bR + 9 * bQ;
+	// Yuri Censor eliminated unnecessary multiplication, 4/24/2013:
+    // wValue = 3 * (wB + wN) + 5 * wR + 9 * wQ;
+    // bValue = 3 * (bB + bN) + 5 * bR + 9 * bQ;
+	// Capablanca weights are used here, irrespective of the UCI piece weight settings! Yuri Censor.
+	wValue = wMinor + wR + wQ + (wPhase << 1); // Optimized by Yuri Censor, 4/24/2013
+	bValue = bMinor + bR + bQ + (bPhase << 1); // Optimized by Yuri Censor, 4/24/2013
     bWeight = 10;
     if (!bP)
-        {
+	{
         if (bPhase == 1)
             bWeight = 0;
-        if (bPhase == 2)
-            {
+        else if (bPhase == 2)
+        {
             if (wPhase == 0)
-                {
+            {
                 if (bN == 2)
-                    {
+                {
                     if (bP >= 1)
                         bWeight = 3;
                     else
                         bWeight = 0;
-                    }
                 }
-            if (wPhase == 1)
+            }
+            else if (wPhase == 1)
+            {
+                bWeight = 1;
+                if (wN == 1)
+				{
+					if (bB == 2)
+						bWeight = 8;
+					else if (bR == 1)
+						bWeight = 2;
+				}
+            }
+            else if (wPhase == 2)
+                bWeight = 1;
+        }
+        else if (bPhase == 3)
+		{
+			if (bR == 1)
+            {
+				if (wPhase == 2)
+				{
+					if (wR == 1)
+					{
+						if (bN == 1)
+							bWeight = 1;
+						if (bB == 1)
+							bWeight = 1;
+					}
+					else if (wR == 0)
+					{
+						bWeight = 2;
+						if (bB == 1 && wN == 2)
+							bWeight = 6;
+						else if (wN == 1)
+						{
+							if ((bBL == 1 && wBL == 1) || (bBD == 1 && wBD == 1))
+								bWeight = 2;
+							if ((bBD == 1 && wBL == 1) || (bBL == 1 && wBD == 1))
+								bWeight = 7;
+						}
+					}
+                }
+				else if (wPhase == 3)
+					bWeight = 2;
+            }
+			else if (bR == 0)
+            {
+				if (wPhase == 2)
+				{
+					if (wR == 1)
+					{
+						if (bN == 2)
+							bWeight = 2;
+						if (bB == 2)
+							bWeight = 7;
+					}
+					else if (wR == 0)
+					{
+						bWeight = 2;
+						if (bB == 2 && wN == 2)
+							bWeight = 4;
+					}
+                }
+				else if (wPhase == 3)
+					bWeight = 2;
+            }
+		}
+        else if (bPhase == 4)
+		{
+			if (bQ)
+            {
+				if (wPhase == 2)
+				{
+					if (wN == 2)
+						bWeight = 2;
+					else if (wN == 1)
+						bWeight = 8;
+					else if (wN == 0)
+						bWeight = 7;
+				}
+				else if (wPhase == 3)
+					bWeight = 1;
+				else if (wPhase == 4)
+					bWeight = 1;
+            }
+			if (bR == 2)
+            {
+				if (wPhase == 2 && wR == 0)
+					bWeight = 7;
+				else if (wPhase == 3)
+					bWeight = 2;
+				else if (wPhase == 4)
+					bWeight = 1;
+            }
+			else if (bR == 1)
+            {
+				if (wPhase == 3)
+				{
+					if (wR == 1)
+						bWeight = 3;
+					else if (wR == 0)
+						bWeight = 2;
+				}
+				else if (wPhase == 4)
+					bWeight = 2;
+            }
+			else if (bR == 0 && bQ == 0)
+            {
+				if (wPhase == 3)
+				{
+					if (wR == 1)
+						bWeight = 4;
+					else if (wR == 0)
+						bWeight = 2;
+				}
+				else if (wPhase == 4)
+				{
+					if (wQ)
+						bWeight = 8;
+					else 
+						bWeight = 1;
+				}
+            }
+		}
+        if (bPhase == 5)
+		{
+			if (bQ)
+            {
+				if (wPhase == 4)
+					bWeight = 2;
+				else if (wPhase == 5)
+					bWeight = 1;
+				if (wPhase == 4 && wR == 2)
                 {
-                bWeight = 1;
-                if (bB == 2 && wN == 1)
-                    bWeight = 8;
-                if (bR == 1 && wN == 1)
-                    bWeight = 2;
+					if (bN)
+						bWeight = 3;
+					if (bB)
+						bWeight = 7;
                 }
-            if (wPhase == 2)
-                bWeight = 1;
+				else if (wPhase == 5)
+					bWeight = 1;
             }
-        if (bPhase == 3 && bR == 1)
+			if (bR == 1)
             {
-            if (wPhase == 2 && wR == 1)
-                {
-                if (bN == 1)
-                    bWeight = 1;
-                if (bB == 1)
-                    bWeight = 1;
-                }
-            if (wPhase == 2 && wR == 0)
-                {
-                bWeight = 2;
-                if (bB == 1 && wN == 2)
-                    bWeight = 6;
-                if (wN == 1 && ((bBL == 1 && wBL == 1) || (bBD == 1 && wBD == 1)))
-                    bWeight = 2;
-                if (wN == 1 && ((bBD == 1 && wBL == 1) || (bBL == 1 && wBD == 1)))
-                    bWeight = 7;
-                }
-            if (wPhase == 3)
-                bWeight = 2;
+				if (wPhase == 4)
+				{
+					if (wQ)
+						bWeight = 9;
+					if (wR == 2)
+						bWeight = 7;
+					else if (wR == 1)
+						bWeight = 3;
+					else if (wQ == 0 && wR == 0)
+						bWeight = 1;
+				}
+				else if (wPhase == 5)
+					bWeight = 2;
             }
-        if (bPhase == 3 && bR == 0)
+			else if (bR == 2)
             {
-            if (wPhase == 2 && wR == 1)
-                {
-                if (bN == 2)
-                    bWeight = 2;
-                if (bB == 2)
-                    bWeight = 7;
-                }
-            if (wPhase == 2 && wR == 0)
-                {
-                bWeight = 2;
-                if (bB == 2 && wN == 2)
-                    bWeight = 4;
-                }
-            if (wPhase == 3)
-                bWeight = 2;
+				if (wPhase == 4)
+				{
+					if (wQ)
+					{
+						if (bB == 1)
+							bWeight = 8;
+						if (bN == 1)
+							bWeight = 7;
+					}
+					if (wR == 2)
+						bWeight = 3;
+					else if (wR == 1)
+						bWeight = 2;
+					else if (wQ == 0 && wR == 0)
+						bWeight = 1;
+				}
+				else if (wPhase == 5)
+					bWeight = 1;
             }
-        if (bPhase == 4 && bQ)
-            {
-            if (wPhase == 2 && wN == 2)
-                bWeight = 2;
-            if (wPhase == 2 && wN == 1)
-                bWeight = 8;
-            if (wPhase == 2 && wN == 0)
-                bWeight = 7;
-            if (wPhase == 3)
-                bWeight = 1;
-            if (wPhase == 4)
-                bWeight = 1;
+		}
+        else if (bPhase == 6)
+		{
+			if (bQ)
+			{
+				if (bR)
+				{
+					if (wPhase == 4 && wQ == 0 && wR == 0)
+						bWeight = 2;
+					else if (wPhase == 5 && wQ)
+						bWeight = 1;
+					if (wPhase == 4)
+					{
+						if (wR == 1)
+							bWeight = 6;
+						else if (wR == 2)
+							bWeight = 3;
+					}
+					else if (wPhase == 5 && wR)
+						bWeight = 1;
+					else if (wPhase == 6)
+						bWeight = 1;
+				}
+				else if (bR == 0)
+				{
+					if (wPhase == 4 && wQ == 0 && wR == 0)
+						bWeight = 5;
+					else if (wPhase == 5)
+					{
+						if (wQ)
+							bWeight = 2;
+						if (wR == 2)
+							bWeight = 2;
+						else if (wR == 1)
+							bWeight = 1;
+					}
+					else if (wPhase == 6)
+						bWeight = 1;
+				}
             }
-        if (bPhase == 4 && bR == 2)
-            {
-            if (wPhase == 2 && wR == 0)
-                bWeight = 7;
-            if (wPhase == 3)
-                bWeight = 2;
-            if (wPhase == 4)
-                bWeight = 1;
+			else if (bQ == 0)
+			{
+				if (bR == 2)
+				{
+					if (wPhase == 5)
+					{
+						if (wQ)
+							bWeight = 7;
+						if (wR == 1)
+							bWeight = 1;
+						else if (wR == 2)
+							bWeight = 2;
+					}
+					else if (wPhase == 6)
+						bWeight = 1;
+				}
+				else if (bR == 1)
+				{
+					if (wPhase == 5)
+					{
+						if (wQ)
+							bWeight = 9;
+						if (wR == 2)
+							bWeight = 3;
+						else if (wR == 1)
+							bWeight = 2;
+					}
+					else if (wPhase == 6)
+					{
+						bWeight = 1;
+						if (wQ)
+						{
+							bWeight = 2;
+							if (wR)
+								bWeight = 4;
+						}
+					}
+				}
             }
-        if (bPhase == 4 && bR == 1)
-            {
-            if (wPhase == 3 && wR == 1)
-                bWeight = 3;
-            if (wPhase == 3 && wR == 0)
-                bWeight = 2;
-            if (wPhase == 4)
-                bWeight = 2;
-            }
-        if (bPhase == 4 && bR == 0 && bQ == 0)
-            {
-            if (wPhase == 3 && wR == 1)
-                bWeight = 4;
-            if (wPhase == 3 && wR == 0)
-                bWeight = 2;
-            if (wPhase == 4 && wQ)
-                bWeight = 8;
-            if (wPhase == 4 && wQ == 0)
-                bWeight = 1;
-            }
-        if (bPhase == 5 && bQ)
-            {
-            if (wPhase == 4)
-                bWeight = 2;
-            if (wPhase == 5)
-                bWeight = 1;
-            if (wPhase == 4 && wR == 2)
-                {
-                if (bN)
-                    bWeight = 3;
-                if (bB)
-                    bWeight = 7;
-                }
-            if (wPhase == 5)
-                bWeight = 1;
-            }
-        if (bPhase == 5 && bR == 1)
-            {
-            if (wPhase == 4 && wQ)
-                bWeight = 9;
-            if (wPhase == 4 && wR == 2)
-                bWeight = 7;
-            if (wPhase == 4 && wR == 1)
-                bWeight = 3;
-            if (wPhase == 4 && wQ == 0 && wR == 0)
-                bWeight = 1;
-            if (wPhase == 5)
-                bWeight = 2;
-            }
-        if (bPhase == 5 && bR == 2)
-            {
-            if (wPhase == 4 && wQ && bB == 1)
-                bWeight = 8;
-            if (wPhase == 4 && wQ && bN == 1)
-                bWeight = 7;
-            if (wPhase == 4 && wR == 2)
-                bWeight = 3;
-            if (wPhase == 4 && wR == 1)
-                bWeight = 2;
-            if (wPhase == 4 && wQ == 0 && wR == 0)
-                bWeight = 1;
-            if (wPhase == 5)
-                bWeight = 1;
-            }
-        if (bPhase == 6 && bQ && bR)
-            {
-            if (wPhase == 4 && wQ == 0 && wR == 0)
-                bWeight = 2;
-            if (wPhase == 5 && wQ)
-                bWeight = 1;
-            if (wPhase == 4 && wR == 1)
-                bWeight = 6;
-            if (wPhase == 4 && wR == 2)
-                bWeight = 3;
-            if (wPhase == 5 && wR)
-                bWeight = 1;
-            if (wPhase == 6)
-                bWeight = 1;
-            }
-        if (bPhase == 6 && bQ && bR == 0)
-            {
-            if (wPhase == 4 && wQ == 0 && wR == 0)
-                bWeight = 5;
-            if (wPhase == 5 && wQ)
-                bWeight = 2;
-            if (wPhase == 5 && wR == 2)
-                bWeight = 2;
-            if (wPhase == 5 && wR == 1)
-                bWeight = 1;
-            if (wPhase == 6)
-                bWeight = 1;
-            }
-        if (bPhase == 6 && bQ == 0 && bR == 2)
-            {
-            if (wPhase == 5 && wQ)
-                bWeight = 7;
-            if (wPhase == 5 && wR == 1)
-                bWeight = 1;
-            if (wPhase == 5 && wR == 2)
-                bWeight = 2;
-            if (wPhase == 6)
-                bWeight = 1;
-            }
-        if (bPhase == 6 && bQ == 0 && bR == 1)
-            {
-            if (wPhase == 5 && wQ)
-                bWeight = 9;
-            if (wPhase == 5 && wR == 2)
-                bWeight = 3;
-            if (wPhase == 5 && wR == 1)
-                bWeight = 2;
-            if (wPhase == 6)
-                bWeight = 1;
-            if (wPhase == 6 && wQ)
-                bWeight = 2;
-            if (wPhase == 6 && wQ && wR)
-                bWeight = 4;
-            }
-        if (bPhase >= 7)
-            {
+		}
+        else if (bPhase >= 7)
+        {
             if (bValue > wValue + 4)
                 bWeight = 9;
-            if (bValue == wValue + 4)
+            else if (bValue == wValue + 4)
                 bWeight = 7;
-            if (bValue == wValue + 3)
+            else if (bValue == wValue + 3)
                 bWeight = 4;
-            if (bValue == wValue + 2)
+            else if (bValue == wValue + 2)
                 bWeight = 2;
-            if (bValue < wValue + 2)
+            else if (bValue < wValue + 2)
                 bWeight = 1;
-            }
         }
-    if (bP == 1)
-        {
+    }
+    else if (bP == 1)
+    {
         if (wPhase == 1)
-            {
+        {
             if (bPhase == 1)
                 bWeight = 3;
-            if (bPhase == 2 && bN == 2)
+            else if (bPhase == 2)
+			{
+				if (bN == 2)
                 {
-                if (wP == 0)
-                    bWeight = 3;
-                else
-                    bWeight = 5;
+					if (wP == 0)
+						bWeight = 3;
+					else
+						bWeight = 5;
                 }
-            if (bPhase == 2 && bR == 1)
-                bWeight = 7;
+				if (bR == 1)
+					bWeight = 7;
             }
-        if (wPhase == 2 && wR == 1 && bPhase == 2 && bR == 1)
-            bWeight = 8;
-        if (wPhase == 2 && wR == 0 && bPhase == 2)
-            bWeight = 4;
-        if (wPhase >= 3 && wMinor > 0 && bPhase == wPhase)
-            bWeight = 3;
-        if (wPhase >= 3 && wMinor == 0 && bPhase == wPhase)
-            bWeight = 5;
-        if (wPhase == 4 && wQ == 1 && bPhase == wPhase)
-            bWeight = 7;
-        }
+		}
+        else if (wPhase == 2)
+		{
+			if (wR == 1 && bPhase == 2 && bR == 1)
+				bWeight = 8;
+			else if (wR == 0 && bPhase == 2)
+				bWeight = 4;
+		}
+        else if (wPhase >= 3)
+		{
+			if (bPhase == wPhase)
+			{
+				if (wMinor > 0)
+					bWeight = 3;
+				else if (wMinor == 0)
+					bWeight = 5;
+				if (wPhase == 4 && wQ == 1)
+					bWeight = 7;
+			}
+		}  
+    }
 	if (bQ == 1 && bPhase == 4 && wPhase >= 2 && wP >= 1) // Added on 3/29/2013, recommended by Jose Maria Velasco
 		bWeight = 5;
     return bWeight;

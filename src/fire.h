@@ -2,7 +2,7 @@
 Firenzina is a UCI chess playing engine by
 Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
 Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
-Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart.
+Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart, Andrey Chilantiev, Quoc Vuong.
 Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
 Firenzina is a derivative (via Fire) of FireBird by Kranium (Norman Schmidt) 
 and Sentinel (Milos Stanisavljevic). Firenzina is based (via Fire and FireBird)
@@ -35,7 +35,7 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 #include <memory.h>
 
 #define Engine "Firenzina"
-#define Vers "2.3 xTreme"
+#define Vers "2.3.1 xTreme"
 #define Author "Yuri Censor and ZirconiumX, a clone of Fire 2.2 xTreme by Kranium"
 #if defined(__GNUC__)
 #define STDIN_FileNO 0
@@ -50,6 +50,7 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 #elif  defined(_WIN64)
 #define PLatform "x64"
 #define LargePages
+
 #if defined(__GNUC__)
 #define INLINE inline
 #endif
@@ -233,6 +234,7 @@ uint64 NodeCheck;
 #define CheckHalt() { if (Position->stop) { return(0); } }
 #define Height(x)((x)->height)
 #define Is_Exact(x) (x)
+#define prefetch(x) _mm_prefetch((char*)(x), _MM_HINT_T2) // Added 4/15/2013
 #include "move.h"
 bool BoardIsOk, isNewGame;
 

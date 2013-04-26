@@ -2,7 +2,7 @@
 Firenzina is a UCI chess playing engine by
 Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
 Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
-Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart.
+Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart, Andrey Chilantiev, Quoc Vuong.
 Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
 Firenzina is a derivative (via Fire) of FireBird by Kranium (Norman Schmidt) 
 and Sentinel (Milos Stanisavljevic). Firenzina is based (via Fire and FireBird)
@@ -163,7 +163,7 @@ static void KingPawnWhite(typePos *Position, int matval, uint8 Token, typePawnEv
     Position->Dyn->bKcheck = Position->Dyn->wKcheck = 0;
     if (WhiteLeader > BlackLeader && (bBitboardP & InFrontB[R8 - WhiteLeader + 1]) == 0)
         Position->Dyn->Value += 150 + 50 * WhiteLeader;
-    if (BlackLeader > WhiteLeader + 1 && (wBitboardP & InFrontW[BlackLeader - 2]) == 0)
+    else if (BlackLeader > WhiteLeader + 1 && (wBitboardP & InFrontW[BlackLeader - 2]) == 0)
         Position->Dyn->Value -= 150 + 50 * BlackLeader;
     A = (wBitboardP &(~FileA)) << 7;
     T = A & bBitboardK;
@@ -192,7 +192,7 @@ static void KingPawnWhite(typePos *Position, int matval, uint8 Token, typePawnEv
         }
     if (Position->Dyn->Value > 0 && !wBitboardP)
         Position->Dyn->Value = 0;
-    if (Position->Dyn->Value < 0 && !bBitboardP)
+    else if (Position->Dyn->Value < 0 && !bBitboardP)
         Position->Dyn->Value = 0;
     if (Position->Dyn->Value > 0)
         {
@@ -211,7 +211,7 @@ static void KingPawnWhite(typePos *Position, int matval, uint8 Token, typePawnEv
                 Position->Dyn->Value = ((sint16)(Position->Dyn->Static & 0xffff)) + 75 * rank + 250;
             }
         }
-    if (Position->Dyn->Value < 0)
+    else if (Position->Dyn->Value < 0)
         {
         if ((bBitboardP & ~FileH) == 0 && (wBitboardK | AttK[Position->wKsq]) & SqSet[H1])
             Position->Dyn->Value = 0;
@@ -227,10 +227,10 @@ static void KingPawnWhite(typePos *Position, int matval, uint8 Token, typePawnEv
             else
                 Position->Dyn->Value = ((sint16)(Position->Dyn->Static & 0xffff)) - 75 * rank - 250;
             }
+		if (!((wBitboardP << 8) & ~Position->OccupiedBW) && !(wPatt & bBitboardOcc)
+			&& !Position->Dyn->ep && !(AttK[Position->wKsq]& ~Position->Dyn->bAtt) && !Position->Dyn->wKcheck)
+			Position->Dyn->Value = 0;
         }
-    if (Position->Dyn->Value < 0 && !((wBitboardP << 8) & ~Position->OccupiedBW) && !(wPatt & bBitboardOcc)
-       && !Position->Dyn->ep && !(AttK[Position->wKsq]& ~Position->Dyn->bAtt) && !Position->Dyn->wKcheck)
-        Position->Dyn->Value = 0;
     }
 static void KingPawnBlack(typePos *Position, int matval, uint8 Token, typePawnEval *PawnInfo)
     {
@@ -280,7 +280,7 @@ static void KingPawnBlack(typePos *Position, int matval, uint8 Token, typePawnEv
     Position->Dyn->bKcheck = Position->Dyn->wKcheck = 0;
     if (WhiteLeader > BlackLeader + 1 && (bBitboardP & InFrontB[R8 - WhiteLeader + 2]) == 0)
         Position->Dyn->Value -= 150 + 50 * WhiteLeader;
-    if (BlackLeader > WhiteLeader && (wBitboardP & InFrontW[BlackLeader - 1]) == 0)
+    else if (BlackLeader > WhiteLeader && (wBitboardP & InFrontW[BlackLeader - 1]) == 0)
         Position->Dyn->Value += 150 + 50 * BlackLeader;
     A = (wBitboardP &(~FileA)) << 7;
     T = A & bBitboardK;
@@ -309,7 +309,7 @@ static void KingPawnBlack(typePos *Position, int matval, uint8 Token, typePawnEv
         }
     if (Position->Dyn->Value < 0 && !wBitboardP)
         Position->Dyn->Value = 0;
-    if (Position->Dyn->Value > 0 && !bBitboardP)
+    else if (Position->Dyn->Value > 0 && !bBitboardP)
         Position->Dyn->Value = 0;
     if (Position->Dyn->Value < 0)
         {
@@ -328,7 +328,7 @@ static void KingPawnBlack(typePos *Position, int matval, uint8 Token, typePawnEv
                 Position->Dyn->Value = -((sint16)(Position->Dyn->Static & 0xffff)) - 75 * rank - 250;
             }
         }
-    if (Position->Dyn->Value > 0)
+    else if (Position->Dyn->Value > 0)
         {
         if ((bBitboardP & ~FileH) == 0 && (AttK[Position->wKsq] | wBitboardK) & SqSet[H1])
             Position->Dyn->Value = 0;
@@ -344,10 +344,10 @@ static void KingPawnBlack(typePos *Position, int matval, uint8 Token, typePawnEv
             else
                 Position->Dyn->Value = -((sint16)(Position->Dyn->Static & 0xffff)) + 75 * rank + 250;
             }
+		if (!((bBitboardP >> 8) & ~Position->OccupiedBW) && !(bPatt & wBitboardOcc)
+			&& !Position->Dyn->ep && !(AttK[Position->bKsq]& ~Position->Dyn->wAtt) && !Position->Dyn->bKcheck)
+			Position->Dyn->Value = 0;
         }
-    if (Position->Dyn->Value < 0 && !((bBitboardP >> 8) & ~Position->OccupiedBW) && !(bPatt & wBitboardOcc)
-       && !Position->Dyn->ep && !(AttK[Position->bKsq]& ~Position->Dyn->wAtt) && !Position->Dyn->bKcheck)
-        Position->Dyn->Value = 0;
     }
 
 void Eval(typePos *Position, int min, int max, int move, int depth)

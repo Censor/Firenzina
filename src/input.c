@@ -2,7 +2,7 @@
 Firenzina is a UCI chess playing engine by
 Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
 Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
-Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart.
+Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart, Andrey Chilantiev, Quoc Vuong.
 Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
 Firenzina is a derivative (via Fire) of FireBird by Kranium (Norman Schmidt) 
 and Sentinel (Milos Stanisavljevic). Firenzina is based (via Fire and FireBird)
@@ -232,11 +232,11 @@ static void uci()
 			str += strlen(str);
 			if (uci->type == UCICheck)
 				sprintf(str, " default %s", uci->def ? "true" : "false");
-			if (uci->type == UCIString)
+			else if (uci->type == UCIString)
 				sprintf(str, " default NULL");
-			if (uci->type == UCISpin)
+			else if (uci->type == UCISpin)
 				sprintf(str, " min %d max %d default %d", uci->min, uci->max, uci->def);
-			if (uci->type == UCICombo)
+			else if (uci->type == UCICombo)
 				{
 				int i;
 				for (i = 0; i < uci->max; i++)
@@ -272,11 +272,11 @@ static void uci()
 			str += strlen(str);
 			if (uci->type == UCICheck)
 				sprintf(str, " default %s", uci->def ? "true" : "false");
-			if (uci->type == UCIString)
+			else if (uci->type == UCIString)
 				sprintf(str, " default NULL");
-			if (uci->type == UCISpin)
+			else if (uci->type == UCISpin)
 				sprintf(str, " min %d max %d default %d", uci->min, uci->max, uci->def);
-			if (uci->type == UCICombo)
+			else if (uci->type == UCICombo)
 				{
 				int i;
 				for (i = 0; i < uci->max; i++)
@@ -366,7 +366,7 @@ static void SetOption(char *string)
                 if (uci->action)
                     (uci->action)(true);
                 }
-            if (uci->type == UCICheck)
+            else if (uci->type == UCICheck)
                 {
                 if (!strcmp(v + 6, "false"))
                     {
@@ -425,7 +425,7 @@ static void SetOption(char *string)
 #endif
 
                 }
-            if (uci->type == UCISpin)
+            else if (uci->type == UCISpin)
                 {
                 Value = atoi(v + 6);
                 if (Value < uci->min)
@@ -471,7 +471,7 @@ static void SetOption(char *string)
 #endif
 
                 }
-            if (uci->type == UCICombo)
+            else if (uci->type == UCICombo)
                 {
                 strcpy((char *)(uci->var), v + 6);
 				if (VerboseUCI)
@@ -550,7 +550,7 @@ static void ParseInput(typePos *Position, char *I)
         ParseInput(Position, "stop");
         Quit();
         }
-    if (!strcmp(I, "stop"))
+    else if (!strcmp(I, "stop"))
         {
         if (SearchIsDone)
             return;
@@ -564,7 +564,7 @@ static void ParseInput(typePos *Position, char *I)
         SuppressInput = false;
         return;
         }
-    if (!strcmp(I, "isready"))
+    else if (!strcmp(I, "isready"))
         {
 		Send ("readyok\n");
 
@@ -584,12 +584,12 @@ static void ParseInput(typePos *Position, char *I)
         StallInput = true;
         return;
         }
-    if (!strcmp(I, "ponderhit"))
+    else if (!strcmp(I, "ponderhit"))
         {
         PonderHit();
         return;
         }
-    if (!strcmp(I, "ucinewgame"))
+    else if (!strcmp(I, "ucinewgame"))
         {
         if (SearchIsDone)
             {
@@ -611,7 +611,7 @@ static void ParseInput(typePos *Position, char *I)
         return;
 
     if (!strcmp(I, "benchmark"))
-        BenchMark(Position, "go movetime 1000");
+        BenchMark(Position, "go depth 10"); // 4/13/2013. Was: "go movetime 1000"
     else if (!memcmp(I, "benchmark", 9))
         BenchMark(Position, I + 10);
 
@@ -626,46 +626,46 @@ static void ParseInput(typePos *Position, char *I)
         if (BoardIsOk)
             Search(Position);
         }
-    if (!memcmp(I, "position", 8))
+    else if (!memcmp(I, "position", 8))
         InitPosition(Position, I + 9);
-    if (!memcmp(I, "setoption name", 14))
+    else if (!memcmp(I, "setoption name", 14))
         SetOption(I + 15);
-    if (!strcmp(I, "uci"))
+    else if (!strcmp(I, "uci"))
         uci();
 		
 #ifdef InitCFG
-    if (!strcmp(I, "default"))
+    //if (!strcmp(I, "default"))
     if (!strcmp(I, "default"))
 		{
         CfgFile = 0;
 		gen_cfg_file("fire.cfg");
 		}
-    if (!strcmp(I, "random"))
+    else if (!strcmp(I, "random"))
 		{
         CfgFile = 1;
 		gen_cfg_file("fire.cfg");
 		}
-    if (!strcmp(I, "rand_eval"))
+    else if (!strcmp(I, "rand_eval"))
 		{
         CfgFile = 2;
 		gen_cfg_file("fire.cfg");
 		}
-    if (!strcmp(I, "rand_material"))
+    else if (!strcmp(I, "rand_material"))
 		{
         CfgFile = 3;
 		gen_cfg_file("fire.cfg");
 		}
-    if (!strcmp(I, "rand_prune"))
+    else if (!strcmp(I, "rand_prune"))
 		{
         CfgFile = 4;
 		gen_cfg_file("fire.cfg");
 		}
-    if (!strcmp(I, "rand_search"))
+    else if (!strcmp(I, "rand_search"))
 		{
         CfgFile = 5;
 		gen_cfg_file("fire.cfg");
 		}
-    if (!strcmp(I, "rand_time"))
+    else if (!strcmp(I, "rand_time"))
 		{
         CfgFile = 6;
 		gen_cfg_file("fire.cfg");

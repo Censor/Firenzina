@@ -2,7 +2,7 @@
 Firenzina is a UCI chess playing engine by
 Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
 Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
-Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart.
+Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart, Andrey Chilantiev, Quoc Vuong.
 Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
 Firenzina is a derivative (via Fire) of FireBird by Kranium (Norman Schmidt) 
 and Sentinel (Milos Stanisavljevic). Firenzina is based (via Fire and FireBird)
@@ -222,35 +222,35 @@ static char *ReadFEN(typePos *Position, char *I)
     Position->Dyn->oo = 16;
     if (!strcmp(i, "KQkq"))
         Position->Dyn->oo = 15;
-    if (!strcmp(i, "Qkq"))
+    else if (!strcmp(i, "Qkq"))
         Position->Dyn->oo = 14;
-    if (!strcmp(i, "Kkq"))
+    else if (!strcmp(i, "Kkq"))
         Position->Dyn->oo = 13;
-    if (!strcmp(i, "kq"))
+    else if (!strcmp(i, "kq"))
         Position->Dyn->oo = 12;
-    if (!strcmp(i, "KQq"))
+    else if (!strcmp(i, "KQq"))
         Position->Dyn->oo = 11;
-    if (!strcmp(i, "Qq"))
+    else if (!strcmp(i, "Qq"))
         Position->Dyn->oo = 10;
-    if (!strcmp(i, "Kq"))
+    else if (!strcmp(i, "Kq"))
         Position->Dyn->oo = 9;
-    if (!strcmp(i, "q"))
+    else if (!strcmp(i, "q"))
         Position->Dyn->oo = 8;
-    if (!strcmp(i, "KQk"))
+    else if (!strcmp(i, "KQk"))
         Position->Dyn->oo = 7;
-    if (!strcmp(i, "Qk"))
+    else if (!strcmp(i, "Qk"))
         Position->Dyn->oo = 6;
-    if (!strcmp(i, "Kk"))
+    else if (!strcmp(i, "Kk"))
         Position->Dyn->oo = 5;
-    if (!strcmp(i, "k"))
+    else if (!strcmp(i, "k"))
         Position->Dyn->oo = 4;
-    if (!strcmp(i, "KQ"))
+    else if (!strcmp(i, "KQ"))
         Position->Dyn->oo = 3;
-    if (!strcmp(i, "Q"))
+    else if (!strcmp(i, "Q"))
         Position->Dyn->oo = 2;
-    if (!strcmp(i, "K"))
+    else if (!strcmp(i, "K"))
         Position->Dyn->oo = 1;
-    if (!strcmp(i, "-"))
+    else if (!strcmp(i, "-"))
         Position->Dyn->oo = 0;
     if (Position->Dyn->oo == 16)
         ErrorFen("FEN oo %s\n", i);
