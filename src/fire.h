@@ -234,7 +234,11 @@ uint64 NodeCheck;
 #define CheckHalt() { if (Position->stop) { return(0); } }
 #define Height(x)((x)->height)
 #define Is_Exact(x) (x)
+#if defined(__GNUC__)
+#define prefetch(x) __builtin_prefetch((char*)(x))
+#elif defined(__INTEL_COMPILER) || defined(_MSC_VER)
 #define prefetch(x) _mm_prefetch((char*)(x), _MM_HINT_T2) // Added 4/15/2013
+#endif
 #include "move.h"
 bool BoardIsOk, isNewGame;
 
