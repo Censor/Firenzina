@@ -267,7 +267,7 @@ static int WhiteWeight(int wP, int wN, int wB, int wBL, int wBD, int wR, int wQ,
 				else if (bPhase == 4)
 					wWeight = 1;
             }
-			if (wR == 1)
+			else if (wR == 1)
             {
 				if (bPhase == 3)
 				{
@@ -302,16 +302,17 @@ static int WhiteWeight(int wP, int wN, int wB, int wBL, int wBD, int wR, int wQ,
 			if (wQ)
             {
 				if (bPhase == 4)
-					wWeight = 2;
-				else if (bPhase == 5)
-					wWeight = 1;
-				if (bPhase == 4 && bR == 2)
-                {
-					if (wN)
-						wWeight = 3;
-					if (wB)
-						wWeight = 7;
-                }
+				{
+                    if (bR == 2)
+                    {
+					    if (wN)
+						    wWeight = 3;
+					    if (wB)
+						    wWeight = 7;
+                    }
+					else
+					    wWeight = 2;
+				}
 				else if (bPhase == 5)
 					wWeight = 1;
             }
@@ -484,9 +485,10 @@ static int WhiteWeight(int wP, int wN, int wB, int wBL, int wBD, int wR, int wQ,
 					wWeight = 7;
 			}
         }
+        if (wQ == 1 && wPhase == 4 && bPhase >= 2 && bP >= 1) // Added on 3/29/2013, recommended by Jose Maria Velasco
+            wWeight = 5;
 	}
-    if (wQ == 1 && wPhase == 4 && bPhase >= 2 && bP >= 1) // Added on 3/29/2013, recommended by Jose Maria Velasco
-        wWeight = 5;
+    
     return wWeight;
     }
 static int BlackWeight(int wP, int wN, int wB, int wBL, int wBD, int wR, int wQ, int bP, int bN, int bB, int bBL,
@@ -648,16 +650,17 @@ static int BlackWeight(int wP, int wN, int wB, int wBL, int wBD, int wR, int wQ,
 			if (bQ)
             {
 				if (wPhase == 4)
-					bWeight = 2;
-				else if (wPhase == 5)
-					bWeight = 1;
-				if (wPhase == 4 && wR == 2)
-                {
-					if (bN)
-						bWeight = 3;
-					if (bB)
-						bWeight = 7;
-                }
+				{
+                    if (wR == 2)
+                    {
+					    if (bN)
+						    bWeight = 3;
+					    if (bB)
+						    bWeight = 7;
+                    }
+					else
+					    bWeight = 2;
+				}
 				else if (wPhase == 5)
 					bWeight = 1;
             }
@@ -830,9 +833,10 @@ static int BlackWeight(int wP, int wN, int wB, int wBL, int wBD, int wR, int wQ,
 					bWeight = 7;
 			}
 		}  
+        if (bQ == 1 && bPhase == 4 && wPhase >= 2 && wP >= 1) // Added on 3/29/2013, recommended by Jose Maria Velasco
+		    bWeight = 5;
     }
-	if (bQ == 1 && bPhase == 4 && wPhase >= 2 && wP >= 1) // Added on 3/29/2013, recommended by Jose Maria Velasco
-		bWeight = 5;
+	
     return bWeight;
     }
 

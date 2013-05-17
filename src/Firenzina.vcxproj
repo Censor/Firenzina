@@ -138,7 +138,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <CheckUndimensionedArrays>false</CheckUndimensionedArrays>
       <DisableIntelLangExtensions>false</DisableIntelLangExtensions>
-      <OptimizeForWindowsApplication>false</OptimizeForWindowsApplication>
+      <OptimizeForWindowsApplication>true</OptimizeForWindowsApplication>
       <StructMemberAlignment>Default</StructMemberAlignment>
       <DisableSpecificWarnings>
       </DisableSpecificWarnings>
