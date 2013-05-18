@@ -65,7 +65,12 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 
 #define true 1
 #define false 0
+#if defined(__GNUC__)
 #define bool uint8
+#elif defined(__INTEL_COMPILER) || defined(_MSC_VER)
+#define bool boolean // Added 5/17/2013
+#endif
+
 
 #define HasPopCNT
 #define HasPreFetch
