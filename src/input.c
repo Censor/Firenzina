@@ -613,7 +613,7 @@ static void ParseInput(typePos *Position, char *I)
         return;
 
     if (!strcmp(I, "benchmark"))
-        BenchMark(Position, "go depth 10"); // 4/13/2013. Was: "go movetime 1000"
+        BenchMark(Position, "go movetime 1000"); // Returned 5/22/2013. Since 4/13/2013 was: "go depth 10"
     else if (!memcmp(I, "benchmark", 9))
         BenchMark(Position, I + 10);
 
