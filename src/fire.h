@@ -132,15 +132,15 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 // Piece Values
 #define DEFAULT_PAWN_VALUE 100           // Original: 100; DO NOT ALTER! IT SETS THE SCALE. Yuri Censor, 03/25/2013
 #define MAX_PAWN_VALUE 200
-#define DEFAULT_KNIGHT_VALUE 320         // Original: 320; Modified: 317 (03/28/2013)
+#define DEFAULT_KNIGHT_VALUE 300         // Original: 320; Modified: 317 (03/28/2013); GH: 300 (5/21/2013)
 #define MAX_KNIGHT_VALUE 640
-#define DEFAULT_BISHOP_VALUE 330         // Original: 330; Modified: 333 (03/28/2013)
+#define DEFAULT_BISHOP_VALUE 310         // Original: 330; Modified: 333 (03/28/2013); GH: 310 (5/21/2013)
 #define MAX_BISHOP_VALUE 640
-#define DEFAULT_ROOK_VALUE 510           // Original: 510; Modified: 520 (03/28/2013)
+#define DEFAULT_ROOK_VALUE 500           // Original: 510; Modified: 520 (03/28/2013); GH: 500 (5/21/2013)
 #define MAX_ROOK_VALUE 1000
-#define DEFAULT_QUEEN_VALUE 1000          // Original: 1000; Modified: 960 (03/28/2013)
+#define DEFAULT_QUEEN_VALUE 950          // Original: 1000; Modified: 960 (03/28/2013); GH: 950 (5/21/2013)
 #define MAX_QUEEN_VALUE 2000
-#define DEFAULT_BISHOP_PAIR_VALUE 50     // Original: 50
+#define DEFAULT_BISHOP_PAIR_VALUE 45     // Original: 50; Modified: 50 (03/28/2013); GH: 45 (5/21/2013)
 #define MAX_BISHOP_PAIR_VALUE 200
 
 // Eval Weights
@@ -323,6 +323,7 @@ int MultiPV;
 int OptHashSize;
 int OptPHashSize;
 int OptMaxThreads;
+int OptMinThreads; // Added 5/22/2013 by Yuri Censor for Firenzina
 int RandRange;
 
 #if defined(_WIN32) && !defined(__GNUC__) || defined(_WIN64) && !defined(__GNUC__)

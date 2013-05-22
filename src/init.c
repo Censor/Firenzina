@@ -183,7 +183,9 @@ static void parse_option(const char *str)
         {
         int input = atoi(arg[1]);
 		OptMaxThreads = input;
-		if (OptMaxThreads == 0)
+		if (OptMaxThreads <= 0) // Modified 5/22/2013 by Yuri Censor for Firenzina
+			OptMaxThreads = MaxCPUs;
+		else if (OptMaxThreads > MaxCPUs)
 			OptMaxThreads = MaxCPUs;
 		Send("Max Threads: %d\n", OptMaxThreads);
 		if (VerboseUCI)
@@ -194,6 +196,27 @@ static void parse_option(const char *str)
 			{
 			log_file = fopen(log_filename, "a");
 			fprintf(log_file, "Max Threads: %d\n", OptMaxThreads);
+			close_log();
+			}
+#endif
+        }
+	if (!strcmp(arg[0], "Min_Threads")) // Added 5/22/2013 by Yuri Censor for Firenzina
+        {
+        int input = atoi(arg[1]);
+		OptMinThreads = input;
+		if (OptMinThreads <= 0)
+			OptMinThreads = 1;
+		else if (OptMinThreads > MaxCPUs)
+			OptMinThreads = MaxCPUs;
+		Send("Min Threads: %d\n", OptMinThreads);
+		if (VerboseUCI)
+			Send("info string Min Threads: %d\n", OptMinThreads);
+
+#ifdef Log
+		if (WriteLog)
+			{
+			log_file = fopen(log_filename, "a");
+			fprintf(log_file, "Min Threads: %d\n", OptMinThreads);
 			close_log();
 			}
 #endif
@@ -1814,6 +1837,7 @@ void gen_cfg_file(char *file_name)
     fprintf(fp, "Hash %d\n", DEFAULT_HASH_SIZE);
     fprintf(fp, "Pawn_Hash %d\n", DEFAULT_PAWN_HASH_SIZE);
     fprintf(fp, "Max_Threads %d\n", OptMaxThreads);
+	fprintf(fp, "Min_Threads %d\n", OptMinThreads); // Added 5/22/2013 by Yuri Censor for Firenzina
     fprintf(fp, "MultiPV %d\n", DEFAULT_MULTIPV);
     fprintf(fp, "Random_Range %d\n", RandRange);
 

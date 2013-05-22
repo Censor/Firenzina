@@ -168,6 +168,7 @@ void InitGlobals()
     MultiPV = DEFAULT_MULTIPV;
     NumThreads = 1;
     OptMaxThreads = MaxCPUs;
+	OptMinThreads = 1; // Added 5/22/2013 by Yuri Censor for Firenzina
     Ponder = false;
 	RandRange = 20;
     SearchIsDone = true;

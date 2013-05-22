@@ -97,6 +97,7 @@ UCItype UCIOptions[256] =
 #endif
 
     { "Max_Threads", "SMP", UCISpin, 1, MaxCPUs, MaxCPUs, &OptMaxThreads, &InitSMP },
+	{ "Min_Threads", "SMP", UCISpin, 1, MaxCPUs, 1, &OptMinThreads, &InitSMP }, // Added 5/22/2013 by Yuri Censor for Firenzina
     { "MultiPV", "System", UCISpin, 1, MAX_MULTIPV, DEFAULT_MULTIPV, &MultiPV, NULL },
 // Split Depths	
     { "AN_Split_Depth", "SMP", UCISpin, MIN_AN_SPLIT_DEPTH, MAX_AN_SPLIT_DEPTH, DEFAULT_AN_SPLIT_DEPTH, &ANSplitDepth, NULL },
@@ -194,6 +195,7 @@ UCItype BaseUCIOptions[256] =
     { "Hash", "System", UCISpin, 1, MAX_HASH_SIZE, DEFAULT_HASH_SIZE, &CurrentHashSize, &InitHash },
     { "Pawn_Hash", "System", UCISpin, 1, MAX_PAWN_HASH_SIZE, DEFAULT_PAWN_HASH_SIZE, &CurrentPHashSize, &InitPawnHashWrapper },
     { "Max_Threads", "SMP", UCISpin, 1, MaxCPUs, MaxCPUs, &OptMaxThreads, &InitSMP },
+	{ "Min_Threads", "SMP", UCISpin, 1, MaxCPUs, 1, &OptMinThreads, &InitSMP }, // Added 5/22/2013 by Yuri Censor for Firenzina
     { "MultiPV", "System", UCISpin, 1, MAX_MULTIPV, DEFAULT_MULTIPV, &MultiPV, NULL },
     { "", "", -1, 0, 0, false, NULL, NULL }
     };

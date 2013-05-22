@@ -423,15 +423,25 @@ NumCPUs = get_nprocs();
 
 		}
 	    
-	NumThreads = NumCPUs<<1; // Modification by Yuri Censor for Firenzina, 2/16/2013
-	                         // Was: NumThreads = NumCPUs; 
-	                         // Problem: We couldn't have more threads than processors
+	NumThreads = NumCPUs; 
     if(NumThreads > MaxCPUs)
         NumThreads = MaxCPUs;
-
-    if(NumThreads > OptMaxThreads)
-        NumThreads = OptMaxThreads;
-
+	if (OptMaxThreads > OptMinThreads) // normal; Added 5/22/2013 by Yuri Censor for Firenzina
+	{
+		if(NumThreads > OptMaxThreads)
+			NumThreads = OptMaxThreads;
+		else if (NumThreads < OptMinThreads) // Added 5/22/2013 by Yuri Censor for Firenzina
+			NumThreads = OptMinThreads;
+	}
+	else if (OptMinThreads > OptMaxThreads) // abnormal; Added 5/22/2013 by Yuri Censor for Firenzina
+	{
+		if(NumThreads > OptMinThreads) // Treat OptMinThreads as OptMaxThreads and vice versa
+			NumThreads = OptMinThreads;
+		else if (NumThreads < OptMaxThreads) 
+			NumThreads = OptMaxThreads;
+	}
+	else // if (OptMinThreads == OptMaxThreads)
+		NumThreads = OptMaxThreads;
 
     if(NumThreads > 1)
 		{
