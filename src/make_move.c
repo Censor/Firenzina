@@ -245,9 +245,11 @@ void MakeWhite(typePos *Position, uint32 move)
             }
         }
     Position->Stack[++(Position->StackHeight)] = Position->Dyn->Hash;
+#ifdef HasPreFetch
 	if(Position->Dyn->PawnHash != (Position->Dyn - 1)->PawnHash) // Code by Quoc Vuong
 		prefetch(PawnHash + (Position->Dyn->PawnHash & ((uint64)(CurrentPHashSize - 1))));
 	prefetch(HashTable + (Position->Dyn->Hash & HashMask));
+#endif
     }
 void MakeBlack(typePos *Position, uint32 move)
     {
@@ -357,9 +359,11 @@ void MakeBlack(typePos *Position, uint32 move)
             }
         }
     Position->Stack[++(Position->StackHeight)] = Position->Dyn->Hash;
+#ifdef HasPreFetch
 	if(Position->Dyn->PawnHash != (Position->Dyn - 1)->PawnHash) // Code by Quoc Vuong
 		prefetch(PawnHash + (Position->Dyn->PawnHash & ((uint64)(CurrentPHashSize - 1))));
 	prefetch(HashTable + (Position->Dyn->Hash & HashMask));
+#endif
     }
 void Make(typePos *Position, uint32 move)
     {
