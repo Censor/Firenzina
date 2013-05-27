@@ -74,6 +74,7 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 
 #define HasPopCNT
 #define HasPreFetch
+#define HasIntrinsics
 #define InitCFG
 
 #define Log

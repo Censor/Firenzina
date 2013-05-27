@@ -48,11 +48,19 @@ static INLINE int BSR(UINT64 x)
     _BitScanReverse64(&r, x);
     return r;
     }
-
-
+#ifdef HasIntrinsics
+#include "nmmintrin.h"
+#endif
 static INLINE long long PopcntHard (unsigned long long x)
 	{
+#ifdef HasIntrinsics
   	return _mm_popcnt_u64(x);
+#else
+	_asm
+    {
+      popcnt rax, x
+    }
+#endif
 	}
 static INLINE long long PopcntEmul (unsigned long long w)
 	{
