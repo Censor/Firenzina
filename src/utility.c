@@ -474,7 +474,7 @@ NumCPUs = get_nprocs();
 
 void SetPOPCNT()
 	{
-
+#if !defined(__GNUC__)
 #if defined(_WIN32) || defined(_WIN64)
 int CPUInfo[4] = {-1};
   	__cpuid(CPUInfo, 0x00000001);
@@ -497,7 +497,7 @@ int CPUInfo[4] = {-1};
 		POPCNT = &PopcntEmul;
 
 #endif
-
+#endif
 	}
 
 #ifdef Log
