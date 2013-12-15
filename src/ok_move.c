@@ -1,6 +1,6 @@
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
-Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
+Kranium (Norman Schmidt), Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
 Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
 Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart, Andrey Chilantiev, Quoc Vuong.
 Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
@@ -39,10 +39,15 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 #include "black.h"
 #endif
 
-bool MyOK(typePos *Position, uint32 move)
+boolean MyOK(typePos* Position, uint32 move)
     {
-    int fr, to, pi, cp;
+	int fr, to, pi, cp;
     uint64 toSet;
+
+#ifdef FischerRandom		
+	int i;
+#endif
+	
     to = To(move);
     toSet = SqSet[to];
     fr = From(move);
@@ -51,11 +56,108 @@ bool MyOK(typePos *Position, uint32 move)
         return false;
     if (PieceIsOpp(pi))
         return false;
-    cp = Position->sq[to];
-    if (cp && PieceIsMine(cp))
-        return false;
-    if (cp == EnumOppK)
-        return false;
+	cp = Position->sq[to];
+	if (cp == EnumOppK)
+		return false;
+
+#ifdef FischerRandom		
+    if (Chess960)
+        {
+        if (!MoveIsOO(move) && cp && PieceIsMine(cp))
+            return FALSE;
+        if (MoveIsOO(move))
+            {
+            if (pi != EnumMyK || cp != EnumMyR || File(fr) != Chess960KingFile)
+                return FALSE;
+            if (to > fr)
+                {
+                if (!CastleOO || File(to) != Chess960KingRookFile)
+                    return FALSE;
+
+                for ( i = Chess960KingRookFile + 1; i <= FF; i++ )
+                    {
+                    if (Position->sq[i + 8 * NumberRank1] == EnumMyK)
+                        continue;
+
+                    if (Position->sq[i + 8 * NumberRank1] != 0)
+                        return FALSE;
+                    }
+
+                for ( i = Chess960KingRookFile - 1; i >= FF; i-- )
+                    {
+                    if (Position->sq[i + 8 * NumberRank1] == EnumMyK)
+                        continue;
+
+                    if (Position->sq[i + 8 * NumberRank1] != 0)
+                        return FALSE;
+                    }
+
+                for ( i = Chess960KingFile + 1; i <= FG; i++ )
+                    {
+                    if (OppAttacked & SqSet[i + 8 * NumberRank1])
+                        return FALSE;
+
+                    if (i == Chess960KingRookFile)
+                        continue;
+
+                    if (Position->sq[i + 8 * NumberRank1] != 0)
+                        return FALSE;
+                    }
+                }
+            if (to < fr)
+                {
+                if (!CastleOOO || File(to) != Chess960QueenRookFile)
+                    return FALSE;
+
+                for ( i = Chess960QueenRookFile + 1; i <= FD; i++ )
+                    {
+                    if (Position->sq[i + 8 * NumberRank1] == EnumMyK)
+                        continue;
+
+                    if (Position->sq[i + 8 * NumberRank1] != 0)
+                        return FALSE;
+                    }
+
+                for ( i = Chess960QueenRookFile - 1; i >= FD; i-- )
+                    {
+                    if (Position->sq[i + 8 * NumberRank1] == EnumMyK)
+                        continue;
+
+                    if (Position->sq[i + 8 * NumberRank1] != 0)
+                        return FALSE;
+                    }
+
+                for ( i = Chess960KingFile + 1; i <= FC; i++ )
+                    {
+                    if (OppAttacked & SqSet[i + 8 * NumberRank1])
+                        return FALSE;
+
+                    if (i == Chess960QueenRookFile)
+                        continue;
+
+                    if (Position->sq[i + 8 * NumberRank1] != 0)
+                        return FALSE;
+                    }
+
+                for ( i = Chess960KingFile - 1; i >= FC; i-- )
+                    {
+                    if (OppAttacked & SqSet[i + 8 * NumberRank1])
+                        return FALSE;
+
+                    if (i == Chess960QueenRookFile)
+                        continue;
+
+                    if (Position->sq[i + 8 * NumberRank1] != 0)
+                        return FALSE;
+                    }
+                }
+            return true;
+            }
+        }
+#endif
+
+	if (cp && PieceIsMine(cp))
+		return false;
     if (pi == EnumMyP)
         {
         if (EighthRank(to) && !MoveIsProm(move))

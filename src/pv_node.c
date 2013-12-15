@@ -1,6 +1,6 @@
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
-Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
+Kranium (Norman Schmidt), Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
 Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
 Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart, Andrey Chilantiev, Quoc Vuong.
 Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
@@ -41,10 +41,7 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 #include "black.h"
 #endif
 
-#define ValueRed1 (depth >> 1)
-#define ValueRed2 (depth)
-
-int MyPV(typePos *Position, int Alpha, int Beta, int depth, int check)
+int MyPV(typePos* Position, int Alpha, int Beta, int depth, int check)
     {
     typeNext NextMove[1];
     TransDeclare();
@@ -76,7 +73,6 @@ int MyPV(typePos *Position, int Alpha, int Beta, int depth, int check)
     (Pos0 + 1)->move = 0;
     for (i = 0; i < 4; i++, Trans++)
         {
-        HyattHash(Trans, trans);
         if ((trans->hash ^ (Position->Dyn->Hash >> 32)) == 0)
             {
             if (trans->flags & FlagMoveLess)
@@ -188,19 +184,19 @@ int MyPV(typePos *Position, int Alpha, int Beta, int depth, int check)
         {
         move = NextMove->trans_move;
         if (check)
-            v = MyExcludeCheck(Position, Alpha - ValueRed1, depth - DepthRed, move & 0x7fff);
+            v = MyExcludeCheck(Position, Alpha - depth, depth - DepthRed, move & 0x7fff);
         else
-            v = MyExclude(Position, Alpha - ValueRed1, depth - DepthRed, move & 0x7fff);
+            v = MyExclude(Position, Alpha - depth, depth - DepthRed, move & 0x7fff);
         CheckHalt();
-        if (v < Alpha - ValueRed1)
+        if (v < Alpha - depth)
             {
             singular = 1;
             if (check)
-                v = MyExcludeCheck(Position, Alpha - ValueRed2, depth - DepthRed, move & 0x7fff);
+                v = MyExcludeCheck(Position, Alpha - (depth << 1), depth - DepthRed, move & 0x7fff);
             else
-                v = MyExclude(Position, Alpha - ValueRed2, depth - DepthRed, move & 0x7fff);
+                v = MyExclude(Position, Alpha - (depth << 1), depth - DepthRed, move & 0x7fff);
             CheckHalt();
-            if (v < Alpha - ValueRed2)
+            if (v < Alpha - (depth << 1))
                 singular = 2;
             }
         }
@@ -218,7 +214,7 @@ int MyPV(typePos *Position, int Alpha, int Beta, int depth, int check)
             int r;
             bool b;
             Split = true;
-            b = IvanSplit(Position, NextMove, depth, Beta, Alpha, NodeTypePV, &r);
+            b = SMPSplit(Position, NextMove, depth, Beta, Alpha, NodeTypePV, &r);
             CheckHalt();
             if (b)
                 {
@@ -227,7 +223,7 @@ int MyPV(typePos *Position, int Alpha, int Beta, int depth, int check)
                 move = good_move;
                 (Pos0 + 1)->move = good_move & 0x7fff;
                 best_value = r;
-                goto Ivan;
+				goto Skip;
                 }
             }
         move = MyNext(Position, NextMove);
@@ -260,8 +256,8 @@ int MyPV(typePos *Position, int Alpha, int Beta, int depth, int check)
         extend = 0;
         if (check)
             extend = 1;
-        if (see && (Pos1->cp || move_is_check))
-            extend = 1;
+		if (see && (Pos1->cp || move_is_check))
+			extend = 1;
 		if (PassedPawnPush (to, FourthRank (to)))
 			extend = 1;
 		if (see && Pos1->cp && Pos1->cp != EnumOppP)
@@ -327,7 +323,7 @@ int MyPV(typePos *Position, int Alpha, int Beta, int depth, int check)
         HashExact(Position, MoveNone, depth, best_value, FlagExact | FlagMoveLess);
         return(best_value);
         }
-    Ivan:
+    Skip:
     if (move)
         {
         if (Position->sq[To(move)] == 0 && MoveHistory(move))

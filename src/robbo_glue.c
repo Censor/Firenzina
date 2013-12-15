@@ -1,6 +1,6 @@
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
-Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
+Kranium (Norman Schmidt), Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
 Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
 Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart, Andrey Chilantiev, Quoc Vuong.
 Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
@@ -215,20 +215,20 @@ bool RobboMove(typePos *Position, uint32 *am, int *v, int *cap)
     for (q = move_list; q->move; q++)
         {
         m = q->move & 0x7fff;
-        Position->StackHeight = 0;
+       Position->StackHeight = 0;
         Make(Position, m);
-        Position->StackHeight = 1;
+       Position->StackHeight = 1;
         Mobility(Position);
         if (IsIllegal)
             {
             Undo(Position, m);
-            Position->StackHeight = 1;
+           Position->StackHeight = 1;
             continue;
             }
         if (!RobboTotalBaseScore(Position, &v2))
             {
             Undo(Position, m);
-            Position->StackHeight = 1;
+           Position->StackHeight = 1;
             return false;
             }
         if (DiskLoss(va))
@@ -238,7 +238,7 @@ bool RobboMove(typePos *Position, uint32 *am, int *v, int *cap)
             if (!RobboMove(Position, &m3, &v3, &cp))
                 {
                 Undo(Position, m);
-                Position->StackHeight = 1;
+               Position->StackHeight = 1;
                 return false;
                 }
             if (v3 > zv
@@ -250,7 +250,7 @@ bool RobboMove(typePos *Position, uint32 *am, int *v, int *cap)
                 }
             }
         Undo(Position, m);
-        Position->StackHeight = 1;
+       Position->StackHeight = 1;
         if (DiskDraw(va) && DiskDraw(v2))
             {
             *am = m;
@@ -281,10 +281,10 @@ bool RobboMake(typePos *Position)
     {
     int va, v2, cp;
     uint32 m;
-    Position->Dyn->Hash ^= 0xfa73e65b089c41d2;
+   Position->Dyn->Hash ^= 0xfa73e65b089c41d2;
     SearchRobboBases = true;
     Eval(Position, -0x7fff0000, 0x7fff0000, 0, 0xff);
-    Position->Dyn->Hash ^= 0xfa73e65b089c41d2;
+   Position->Dyn->Hash ^= 0xfa73e65b089c41d2;
     if (Position->Dyn->exact)
         SearchRobboBases = false;
     else
@@ -370,30 +370,30 @@ static void MainLineIterate(typePos *Position)
 			}
 
         (Position->Dyn + 1)->move = MoveNone;
-        Position->StackHeight = 0;
+       Position->StackHeight = 0;
         return;
         }
     if (!RobboMove(Position, &m, &v2, &cp))
         {
         (Position->Dyn + 1)->move = MoveNone;
-        Position->StackHeight = 0;
+       Position->StackHeight = 0;
         return;
         }
     if (va == dDraw)
         {
-        Position->StackHeight = 0;
+       Position->StackHeight = 0;
         Make(Position, m);
-        Position->StackHeight = 1;
+       Position->StackHeight = 1;
         Undo(Position, m);
         return;
         }
     m &= 0x7fff;
-    Position->StackHeight = 0;
+   Position->StackHeight = 0;
     Make(Position, m);
-    Position->StackHeight = 1;
+   Position->StackHeight = 1;
     MainLineIterate(Position);
     Undo(Position, m);
-    Position->StackHeight = 1;
+   Position->StackHeight = 1;
     }
 void MainLine(typePos *Position)
     {

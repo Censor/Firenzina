@@ -1,6 +1,6 @@
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
-Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
+Kranium (Norman Schmidt), Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
 Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
 Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart, Andrey Chilantiev, Quoc Vuong.
 Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
@@ -74,9 +74,9 @@ void ApplySort(int n, typeMPV *mpv)
 #else
 #include "black.h"
 #endif
-#define CheckHaltMulti() { if (IvanAllHalt || Position->stop) goto UndoLabel; }
+#define CheckHaltMulti() { if (SMPAllHalt || Position->stop) goto UndoLabel; }
 
-int MyMultiPV(typePos *Position, int depth)
+int MyMultiPV(typePos * Position, int depth)
     {
     int Cnt, cnt, best_value, move_is_check, new_depth, v;
     typeRootMoveList *p, *q;
@@ -143,11 +143,8 @@ int MyMultiPV(typePos *Position, int depth)
 		EVAL (move, depth);
         move_is_check = (MoveIsCheck != 0);
         extend = 0;
-        to = To(move);
-
-        if (Pos1->cp || move_is_check)
-			extend = 1;
-		if (PassedPawnPush (to, FourthRank (to)))
+		to = To(move);
+		if (Pos1->cp || move_is_check || PassedPawnPush(to, FourthRank(to)))
 			extend = 1;
 
         LMR = 0;
@@ -156,7 +153,7 @@ int MyMultiPV(typePos *Position, int depth)
         if (!extend && cnt >= (GoodMoves << 1) + 6 && depth >= 10)
             LMR = 2;
         new_depth = depth - 2 + extend - LMR;
-        if (DoOutput && CurrMoveInfo && Analysing && depth >= 24)
+        if (DoOutput && CurrMoveInfo && Analysing && depth >= 24 && !BenchMarking)
 			{
             Send("info currmove %s currmovenumber %d\n", Notate(move, String1[Position->cpu]),(p - RootMoveList) + 1);
 #ifdef Log
@@ -179,6 +176,10 @@ int MyMultiPV(typePos *Position, int depth)
 				else
 					v = -OppPV(Position, -Target - Delta, -Lower, new_depth, move_is_check);
                 CheckHaltMulti();
+				if (v >= ValueMate)
+					v = ValueMate - 1;
+				if (v <= -ValueMate)
+					v = -ValueMate + 1;
                 if (v < Target + Delta && v > Lower)
                     break;
                 if (GoodMoves && v <= Alpha2)
@@ -249,8 +250,12 @@ int MyMultiPV(typePos *Position, int depth)
                 CheckHaltMulti();
                 }
             new_depth += LMR;
+			if (v >= ValueMate)
+				v = ValueMate - 1;
             if (v > Alpha)
                 v = -OppPV(Position, -Alpha - 1, -Alpha, new_depth, move_is_check);
+			if (v >= ValueMate)
+				v = ValueMate - 1;
             EnCircle:
             CheckHaltMulti();
             Delta = 8;
@@ -260,8 +265,12 @@ int MyMultiPV(typePos *Position, int depth)
                     v = -Position->Dyn->Value;
                 else
                 v = -OppPV(Position, -Alpha - Delta, -Alpha, new_depth, move_is_check);
-                if (IvanAllHalt)
+                if (SMPAllHalt)
                     break;
+				if (v >= ValueMate)
+					v = ValueMate - 1;
+				if (v <= -ValueMate)
+					v = -ValueMate + 1;
                 if (v < Alpha + Delta)
                     break;
                 Delta += Delta >> 1;

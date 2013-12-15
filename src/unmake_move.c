@@ -1,6 +1,6 @@
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
-Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
+Kranium (Norman Schmidt), Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
 Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
 Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart, Andrey Chilantiev, Quoc Vuong.
 Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
@@ -37,75 +37,149 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 #define INLINE inline
 #endif
 
-static INLINE void UnMakeWhiteOO(typePos *Position, int to)
+static INLINE void UnMakeWhiteOO(typePos* Position, int to)
+	{
+	if (to == G1)
+		{
+		wBitboardOcc ^= F1H1;
+		wBitboardR ^= F1H1;
+		Position->sq[F1] = 0;
+		Position->sq[H1] = wEnumR;
+		Position->OccupiedBW ^= F1H1;
+		}
+	else if (to == C1)
+		{
+		wBitboardOcc ^= A1D1;
+		wBitboardR ^= A1D1;
+		Position->sq[D1] = 0;
+		Position->sq[A1] = wEnumR;
+		Position->OccupiedBW ^= A1D1;
+		}
+	}
+static INLINE void UnMakeBlackOO(typePos* Position, int to)
+	{
+	if (to == G8)
+		{
+		bBitboardOcc ^= F8H8;
+		bBitboardR ^= F8H8;
+		Position->sq[F8] = 0;
+		Position->sq[H8] = bEnumR;
+		Position->OccupiedBW ^= F8H8;
+		}
+	else if (to == C8)
+		{
+		bBitboardOcc ^= A8D8;
+		bBitboardR ^= A8D8;
+		Position->sq[D8] = 0;
+		Position->sq[A8] = bEnumR;
+		Position->OccupiedBW ^= A8D8;
+		}
+	}
+	
+#ifdef FischerRandom	
+static INLINE void UnMake960CastleWhite( typePos *Position, int to, int fr )
     {
-    if (to == G1)
+   Position->wtm ^= 1;
+   Position->height--;
+   Position->wKsq = fr;
+    wBitboardK ^= SqSet[fr];
+    wBitboardR ^= SqSet[to];
+    wBitboardOcc ^= SqSet[to] | SqSet[fr];
+
+    if (to > fr)
         {
-        wBitboardOcc ^= F1H1;
-        wBitboardR ^= F1H1;
-        Position->sq[F1] = 0;
-        Position->sq[H1] = wEnumR;
-        Position->OccupiedBW ^= F1H1;
+       Position->sq[F1] = Position->sq[G1] = 0;
+        wBitboardOcc ^= SqSet[F1] | SqSet[G1];
+        wBitboardK ^= SqSet[G1];
+        wBitboardR ^= SqSet[F1];
         }
-    else if (to == C1)
+
+    if (to < fr)
         {
-        wBitboardOcc ^= A1D1;
-        wBitboardR ^= A1D1;
-        Position->sq[D1] = 0;
-        Position->sq[A1] = wEnumR;
-        Position->OccupiedBW ^= A1D1;
+       Position->sq[C1] = Position->sq[D1] = 0;
+        wBitboardOcc ^= SqSet[C1] | SqSet[D1];
+        wBitboardK ^= SqSet[C1];
+        wBitboardR ^= SqSet[D1];
         }
+   Position->sq[fr] = wEnumK;
+   Position->sq[to] = wEnumR;
+   Position->Dyn--;
+   Position->StackHeight--;
+   Position->OccupiedBW = wBitboardOcc | bBitboardOcc;
     }
-static INLINE void UnMakeBlackOO(typePos *Position, int to)
+
+static INLINE void UnMake960CastleBlack( typePos *Position, int to, int fr )
     {
-    if (to == G8)
+   Position->wtm ^= 1;
+   Position->height--;
+   Position->bKsq = fr;
+    bBitboardK ^= SqSet[fr];
+    bBitboardR ^= SqSet[to];
+    bBitboardOcc ^= SqSet[to] | SqSet[fr];
+
+    if (to > fr)
         {
-        bBitboardOcc ^= F8H8;
-        bBitboardR ^= F8H8;
-        Position->sq[F8] = 0;
-        Position->sq[H8] = bEnumR;
-        Position->OccupiedBW ^= F8H8;
+       Position->sq[F8] = Position->sq[G8] = 0;
+        bBitboardOcc ^= SqSet[F8] | SqSet[G8];
+        bBitboardK ^= SqSet[G8];
+        bBitboardR ^= SqSet[F8];
         }
-    else if (to == C8)
+
+    if (to < fr)
         {
-        bBitboardOcc ^= A8D8;
-        bBitboardR ^= A8D8;
-        Position->sq[D8] = 0;
-        Position->sq[A8] = bEnumR;
-        Position->OccupiedBW ^= A8D8;
+       Position->sq[C8] = Position->sq[D8] = 0;
+        bBitboardOcc ^= SqSet[C8] | SqSet[D8];
+        bBitboardK ^= SqSet[C8];
+        bBitboardR ^= SqSet[D8];
         }
+   Position->sq[fr] = bEnumK;
+   Position->sq[to] = bEnumR;
+   Position->Dyn--;
+   Position->StackHeight--;
+   Position->OccupiedBW = wBitboardOcc | bBitboardOcc;
     }
-void UndoWhite(typePos *Position, uint32 move)
+#endif
+	
+void UndoWhite(typePos* Position, uint32 move)
     {
     int fr, to, pi, cp, z;
     uint64 mask;
     fr = From(move);
-    to = To(move);
-    pi = Position->sq[to];
-    Position->wtm ^= 1;
-    Position->height--;
+	to = To(move);
+	
+#ifdef FischerRandom	
+    if (Chess960 && MoveIsOO(move))
+        {
+        UnMake960CastleWhite(Position, to, fr);
+        return;
+        }
+	#endif
+		
+	pi = Position->sq[to];
+   Position->wtm ^= 1;
+   Position->height--;
     if (MoveIsProm(move))
         {
-        Position->bitboard[pi] &= SqClear[to];
+       Position->bitboard[pi] &= SqClear[to];
         pi = wEnumP;
         }
-    Position->sq[fr] = pi;
-    Position->sq[to] = Position->Dyn->cp;
+   Position->sq[fr] = pi;
+   Position->sq[to] = Position->Dyn->cp;
     if (pi == wEnumK)
-        Position->wKsq = fr;
+       Position->wKsq = fr;
     mask = SqSet[fr];
     wBitboardOcc |= mask;
-    Position->bitboard[pi] |= mask;
+   Position->bitboard[pi] |= mask;
     SetOccupied(mask, fr);
     mask = SqClear[to];
     wBitboardOcc &= mask;
-    Position->bitboard[pi] &= mask;
+   Position->bitboard[pi] &= mask;
     cp = Position->Dyn->cp;
     if (cp)
         {
         mask = ~mask;
         bBitboardOcc |= mask;
-        Position->bitboard[cp] |= mask;
+       Position->bitboard[cp] |= mask;
         }
     else
         {
@@ -115,47 +189,56 @@ void UndoWhite(typePos *Position, uint32 move)
         else if (MoveIsEP(move))
             {
             z = to ^ 8;
-            Position->sq[z] = bEnumP;
+           Position->sq[z] = bEnumP;
             mask = SqSet[z];
             bBitboardOcc |= mask;
             bBitboardP |= mask;
             SetOccupied(mask, z);
             }
         }
-    Position->Dyn--;
-    Position->StackHeight--;
+   Position->Dyn--;
+   Position->StackHeight--;
     }
-void UndoBlack(typePos *Position, uint32 move)
+void UndoBlack(typePos* Position, uint32 move)
     {
     int fr, to, pi, cp, z;
     uint64 mask;
     fr = From(move);
     to = To(move);
+	
+#ifdef FischerRandom
+  if (Chess960 && MoveIsOO(move))
+        {
+        UnMake960CastleBlack(Position, to, fr);
+        return;
+        }
+#endif
+
     pi = Position->sq[to];
-    Position->wtm ^= 1;
-    Position->height--;
+   Position->wtm ^= 1;
+   Position->height--;
     if (MoveIsProm(move))
         {
-        Position->bitboard[pi] &= SqClear[to];
+       Position->bitboard[pi] &= SqClear[to];
         pi = bEnumP;
         }
-    Position->sq[fr] = pi;
-    Position->sq[to] = Position->Dyn->cp;
+   Position->sq[fr] = pi;
+   Position->sq[to] = Position->Dyn->cp;
     if (pi == bEnumK)
-        Position->bKsq = fr;
+       Position->bKsq = fr;
     mask = SqSet[fr];
     bBitboardOcc |= mask;
-    Position->bitboard[pi] |= mask;
+   Position->bitboard[pi] |= mask;
     SetOccupied(mask, fr);
     mask = SqClear[to];
     bBitboardOcc &= mask;
-    Position->bitboard[pi] &= mask;
+   Position->bitboard[pi] &= mask;
     cp = Position->Dyn->cp;
     if (cp)
         {
         mask = ~mask;
         wBitboardOcc |= mask;
-        Position->bitboard[cp] |= mask;
+       Position->bitboard[cp] |= mask;
         }
     else
         {
@@ -165,17 +248,17 @@ void UndoBlack(typePos *Position, uint32 move)
         else if (MoveIsEP(move))
             {
             z = to ^ 8;
-            Position->sq[z] = wEnumP;
+           Position->sq[z] = wEnumP;
             mask = SqSet[z];
             wBitboardOcc |= mask;
             wBitboardP |= mask;
             SetOccupied(mask, z);
             }
         }
-    Position->Dyn--;
-    Position->StackHeight--;
+   Position->Dyn--;
+   Position->StackHeight--;
     }
-void Undo(typePos *Position, uint32 move)
+void Undo(typePos* Position, uint32 move)
     {
     if (!Position->wtm)
         UndoWhite(Position, move);

@@ -1,6 +1,6 @@
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
-Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
+Kranium (Norman Schmidt), Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
 Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
 Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart, Andrey Chilantiev, Quoc Vuong.
 Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
@@ -39,7 +39,7 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 #include "black.h"
 #endif
 
-int MyPVQsearch(typePos *Position, int Alpha, int Beta, int depth)
+int MyPVQsearch(typePos* Position, int Alpha, int Beta, int depth)
     {
     int i;
     uint32 good_move = 0, trans_move = 0, move, BadCaps[64];
@@ -59,7 +59,6 @@ int MyPVQsearch(typePos *Position, int Alpha, int Beta, int depth)
     Trans = HashPointer(Position->Dyn->Hash);
     for (i = 0; i < 4; i++, Trans++)
         {
-        HyattHash(Trans, trans);
         if ((trans->hash ^ (Position->Dyn->Hash >> 32)) == 0)
             {
             if (trans->flags & FlagMoveLess)
@@ -278,7 +277,7 @@ int MyPVQsearch(typePos *Position, int Alpha, int Beta, int depth)
     HashUpper(Position->Dyn->Hash, 1, best_value);
     return(best_value);
     }
-int MyPVQsearchCheck(typePos *Position, int Alpha, int Beta, int depth)
+int MyPVQsearchCheck(typePos* Position, int Alpha, int Beta, int depth)
     {
     int i;
     uint32 trans_move = 0, good_move = 0, move, Temp;
@@ -296,7 +295,6 @@ int MyPVQsearchCheck(typePos *Position, int Alpha, int Beta, int depth)
     Trans = HashPointer(Position->Dyn->Hash);
     for (i = 0; i < 4; i++, Trans++)
         {
-        HyattHash(Trans, trans);
         if ((trans->hash ^ (Position->Dyn->Hash >> 32)) == 0)
             {
             if (trans->flags & FlagMoveLess)

@@ -1,6 +1,6 @@
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
-Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
+Kranium (Norman Schmidt), Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
 Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
 Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart, Andrey Chilantiev, Quoc Vuong.
 Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
@@ -52,6 +52,8 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 // 'int (__cdecl *)()' differs in parameter list
 #pragma warning(disable : 4146)
 // unary minus operator applied to unsigned type, result still unsigned
+#pragma warning(disable : 4267)
+// conversion from 'size_t' to 'int', possible loss of data
 
 typedef __int8 sint8;
 typedef __int16 sint16;
@@ -68,7 +70,7 @@ typedef unsigned __int64 uint64;
 #define Type64Bit "%I64d"
 #define MemAlign(a, b, c) a = _aligned_malloc (c, b)
 #define AlignedFree(x) _aligned_free (x)
-#define __builtin_prefetch
+
 #if defined(_WIN64)
 #include "win64bits.h"
 #else
@@ -90,7 +92,7 @@ typedef unsigned __int64 uint64;
 #define PThreadJoin(x)              \
 	{ DWORD w; do { GetExitCodeThread (x, &w); } while (w == STILL_ACTIVE); }
 HANDLE PThread[MaxCPUs], PThreadIO;
-#define IvanThread(A) DWORD WINAPI SMPThread (LPVOID A)
+#define SMPThread(A) DWORD WINAPI SMPThread (LPVOID A)
 #define IOThread(A) DWORD WINAPI io_thread (LPVOID A)
 #define VoidStarType DWORD
 #else
@@ -124,7 +126,7 @@ HANDLE PThread[MaxCPUs], PThreadIO;
 #define PThreadCreate(N, b, thr, d) pthread_create (N, NULL, thr, (void*) (d))
 #define PThreadJoin(x) pthread_join (x, NULL)
 pthread_t PThread[MaxCPUs], PThreadIO;
-#define IvanThread(A) void* SMPThread (void* A)
+#define SMPThread(A) void* SMPThread (void* A)
 #define IOThread(A) void* io_thread (void* A)
 #define VoidStarType void*
 //#define LinuxLargePages true

@@ -1,6 +1,6 @@
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
-Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
+Kranium (Norman Schmidt), Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
 Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
 Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart, Andrey Chilantiev, Quoc Vuong.
 Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
@@ -35,11 +35,21 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 #include <time.h>
 #endif
 
-uint32 RootBestMove;
-int RootScore, RootPrevious;
-int RootDepth, PreviousDepth, PreviousFast;
+boolean EasyMove;
+boolean BadMove;
+boolean BattleMove;
+boolean Analysing;
+
 extern jmp_buf J;
-volatile bool JumpIsSet;
-bool EasyMove, BadMove, BattleMove;
-uint64 StartClock, CPUtime;
-bool Analysing;
+
+int RootScore;
+int RootPrevious;
+int RootDepth;
+int PreviousDepth;
+int PreviousFast;
+
+uint32 RootBestMove;
+uint64 StartClock;
+uint64 CPUtime;
+
+volatile boolean JumpIsSet;

@@ -1,6 +1,6 @@
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
-Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
+Kranium (Norman Schmidt), Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
 Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
 Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart, Andrey Chilantiev, Quoc Vuong.
 Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
@@ -40,7 +40,22 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 #define BlackMinorOnly (Position->Dyn->flags & 64)
 #define BlackHasPiece (Position->Dyn->flags & 1)
 
-int EvalEnding(typePos *Position, int Value, uint64 wPatt, uint64 bPatt)
+#define BitBoard3(x, y, z) ((1ULL << (x)) | (1ULL << (y)) | (1ULL << (z)))
+#define BitBoard4(w, x, y, z) ((1ULL << (w)) | (1ULL << (x)) | (1ULL << (y)) | (1ULL << (z)))
+
+#define A7A8B8 BitBoard3 (A7, A8, B8)
+#define F8G8H8 BitBoard3 (F8, G8, H8)
+#define E8F8G8H8 BitBoard4 (E8, F8, G8, H8)
+#define H7G8H8 BitBoard3 (H7, G8, H8)
+#define A8B8C8D8 BitBoard4 (A8, B8, C8, D8)
+#define A8B8C8 BitBoard3 (A8, B8, C8)
+#define A1B1A2 BitBoard3 (A1, B1, A1)
+#define F1G1H1 BitBoard3 (F1, G1, H1)
+#define E1F1G1H1 BitBoard4 (E1, F1, G1, H1)
+#define G1H1H2 BitBoard3 (G1, H1, H2)
+#define A1B1C1D1 BitBoard4 (A1, B1, C1, D1)
+#define A1B1C1 BitBoard3 (A1, B1, C1)
+int EvalEnding(typePos* Position, int Value, uint64 wPatt, uint64 bPatt)
     {
 
     if (BishopKnightMate)
@@ -98,6 +113,28 @@ int EvalEnding(typePos *Position, int Value, uint64 wPatt, uint64 bPatt)
                 else
                     Value = 0;
                 }
+			if (wBitboardBL)
+				{
+				if (Position->sq[B6] == wEnumP && Position->sq[B7] == bEnumP && !(wBitboardP & ~SqSet[B6])
+					&& !(bBitboardP & ~FileB) && !((bBitboardP >> 8) & ~Position->OccupiedBW)
+					&& !(wBitboardBL & (wBitboardBL - 1))
+				&& (bBitboardK & B8C8D8) && !(wBitboardK &A7A8B8))
+					Value = 0;
+				if (Position->sq[G6] == wEnumP && Position->sq[G7] == bEnumP && !((wBitboardP | bBitboardP) & ~FileG)
+					&& (bBitboardK & E8F8G8H8) && !(wBitboardK &H7G8H8))
+					Value = 0;
+				}
+			if (wBitboardBD)
+				{
+				if (Position->sq[B6] == wEnumP && Position->sq[B7] == bEnumP && !((wBitboardP | bBitboardP) & ~FileB)
+					&& (bBitboardK & A8B8C8D8) && !(wBitboardK &A7A8B8))
+					Value = 0;
+				if (Position->sq[G6] == wEnumP && Position->sq[G7] == bEnumP && !(wBitboardP & ~SqSet[G6])
+					&& !(bBitboardP & ~FileG) && !((bBitboardP >> 8) & ~Position->OccupiedBW)
+					&& !(bBitboardBL & (bBitboardBL - 1))
+				&& (bBitboardK & F8G8H8) && !(wBitboardK &H7G8H8))
+					Value = 0;
+				}
             if (!wBitboardP)
                 Value = 0;
             }
@@ -131,6 +168,28 @@ int EvalEnding(typePos *Position, int Value, uint64 wPatt, uint64 bPatt)
                 else
                     Value = 0;
                 }
+			if (bBitboardBL)
+				{
+				if (Position->sq[B3] == bEnumP && Position->sq[B2] == wEnumP && !((bBitboardP | wBitboardP) & ~FileB)
+					&& (wBitboardK & A1B1C1D1) && !(bBitboardK &A1B1A2))
+					Value = 0;
+				if (Position->sq[G3] == bEnumP && Position->sq[G2] == wEnumP && !(bBitboardP & ~SqSet[G3])
+					&& !(wBitboardP & ~FileG) && !((wBitboardP << 8) & ~Position->OccupiedBW)
+					&& !(bBitboardBL & (bBitboardBL - 1))
+				&& (wBitboardK & F1G1H1) && !(bBitboardK &G1H1H2))
+					Value = 0;
+				}
+			if (bBitboardBD)
+				{
+				if (Position->sq[B3] == bEnumP && Position->sq[B2] == wEnumP && !(bBitboardP & ~SqSet[B3])
+					&& !(wBitboardP & ~FileB) && !((wBitboardP << 8) & ~Position->OccupiedBW)
+					&& !(bBitboardBD & (bBitboardBD - 1))
+				&& (wBitboardK & A1B1C1) && !(bBitboardK &A1B1A2))
+					Value = 0;
+				if (Position->sq[G3] == bEnumP && Position->sq[G2] == wEnumP && !((bBitboardP | wBitboardP) & ~FileG)
+					&& (wBitboardK & E1F1G1H1) && !(bBitboardK &G1H1H2))
+					Value = 0;
+				}
             if (!bBitboardP)
                 Value = 0;
             }

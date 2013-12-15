@@ -1,6 +1,6 @@
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
-Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
+Kranium (Norman Schmidt), Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
 Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
 Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart, Andrey Chilantiev, Quoc Vuong.
 Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
@@ -44,7 +44,7 @@ static INLINE void SMPBadHistory(typePos *Pos, uint32 m, SplitPoint *sp)
     if ((Pos->Dyn + 1)->cp == 0 && MoveHistory(m))
         {
         int sv = HistoryValue(Pos, m);
-        if (Pos->Dyn->Value > sp->alpha - 50)
+		if (Pos->Dyn->Value > sp->alpha - HistoryThreshold)
             HistoryValue(Pos, m) = sv - ((sv * sp->depth) >> 8);
         }
     }
@@ -54,7 +54,7 @@ static INLINE void SMPBadHistory(typePos *Pos, uint32 m, SplitPoint *sp)
 #include "black.h"
 #endif
 
-void MyPVNodeSMP(typePos *Position)
+void MyPVNodeSMP(typePos* Position)
     {
     int v;
     int alpha;
@@ -149,7 +149,7 @@ void MyPVNodeSMP(typePos *Position)
             }
         }
     }
-void MyAllSMP(typePos *Position)
+void MyAllSMP(typePos* Position)
     {
     int v;
     int m;
@@ -220,7 +220,7 @@ void MyAllSMP(typePos *Position)
         SMPBadHistory(Position, m, sp);
         }
     }
-void MyCutSMP(typePos *Position)
+void MyCutSMP(typePos* Position)
     {
     int v;
     int m;

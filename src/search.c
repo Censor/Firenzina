@@ -1,6 +1,6 @@
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
-Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
+Kranium (Norman Schmidt), Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
 Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
 Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart, Andrey Chilantiev, Quoc Vuong.
 Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
@@ -38,7 +38,7 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 #define InCheck (Position->wtm ? WhiteInCheck : BlackInCheck)
 #define MaxMatePly 128
 
-static void OutputBestMove(typePos *Position)
+void OutputBestMove(typePos* Position)
     {
     int i, k;
     bool b;
@@ -66,7 +66,6 @@ static void OutputBestMove(typePos *Position)
     for (i = 0; i < 4; i++)
         {
         Trans_pv = PVHashTable + (k + i);
-        HyattHash(Trans_pv, trans_pv);
         if (trans_pv->hash == Position->Dyn->Hash)
             {
             PonderMove = trans_pv->move;
@@ -77,7 +76,7 @@ static void OutputBestMove(typePos *Position)
         {
         int depth;
         for (depth = 2; depth <= 10; depth += 2)
-            Position->wtm
+           Position->wtm
                ? PVNodeWhite(Position, -ValueInfinity, ValueInfinity, depth, Position->Dyn->bAtt & wBitboardK)
                : PVNodeBlack(Position, -ValueInfinity, ValueInfinity, depth, Position->Dyn->wAtt & bBitboardK);
         PonderMove = (Position->Dyn + 1)->move;
@@ -94,8 +93,9 @@ static void OutputBestMove(typePos *Position)
             PonderMove = MoveNone;
         }
     Undo(Position, RootBestMove);
-    Send("bestmove %s ponder %s\n", Notate(RootBestMove, String1[Position->cpu]),
-		Notate(PonderMove, String2[Position->cpu]));
+	if (!BenchMarking)
+    	Send("bestmove %s ponder %s\n", Notate(RootBestMove, String1[Position->cpu]),
+			Notate(PonderMove, String2[Position->cpu]));
 
 #ifdef Log
 	if (WriteLog)
@@ -111,6 +111,14 @@ static void OutputBestMove(typePos *Position)
 static char *Modifier(int Alpha, int Value, int Beta, char *s)
     {
     s[0] = 0;
+	if (Alpha <= -ValueMate)
+		Alpha = -ValueMate;
+	if (Beta >= ValueMate)
+		Beta = ValueMate;
+	if (Value > ValueMate - 16)
+		Value = ValueMate - 16;
+	if (Value < -ValueMate + 32)
+		Value = -ValueMate + 32;
     if (Value <= Alpha)
         strcpy(s, " upperbound");
     else if (Value >= Beta)
@@ -122,6 +130,10 @@ static char *Modifier(int Alpha, int Value, int Beta, char *s)
 
 static char *cp_mate(int Value, char *s)
     {
+	if (Value > ValueMate - 16)
+		Value = ValueMate - 16;
+	if (Value < -ValueMate + 32)
+		Value = -ValueMate + 32;
 	if (Value > ValueMate - (MaxMatePly << 6))
 		sprintf (s, "mate %d", (ValueMate + 64 - Value) >> 7);
 	else if (Value < -ValueMate + (MaxMatePly << 6))
@@ -130,7 +142,7 @@ static char *cp_mate(int Value, char *s)
         sprintf(s, "cp %d", Value);
     return s;
     }
-void Information(typePos *Position, sint64 x, int Alpha, int Value, int Beta)
+void Information(typePos * Position, sint64 x, int Alpha, int Value, int Beta)
     {
     uint64 t, nps, Nodes = 0;
     int cpu, rp;
@@ -208,7 +220,6 @@ void Information(typePos *Position, sint64 x, int Alpha, int Value, int Beta)
             for (i = 0; i < 4; i++)
                 {
                 Trans_pv = PVHashTable + (k + i);
-                HyattHash(Trans_pv, trans_pv);
                 if (trans_pv->hash == Position->Dyn->Hash)
                     {
                     move = trans_pv->move;
@@ -220,7 +231,6 @@ void Information(typePos *Position, sint64 x, int Alpha, int Value, int Beta)
                 Trans = HashPointer(Position->Dyn->Hash);
                 for (i = 0; i < 4; i++, Trans++)
                     {
-                    HyattHash(Trans, trans);
                     if (trans->hash == Position->Dyn->Hash)
                         {
                         move = trans->move;
@@ -247,42 +257,45 @@ void Information(typePos *Position, sint64 x, int Alpha, int Value, int Beta)
             else
                 Undo(Position, Position->Dyn->move);
             }
-        Send("info multipv %d time " Type64Bit " nodes " Type64Bit " nps " Type64Bit, mpv + 1, t, Nodes, nps * 1000);
-
-#ifdef RobboBases
-		if (UseRobboBases)
-			{
-			if (TBHitInfo && TBHits)
-				Send (" tbhits " Type64Bit, TBHits);
-			}
-#endif
-
-        Send(" score %s%s depth %d pv %s\n", cp_mate(MPV[mpv].Value, String2[Position->cpu]),
-			Modifier(MPV[mpv].alpha, MPV[mpv].Value, MPV[mpv].beta, String3[Position->cpu]), MPV[mpv].depth >> 1, pv);
-
-#ifdef Log
-		if (WriteLog)
-			{
-			log_file = fopen(log_filename, "a");
-			fprintf(log_file, "info multipv %d time " Type64Bit " nodes " Type64Bit
-				" nps " Type64Bit, mpv + 1, t, Nodes, nps * 1000);
+		if (!BenchMarking)	
+			{			
+        	Send("info multipv %d time " Type64Bit " nodes " Type64Bit " nps " Type64Bit, mpv + 1, t, Nodes, nps * 1000);
 
 #ifdef RobboBases
 			if (UseRobboBases)
 				{
 				if (TBHitInfo && TBHits)
-					fprintf(log_file, " tbhits " Type64Bit, TBHits);
+					Send (" tbhits " Type64Bit, TBHits);
 				}
 #endif
 
-			fprintf(log_file, " score %s%s depth %d pv %s\n", cp_mate(MPV[mpv].Value, String2[Position->cpu]),
-				Modifier(MPV[mpv].alpha, MPV[mpv].Value, MPV[mpv].beta, String3[Position->cpu]), MPV[mpv].depth >> 1, pv);
-			close_log();
-			}
+        	Send(" score %s%s depth %d seldepth %d pv %s\n", cp_mate(MPV[mpv].Value, String2[Position->cpu]),
+				Modifier(MPV[mpv].alpha, MPV[mpv].Value, MPV[mpv].beta, String3[Position->cpu]), MPV[mpv].depth >> 1, seldepth, pv);
+
+#ifdef Log
+			if (WriteLog)
+				{
+				log_file = fopen(log_filename, "a");
+				fprintf(log_file, "info multipv %d time " Type64Bit " nodes " Type64Bit
+					" nps " Type64Bit, mpv + 1, t, Nodes, nps * 1000);
+
+#ifdef RobboBases
+				if (UseRobboBases)
+					{
+					if (TBHitInfo && TBHits)
+						fprintf(log_file, " tbhits " Type64Bit, TBHits);
+					}
 #endif
-        }
+
+				fprintf(log_file, " score %s%s depth %d seldepth %d pv %s\n", cp_mate(MPV[mpv].Value, String2[Position->cpu]),
+					Modifier(MPV[mpv].alpha, MPV[mpv].Value, MPV[mpv].beta, String3[Position->cpu]), MPV[mpv].depth >> 1, seldepth, pv);
+				close_log();
+				}
+#endif
+        	}
+		}
     }
-void Search(typePos *Position)
+void Search(typePos * Position)
     {
     int z, i;
     typeDynamic *p, *q, *S;
@@ -297,13 +310,13 @@ void Search(typePos *Position)
     NodeCheck = 0;
     RootPosition0->nodes = 0;
     RootBestMove = RootDepth = RootScore = 0;
-    Position->StackHeight = 0;
+   Position->StackHeight = 0;
     if (Position->Dyn->reversible > 110)
         goto SkipRepCheck;
-    Position->StackHeight = -1;
+   Position->StackHeight = -1;
     S = MAX(Position->DynRoot + 1, Position->Dyn - Position->Dyn->reversible);
     for (p = S; p <= Position->Dyn; p++)
-        Position->Stack[++(Position->StackHeight)] = p->Hash;
+       Position->Stack[++(Position->StackHeight)] = p->Hash;
     if (Analysing)
         {
         bool Repetition;
@@ -317,18 +330,18 @@ void Search(typePos *Position)
                     break;
                     }
             if (!Repetition)
-                Position->Stack[p - Position->Dyn + Position->Dyn->reversible] = 0;
+               Position->Stack[p - Position->Dyn + Position->Dyn->reversible] = 0;
             (p + 1)->move = 0;
             }
         }
     if (Position->StackHeight == -1)
-        Position->StackHeight = 0;
+       Position->StackHeight = 0;
     SkipRepCheck:
     memcpy(Position->DynRoot + 1, Position->Dyn, sizeof(typeDynamic));
     memset(Position->DynRoot + 2, 0, 254 * sizeof(typeDynamic));
     memset(Position->DynRoot, 0, sizeof(typeDynamic));
-    Position->Dyn = Position->DynRoot + 1;
-    Position->height = 0;
+   Position->Dyn = Position->DynRoot + 1;
+   Position->height = 0;
 
     if (Analysing)
         GlobalAge = 0;
@@ -359,7 +372,7 @@ void Search(typePos *Position)
 		RootPosition0->tbhits = 0;
 #endif
 
-    StubIvan();
+    SMPStub();
     Pos = &RootPosition[0][0];
     z = setjmp(J);
     if (!z)

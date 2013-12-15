@@ -1,6 +1,6 @@
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
-Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
+Kranium (Norman Schmidt), Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
 Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
 Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart, Andrey Chilantiev, Quoc Vuong.
 Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
@@ -30,19 +30,25 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see http://www.gnu.org/licenses/.
 *******************************************************************************/
 
+#define NodeTypePV 1
+#define NodeTypeAll 2
+#define NodeTypeCut 3
+
 MutexType PThreadCondMutex[MaxCPUs];
 MutexType Wakeup_Lock_IO[1];
 MutexType SMP[1];
 CondType PThreadCondWait[MaxCPUs];
 CondType Wakeup_IO[1];
+
 bool volatile Die[MaxCPUs];
 bool  volatile SMPisActive;
-bool  volatile IvanAllHalt;
+bool  volatile SMPAllHalt;
 bool volatile IOAwake;
 bool volatile InfiniteLoop;
 bool volatile SearchIsDone;
 bool volatile StallMode;
 int volatile NumThreads;
+
 typedef struct
     {
     int alpha;
@@ -60,8 +66,5 @@ typedef struct
     } SplitPoint;
 SplitPoint RootSP[MaxSP];
 volatile uint64 SMPFree;
-#define NodeTypePV 1
-#define NodeTypeAll 2
-#define NodeTypeCut 3
 #include <setjmp.h>
 

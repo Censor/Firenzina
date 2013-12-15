@@ -1,6 +1,6 @@
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
-Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
+Kranium (Norman Schmidt), Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
 Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
 Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart, Andrey Chilantiev, Quoc Vuong.
 Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
@@ -35,20 +35,25 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 #include <memory.h>
 
 #define Engine "Firenzina"
-#define Vers "2.3.1 xTreme"
-#define Author "Yuri Censor and ZirconiumX, a clone of Fire 2.2 xTreme by Kranium"
+#define Vers "2.4 xTreme"
+#define Orig "based on Ippolit"
+#define Author "Kranium, Yuri Censor and ZirconiumX, a derivative of Fire by Kranium" 
+// ZirconiumX added, 3/19/2013
+// Kranium added back, 11/23/2013
+#define Compiler "Yuri Censor" // Modified by Yuri Censor for Firenzina, 2/23/2013; Was: compiled by NS (i.e., Norman Schmidt) 
+
 #if defined(__GNUC__)
 #define STDIN_FileNO 0
 
 #if defined(__i386__)
-#define PLatform "Linux 32"
+#define Plat "Linux 32"
 #else
-#define PLatform "Linux 64"
+#define Plat "Linux 64"
 //#define LinuxLargePages
 #endif
 
 #elif  defined(_WIN64)
-#define PLatform "x64"
+#define Plat "x64"
 #define LargePages
 
 #if defined(__GNUC__)
@@ -56,7 +61,7 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 #endif
 
 #else
-#define PLatform "w32"
+#define Plat "w32"
 #define LargePages
 #if defined(__GNUC__)
 #define INLINE inline
@@ -71,16 +76,16 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 #define bool boolean // Added 5/17/2013
 #endif
 
-
+#define Bench
+//#define FischerRandom    // was added, but commented out by NS
 #define HasPopCNT
 #define HasPreFetch
 #define HasIntrinsics
-#define InitCFG
-
-#define Log
-#define MatFactors
-#define MultiplePosGain
-#define MultipleHistory
+#define InitCFG            // was commented out by NS; uncommented by YC, 12/03/2013 
+//#define Log              // was commented out by NS
+#define MatFactors         // was commented out by NS; uncommented by YC, 12/03/2013
+//#define MultiplePosGain  // was commented out by NS
+//#define MultipleHistory  // was commented out by NS
 #define OneDimensional
 #define RobboBases
 #define SlabMemory
@@ -108,9 +113,9 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 // Define default settings here (comment by Yuri Censor for Firenzina, 3/25/2013)//
 //*******************************************************************************//
 // System
-#define MaxCPUs 64
+#define MaxCPUs 16
 #define RPperCPU 8
-#define MaxSP 16
+#define MaxSP 16 // It looks like this number must match MaxCPUs. Yuri Censor, 12/15/2013
 #define DEFAULT_HASH_SIZE 128
 #define MAX_HASH_SIZE 65536
 #define DEFAULT_PAWN_HASH_SIZE 32
@@ -119,16 +124,11 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 #define MAX_MULTIPV 250
 #define DEFAULT_MIN_PV_DEPTH 15
 
-// Split Depths
-#define MIN_AN_SPLIT_DEPTH 8             // Original: 12
-#define DEFAULT_AN_SPLIT_DEPTH 12        // Original: 12; Conservative: 12; Aggressive: 14
-#define MAX_AN_SPLIT_DEPTH 24
-#define MIN_CN_SPLIT_DEPTH 8             // Original: 12
-#define DEFAULT_CN_SPLIT_DEPTH 14        // Original: 14; Conservative: 14; Aggressive: 16
-#define MAX_CN_SPLIT_DEPTH 24
-#define MIN_PV_SPLIT_DEPTH 8             // Original: 12
-#define DEFAULT_PV_SPLIT_DEPTH 12        // Original: 12
-#define MAX_PV_SPLIT_DEPTH 24
+// Lazy Eval
+#define DEFAULT_LAZY_EVAL_MIN 150        // Original: 150; Conservative: 90; Aggressive 70
+#define MAX_LAZY_EVAL_MIN 300
+#define DEFAULT_LAZY_EVAL_MAX 300
+#define MAX_LAZY_EVAL_MAX 600
 
 // Piece Values
 #define DEFAULT_PAWN_VALUE 100           // Original: 100; DO NOT ALTER! IT SETS THE SCALE. Yuri Censor, 03/25/2013
@@ -144,31 +144,26 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 #define DEFAULT_BISHOP_PAIR_VALUE 45     // Original: 50; Modified: 50 (03/28/2013); GH: 45 (5/21/2013)
 #define MAX_BISHOP_PAIR_VALUE 200
 
-// Eval Weights
-#define DEFAULT_DRAW_WEIGHT 100          // Original: 100
-#define MAX_DRAW_WEIGHT 200
-#define DEFAULT_KING_SAFETY_WEIGHT 100   // Original: 100; Conservative: 130; Aggressive: 120
-#define MAX_KING_SAFETY_WEIGHT 200
-#define DEFAULT_MATERIAL_WEIGHT 100      // Original: 100
-#define MAX_MATERIAL_WEIGHT 200
-#define DEFAULT_MOBILITY_WEIGHT 100      // Original: 100; Conservative: 115; Aggressive: 130
-#define MAX_MOBILITY_WEIGHT 200
-#define DEFAULT_PAWN_WEIGHT 100          // Original: 100; DO NOT ALTER! IT SETS THE SCALE. Yuri Censor, 03/25/2013
-#define MAX_PAWN_WEIGHT 200
-#define DEFAULT_POSITIONAL_WEIGHT 100    // Original: 100; Conservative: 120; Aggressive: 110
-#define MAX_POSITIONAL_WEIGHT 200
-#define DEFAULT_PST_WEIGHT 100           // Original: 100
-#define MAX_PST_WEIGHT 200
+// Prune Thresholds
+#define DEFAULT_PRUNE_CHECK 10
+#define MAX_PRUNE_CHECK 30
+#define DEFAULT_PRUNE_PAWN 160
+#define MAX_PRUNE_PAWN 320
+#define DEFAULT_PRUNE_MINOR 500
+#define MAX_PRUNE_MINOR 1000
+#define DEFAULT_PRUNE_ROOK 800
+#define MAX_PRUNE_ROOK 1600
 
-// Lazy Eval
-#define DEFAULT_LAZY_EVAL_MIN 150        // Original: 150; Conservative: 90; Aggressive 70
-#define MAX_LAZY_EVAL_MIN 300
-#define DEFAULT_LAZY_EVAL_MAX 300
-#define MAX_LAZY_EVAL_MAX 600
+// RobboBases
+#define MAX_TOTAL_BASE_CACHE 1024
+#define MAX_TRIPLE_BASE_HASH 4096
+#define MAX_DYNAMIC_TRIPLE_BASE_CACHE 65536
 
 // Search Vars
 #define DEFAULT_ASPIRATION_WINDOW 8      // Original: 8; Conservative: 8; Aggressive: 6
 #define MAX_ASPIRATION_WINDOW 100
+#define DEFAULT_COUNT_LIMIT 5
+#define MAX_COUNT_LIMIT 10
 #define MIN_DELTA_CUTOFF 20000
 #define DEFAULT_DELTA_CUTOFF 25000
 #define MAX_DELTA_CUTOFF 30000
@@ -186,27 +181,19 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 #define MAX_MIN_TRANS_MOVE_DEPTH 32
 #define DEFAULT_NULL_REDUCTION 8
 #define MAX_NULL_REDUCTION 16
-
-// Prune Thresholds
-#define DEFAULT_PRUNE_CHECK 10
-#define MAX_PRUNE_CHECK 30
-#define DEFAULT_PRUNE_PAWN 160
-#define MAX_PRUNE_PAWN 320
-#define DEFAULT_PRUNE_MINOR 500
-#define MAX_PRUNE_MINOR 1000
-#define DEFAULT_PRUNE_ROOK 800
-#define MAX_PRUNE_ROOK 1600
-
-// More Search Vars
 #define DEFAULT_QS_ALPHA_THRESHOLD 200
 #define MAX_QS_ALPHA_THRESHOLD 400
 #define DEFAULT_SEARCH_DEPTH_MIN 20      // Original: 20; Conservative: 22; Aggressive: 22
 #define MAX_SEARCH_DEPTH_MIN 40
 #define DEFAULT_SEARCH_DEPTH_REDUCTION 6 // Original: 6; Conservative: 6; Aggressive: 8
 #define MAX_SEARCH_DEPTH_REDUCTION 12
+#define MAX_SEE_CUTOFF 240
+#define DEFAULT_SEE_CUTOFF 120
+#define MAX_SEE_LIMIT 12348
+#define DEFAULT_SEE_LIMIT 6174
 #define DEFAULT_TOP_MIN_DEPTH 14         // Original: 14; Conservative: 14; Aggressive: 16
 #define MAX_TOP_MIN_DEPTH 28
-#define DEFAULT_UNDO_COUNT_THRESHOLD 15  // Original: 15; Conservative: 15; Aggressive: 17
+#define DEFAULT_UNDO_COUNT_THRESHOLD 15 // Original: 15; Conservative: 15; Aggressive: 17
 #define MAX_UNDO_COUNT_THRESHOLD 20
 #define MIN_VALUE_CUT 1000
 #define DEFAULT_VALUE_CUT 15000
@@ -214,11 +201,24 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 #define DEFAULT_VERIFY_REDUCTION 2       // Original: 2; Conservative: 3; Aggressive: 1
 #define MAX_VERIFY_REDUCTION 16
 
+// Split Depths
+#define MIN_AN_SPLIT_DEPTH 8             // Original: 12
+#define DEFAULT_AN_SPLIT_DEPTH 12        // Original: 12; Conservative: 12; Aggressive: 14
+#define MAX_AN_SPLIT_DEPTH 24
+#define MIN_CN_SPLIT_DEPTH 8             // Original: 12
+#define DEFAULT_CN_SPLIT_DEPTH 14        // Original: 14; Conservative: 14; Aggressive: 16
+#define MAX_CN_SPLIT_DEPTH 24
+#define MIN_PV_SPLIT_DEPTH 8             // Original: 12
+#define DEFAULT_PV_SPLIT_DEPTH 12        // Original: 12
+#define MAX_PV_SPLIT_DEPTH 24
+
 // Time Management
 #define DEFAULT_ABSOLUTE_FACTOR 25       // Original: 25; Conservative: 25; Aggressive: 30
 #define MAX_ABSOLUTE_FACTOR 100
 #define DEFAULT_BATTLE_FACTOR   100      // Original: 100; Conservative: 95; Aggressive: 75
 #define MAX_BATTLE_FACTOR 200
+#define DEFAULT_DESIRED_MILLIS 40
+#define MAX_DESIRED_MILLIS 80
 #define DEFAULT_EASY_FACTOR 15           // Original: 15; Conservative: 15; Aggressive: 20
 #define MAX_EASY_FACTOR 100
 #define DEFAULT_EASY_FACTOR_PONDER 33    // Original: 33
@@ -226,10 +226,21 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 #define DEFAULT_NORMAL_FACTOR 75         // Original: 75; Conservative: 80; Aggressive: 50
 #define MAX_NORMAL_FACTOR 200
 
-// RobboBases
-#define MAX_TOTAL_BASE_CACHE 1024
-#define MAX_TRIPLE_BASE_HASH 4096
-#define MAX_DYNAMIC_TRIPLE_BASE_CACHE 65536
+// Weights
+#define DEFAULT_DRAW_WEIGHT 100          // Original: 100
+#define MAX_DRAW_WEIGHT 200
+#define DEFAULT_KING_SAFETY_WEIGHT 100   // Original: 100; Conservative: 130; Aggressive: 120
+#define MAX_KING_SAFETY_WEIGHT 200
+#define DEFAULT_MATERIAL_WEIGHT 100      // Original: 100
+#define MAX_MATERIAL_WEIGHT 200
+#define DEFAULT_MOBILITY_WEIGHT 100      // Original: 100; Conservative: 115; Aggressive: 130
+#define MAX_MOBILITY_WEIGHT 200
+#define DEFAULT_PAWN_WEIGHT 100          // Original: 100; DO NOT ALTER! IT SETS THE SCALE. Yuri Censor, 03/25/2013
+#define MAX_PAWN_WEIGHT 200
+#define DEFAULT_POSITIONAL_WEIGHT 100    // Original: 100; Conservative: 120; Aggressive: 110
+#define MAX_POSITIONAL_WEIGHT 200
+#define DEFAULT_PST_WEIGHT 100           // Original: 100
+#define MAX_PST_WEIGHT 200
 
 #include "win-linux.h"
 #include "hash.h"
@@ -275,21 +286,28 @@ typedef struct
 #include "board.h"
 #include "slab_memory.h"
 
+#define UpdateSeldepth(x) \
+	if ((x)->height > seldepth) seldepth = (x)->height;
+
 #define MAX(x, y) (((x) >= (y)) ? (x) : (y))
 #define MIN(x, y) (((x) <= (y)) ? (x) : (y))
 #define ABS(x) (((x) >= 0) ? (x) : -(x))
 #define FileDistance(x, y) (ABS(File(x) - File(y)))
 #define RankDistance(x, y) (ABS(Rank(x) - Rank(y)))
-#define DepthRed (MIN (12, depth / 2))
 
+#define DepthRed (MIN (12, depth >> 1))
+#define ValueRed (depth << 1)
+
+#define BitClear(b, B) B &= (B - 1)
+#define BitSet(b, B) B |=((uint64) 1) << (b)
+
+#define Score(x,y) (((x) << 16) + (y))
 #define ValueMate 30000
 #define ValueInfinity 32750
-#define CountLimit 5
 #define MultiCentiPawnPV 65535
 #define RandomCount 0
 #define RandomBits 1
 
-#define DesiredMillis 40
 #define MaxDepth 256
 
 #ifdef RobboBases
@@ -313,6 +331,17 @@ volatile bool SuppressInput;
 volatile bool Stop;
 volatile bool UCINewGame;
 
+#ifdef FischerRandom
+boolean Chess960;
+uint8 Chess960KingRookFile;
+uint8 Chess960QueenRookFile;
+uint8 Chess960KingFile;
+#endif
+
+#ifdef Bench
+boolean BenchMarking;
+#endif
+
 bool Ponder;
 bool CfgFound;
 bool DoOutput;
@@ -326,6 +355,7 @@ int OptPHashSize;
 int OptMaxThreads;
 int OptMinThreads; // Added 5/22/2013 by Yuri Censor for Firenzina
 int RandRange;
+int seldepth;
 
 #if defined(_WIN32) && !defined(__GNUC__) || defined(_WIN64) && !defined(__GNUC__)
 long long (*POPCNT) (unsigned long long); // Modification by Yuri Censor for Firenzina, 2/17/2013
@@ -385,6 +415,7 @@ char BulkName[1024];
 
 //Search Vars
 int AspirationWindow;
+int CountLimit;
 bool ExtendInCheck;
 int ValueCut;
 int NullReduction;
@@ -400,6 +431,9 @@ int MinTransMoveDepth;
 int QSAlphaThreshold;
 int SearchDepthMin;
 int SearchDepthReduction;
+int SEECutOff;
+int SEELimit;
+
 int TopMinDepth;
 int UndoCountThreshold;
 
@@ -413,6 +447,7 @@ bool  SlitDepth;
 //Time Management
 int AbsoluteFactor;
 int BattleFactor;
+int DesiredMillis;
 int EasyFactor;
 int EasyFactorPonder;
 int NormalFactor;

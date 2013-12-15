@@ -1,6 +1,6 @@
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
-Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
+Kranium (Norman Schmidt), Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
 Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
 Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart, Andrey Chilantiev, Quoc Vuong.
 Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
@@ -30,29 +30,50 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see http://www.gnu.org/licenses/.
 *******************************************************************************/
 
+typedef struct
+	{
+	uint64 RandKey;
+	uint8 pad[56];
+	} RAND;
+static RAND Rand[MaxCPUs];
+
+#define Ranks78 0xffff000000000000
+#define Ranks678 0xffffff0000000000
+#define Ranks12 0x000000000000ffff
+#define Ranks123 0x00000000000ffffff
+
+#define EvalTweak 0x12345678
+#define GetEvalHash(Z) EvalHash[(Z ^ EvalTweak) & EvalHashMask]
+
+#define QueenEnd ((Position->Dyn->flags & 28) == 4)
+#define RookEnd ((Position->Dyn->flags & 28) == 8)
+
+#define WhiteMinorOnly (Position->Dyn->flags & 32)
+#define BlackMinorOnly (Position->Dyn->flags & 64)
+
+#define EvalTweak 0x12345678
+#define GetEvalHash(Z) EvalHash[(Z ^ EvalTweak) & EvalHashMask]
+
+#define QueenEnd ((Position->Dyn->flags & 28) == 4)
+#define RookEnd ((Position->Dyn->flags & 28) == 8)
+#define BishopKnightMate (Position->Dyn->flags & 128)
+#define MaxDist(i,j) (MAX (FileDistance (i, j), RankDistance (i, j)))
+#define MinDist(i,j) (MIN (FileDistance (i, j), RankDistance (i, j)))
+#define WhiteMinorOnly (Position->Dyn->flags & 32)
+#define BlackMinorOnly (Position->Dyn->flags & 64)
+#define WhiteHasPiece (wBitboardOcc ^ (wBitboardK | wBitboardP))
+#define BlackHasPiece (bBitboardOcc ^ (bBitboardK | bBitboardP))
 #define wOutpost 0x00007e7e7e000000
 #define bOutpost 0x0000007e7e7e0000
+#define KingSafetyDivider 8
 #define Bitboard2(x, y) (1ULL << (x))|(1ULL << (y))
-static const uint64 RookTrapped[64] =
-    {
-	0, Bitboard2 (A1, A2), Bitboard2 (A1, A2) | Bitboard2 (B1, B2), 0,
-	0, Bitboard2 (H1, H2) | Bitboard2 (G1, G2), Bitboard2 (H1, H2), 0,
-	0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0,
-	0, Bitboard2 (A8, A7), Bitboard2 (A8, A7) | Bitboard2 (B8, B7), 0,
-	0, Bitboard2 (H8, H7) | Bitboard2 (G8, G7), Bitboard2 (H8, H7), 0
-    };
-#define Score(x,y) (((x) << 16) + (y))
 
-#define PawnAntiMobility Score (3, 10)
+#define PawnAntiMobility Score(3, 10)
 #define MobQ(Y) Score (2, 2) * POPCNT (Y)
 #define MobB(Y, Z) Score (5, 5) * POPCNT (Y & Z)
 #define MobR(Y) Score (2, 3) * POPCNT (Y)
 #define MobN(Y, Z) Score (6, 8) * POPCNT (Y & Z)
+
 #define xrayB0 Score(0, 0)
 #define xrayBmP Score(3, 5)
 #define xrayBmN Score(3, 5)
@@ -79,26 +100,7 @@ static const uint64 RookTrapped[64] =
 #define xrayRoB Score(2, 5)
 #define xrayRoR Score(0, 0)
 #define xrayRoQ Score(10, 20)
-static const uint32 wBxray[16] =
-    {
-    xrayB0, xrayBmP, xrayBmN, xrayBmK, xrayBmB, xrayBmB, xrayBmR, xrayBmQ,
-	xrayB0, xrayBoP, xrayBoN, xrayBoK, xrayBoB, xrayBoB, xrayBoR, xrayBoQ
-    };
-static const uint32 bBxray[16] =
-    {
-    xrayB0, xrayBoP, xrayBoN, xrayBoK, xrayBoB, xrayBoB, xrayBoR, xrayBoQ,
-	xrayB0, xrayBmP, xrayBmN, xrayBmK, xrayBmB, xrayBmB, xrayBmR, xrayBmQ
-    };
-static const uint32 wRxray[16] =
-    {
-    xrayR0, xrayRmP, xrayRmN, xrayRmK, xrayRmB, xrayRmB, xrayRmR, xrayRmQ,
-	xrayR0, xrayRoP, xrayRoN, xrayRoK, xrayRoB, xrayRoB, xrayRoR, xrayRoQ
-    };
-static const uint32 bRxray[16] =
-    {
-    xrayR0, xrayRoP, xrayRoN, xrayRoK, xrayRoB, xrayRoB, xrayRoR, xrayRoQ,
-	xrayR0, xrayRmP, xrayRmN, xrayRmK, xrayRmB, xrayRmB, xrayRmR, xrayRmQ
-    };
+
 #define xQ0d Score(0, 0)
 #define xQmPd Score(1, 2)
 #define xQmNd Score(2, 4)
@@ -125,6 +127,91 @@ static const uint32 bRxray[16] =
 #define xQoBhv Score(2, 5)
 #define xQoRhv Score(0, 0)
 #define xQoQhv Score(0, 0)
+
+#define BishopTrapValue Score(40, 40)
+#define BishopTrapGuardValue Score(40, 40)
+
+#define QguardK Score(5, 2)
+#define RguardK Score(3, 1)
+#define BguardK Score(2, 1)
+#define NguardK Score(4, 2)
+
+#define DoubQueen7th Score(10, 15)
+#define DoubRook7thKingPawn Score(10, 20)
+#define MultipleAtt Score(15, 25)
+#define Queen7th Score(5, 25)
+#define KingAttUnguardedPawn Score(0, 5)
+
+#define PattQ Score(8, 12)
+#define RattQ Score(5, 5)
+#define NattRQ Score(7, 10)
+#define bAttRQ Score(7, 10)
+#define PattR Score(7, 10)
+#define PattN Score(5, 7)
+#define PattB Score(5, 7)
+#define bAttN Score(5, 5)
+#define NattB Score(5, 5)
+#define Qatt Score(4, 4)
+#define RattBN Score(4, 5)
+#define RattP Score(2, 3)
+#define NattP Score(3, 4)
+#define bAttP Score(3, 4)
+
+#define RookHalfOpen Score(3, 6)
+#define RookOpenFile Score(20, 10)
+#define RookOpenDoubled Score(7, 3)
+#define RookConnected Score(2, 2)
+#define RookOpenFixedMinor Score(10, 0)
+#define RookOpenMinor Score(15, 5)
+#define RookHalfOpenPawn Score(5, 5)
+#define RookHalfOpenKing Score(15, 0)
+#define RookKing8th Score(5, 10)
+#define Rook7thKingPawn Score(10, 30)
+#define Rook6thKingPawn Score(5, 15)
+#define OutpostBishop Score(1, 2)
+#define OutpostBishopGuarded Score(3, 4)
+#define OutpostRook Score(1, 2)
+#define OutpostRookGuarded Score(3, 4)
+#define OutpostKnight Score(2, 3)
+#define OutpostKnightPawn Score(2, 3)
+#define OutpostKnightAttacks Score(5, 5)
+#define OutpostKnight5th Score(2, 2)
+#define OutpostKnightONde Score(3, 3)
+
+#define HitP Score(1, 0)
+#define HitQ Score(1, 40)
+#define HitR Score(1, 25)
+#define HitN Score(1, 15)
+#define HitB Score(1, 15)
+#define HitK Score(0, 0)
+
+#define Rook7thEnd Score(100, 100)
+#define Rook6thEnd Score(25, 25)
+#define Queen7thEnd Score(10, 10)
+
+#define RQCrampFile Score(0, 5)
+#define RQCrampFileOpen Score(5, 15)
+
+static const uint32 wBxray[16] =
+    {
+    xrayB0, xrayBmP, xrayBmN, xrayBmK, xrayBmB, xrayBmB, xrayBmR, xrayBmQ,
+	xrayB0, xrayBoP, xrayBoN, xrayBoK, xrayBoB, xrayBoB, xrayBoR, xrayBoQ
+    };
+static const uint32 bBxray[16] =
+    {
+    xrayB0, xrayBoP, xrayBoN, xrayBoK, xrayBoB, xrayBoB, xrayBoR, xrayBoQ,
+	xrayB0, xrayBmP, xrayBmN, xrayBmK, xrayBmB, xrayBmB, xrayBmR, xrayBmQ
+    };
+static const uint32 wRxray[16] =
+    {
+    xrayR0, xrayRmP, xrayRmN, xrayRmK, xrayRmB, xrayRmB, xrayRmR, xrayRmQ,
+	xrayR0, xrayRoP, xrayRoN, xrayRoK, xrayRoB, xrayRoB, xrayRoR, xrayRoQ
+    };
+static const uint32 bRxray[16] =
+    {
+    xrayR0, xrayRoP, xrayRoN, xrayRoK, xrayRoB, xrayRoB, xrayRoR, xrayRoQ,
+	xrayR0, xrayRmP, xrayRmN, xrayRmK, xrayRmB, xrayRmB, xrayRmR, xrayRmQ
+    };
 static const uint32 wQxrayD[16] =
     {
     xQ0d, xQmPd, xQmNd, xQmKd, xQmBd, xQmBd, xQmRd, xQmQd,
@@ -145,6 +232,11 @@ static const uint32 bQxrayO[16] =
     xQ0hv, xQoPhv, xQoNhv, xQoKhv, xQoBhv, xQoBhv, xQoRhv, xQoQhv,
 	xQ0hv, xQmPhv, xQmNhv, xQmKhv, xQmBhv, xQmBhv, xQmRhv, xQmQhv
     };
+static const uint32 KingSafetyMult[16] =
+	{
+	0, 1, 4, 9, 16, 25, 36, 49,
+	50, 50, 50, 50, 50, 50, 50, 50
+	};
 static const uint8 BishopTrapSq[64] =
     {
 	0x00,  C2,  0x00, 0x00, 0x00, 0x00,  F2,  0x00,
@@ -155,9 +247,7 @@ static const uint8 BishopTrapSq[64] =
 	B5,  0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  G5,
 	B6,  0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  G6,
 	0x00,  C7,  0x00, 0x00, 0x00, 0x00,  F7,  0x00
-    };
-#define BishopTrapValue Score(40, 40)
-#define BishopTrapGuardValue Score(40, 40)
+	};
 static const uint8 GoodBishopTrapSq[64] =
     {
 	0x00,  D1,  0x00, 0x00, 0x00, 0x00,  E1,  0x00,
@@ -169,87 +259,40 @@ static const uint8 GoodBishopTrapSq[64] =
 	C7,  0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  F7,
 	0x00,  D8,  0x00, 0x00, 0x00, 0x00,  E8,  0x00
     };
-static const uint32 PassedPawnMeClear[8] =
-    {
-    0, 0, 0, Score(0, 0), Score(0, 0), Score(3, 5), Score(5, 10), 0
-    };
-static const uint32 PassedPawnOppClear[8] =
-    {
-    0, 0, 0, Score(0, 0), Score(5, 10), Score(15, 30), Score(25, 50)
-    };
-static const uint32 PassedPawnCanMove[8] =
-    {
-    0, 0, 0, Score(1, 2), Score(2, 3), Score(3, 5), Score(5, 10), 0
-    };
-static const uint32 PassedPawnIsFree[8] =
-    {
-    0, 0, 0, Score(0, 0), Score(5, 10), Score(10, 20), Score(20, 40)
-    };
-#define QguardK Score(5, 2)
-#define RguardK Score(3, 1)
-#define BguardK Score(2, 1)
-#define NguardK Score(4, 2)
-#define DoubQueen7th Score(10, 15)
-#define DoubRook7thKingPawn Score(10, 20)
-#define MultipleAtt Score(15, 25)
-#define Queen7th Score(5, 25)
-#define KingAttUnguardedPawn Score(0, 5)
-#define PattQ Score(8, 12)
-#define RattQ Score(5, 5)
-#define NattRQ Score(7, 10)
-#define bAttRQ Score(7, 10)
-#define PattR Score(7, 10)
-#define PattN Score(5, 7)
-#define PattB Score(5, 7)
-#define bAttN Score(5, 5)
-#define NattB Score(5, 5)
-#define Qatt Score(4, 4)
-#define RattBN Score(4, 5)
-#define RattP Score(2, 3)
-#define NattP Score(3, 4)
-#define bAttP Score(3, 4)
-
-#define RookHalfOpen Score(3, 6)
-#define RookOpenFile Score(20, 10)
-#define RookOpenFixedMinor Score(10, 0)
-#define RookOpenMinor Score(15, 5)
-#define RookHalfOpenPawn Score(5, 5)
-#define RookHalfOpenKing Score(15, 0)
-#define RookKing8th Score(5, 10)
-#define Rook7thKingPawn Score(10, 30)
-#define Rook6thKingPawn Score(5, 15)
-#define OutpostBishop Score(1, 2)
-#define OutpostBishopGuarded Score(3, 4)
-#define OutpostRook Score(1, 2)
-#define OutpostRookGuarded Score(3, 4)
-#define OutpostKnight Score(2, 3)
-#define OutpostKnightPawn Score(2, 3)
-#define OutpostKnightAttacks Score(5, 5)
-#define OutpostKnight5th Score(2, 2)
-#define OutpostKnightONde Score(3, 3)
-static const uint32 KingSafetyMult[16] =
-    {
-    0, 1, 4, 9, 16, 25, 36, 49,
-	50, 50, 50, 50, 50, 50, 50, 50
-    };
-#define Hit(x,y) ((x) << 16) + (y)
-#define HitP Hit(1, 0)
-#define HitQ Hit(1, 40)
-#define HitR Hit(1, 25)
-#define HitN Hit(1, 15)
-#define HitB Hit(1, 15)
-#define HitK Hit(0, 0)
-#define KingSafetyDivider 8
-static const uint32 RankQueenEnd[8] =
-    {
-    0, 0, 0, Score(5, 5), Score(10, 10), Score(20, 20), Score(40, 40), 0
-    };
-
-#define Rook7thEnd Score(100, 100)
-#define Rook6thEnd Score(25, 25)
-#define Queen7thEnd Score(10, 10)
-
+static const uint64 RookTrapped[64] =
+	{
+	  0, Bitboard2 (A1, A2), Bitboard2 (A1, A2) | Bitboard2 (B1, B2), 0,
+	  0, Bitboard2 (H1, H2) | Bitboard2 (G1, G2), Bitboard2 (H1, H2), 0,
+	  0, 0, 0, 0, 0, 0, 0, 0,
+	  0, 0, 0, 0, 0, 0, 0, 0,
+	  0, 0, 0, 0, 0, 0, 0, 0,
+	  0, 0, 0, 0, 0, 0, 0, 0,
+	  0, 0, 0, 0, 0, 0, 0, 0,
+	  0, 0, 0, 0, 0, 0, 0, 0,
+	  0, Bitboard2 (A8, A7), Bitboard2 (A8, A7) | Bitboard2 (B8, B7), 0,
+	  0, Bitboard2 (H8, H7) | Bitboard2 (G8, G7), Bitboard2 (H8, H7), 0
+	};
 static const uint64 CrampFile[8] =
-    {
-    FileB, 0, 0, 0, 0, 0, 0, FileG
-    };
+	{
+	FileB, 0, 0, 0, 0, 0, 0, FileG
+	};
+static const uint32 RankQueenEnd[8] =
+	{
+	0, 0, 0, Score(5, 5), Score(10, 10), Score(20, 20), Score(40, 40), 0
+	};
+static const uint32 PassedPawnMeClear[8] =
+	{
+	0, 0, 0, Score(0, 0), Score(0, 0), Score(3, 5), Score(5, 10), 0
+	};
+static const uint32 PassedPawnOppClear[8] =
+	{
+	0, 0, 0, Score(0, 0), Score(5, 10), Score(15, 30), Score(25, 50)
+	};
+static const uint32 PassedPawnCanMove[8] =
+	{
+	0, 0, 0, Score(1, 2), Score(2, 3), Score(3, 5), Score(5, 10), 0
+	};
+static const uint32 PassedPawnIsFree[8] =
+	{
+	0, 0, 0, Score(0, 0), Score(5, 10), Score(10, 20), Score(20, 40)
+	};

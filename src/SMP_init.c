@@ -1,6 +1,6 @@
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
-Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
+Kranium (Norman Schmidt), Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
 Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
 Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart, Andrey Chilantiev, Quoc Vuong.
 Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
@@ -53,16 +53,16 @@ typedef struct
 t_args ARGS[MaxCPUs];
 volatile int init_threads;
 volatile int io_init;
+static boolean SMPInit = false;
+static int CurrCPUs = 0;
+static boolean volatile Destroy;
+static boolean volatile Destroyed;
 typePos* volatile Working[MaxCPUs];
-void ThreadStall(typePos *, int);
-static bool SMPInit = false;
-static int CurrCPUS = 0;
-static bool volatile Destroy, Destroyed;
 
 void EndSMP()
     {
     int cpu, rp, sp;
-    IvanAllHalt = true;
+    SMPAllHalt = true;
     while (true)
         {
         for (cpu = 0; cpu < NumThreads; cpu++)
@@ -82,7 +82,7 @@ void EndSMP()
     for (sp = 0; sp < MaxSP; sp++)
         RootSP[sp].active = false;
     }
-IvanThread(A)
+SMPThread(A)
     {
     t_args *B;
     B = (t_args *)A;
@@ -137,7 +137,7 @@ IOThread(A)
 static void SMPCleanup()
     {
     int cpu;
-    for (cpu = 0; cpu < CurrCPUS; cpu++)
+    for (cpu = 0; cpu < CurrCPUs; cpu++)
         {
 #if !defined(_WIN32) && !defined(_WIN64)
         LockDestroy(&PThreadCondMutex[cpu]);
@@ -169,10 +169,10 @@ int InitSMP()
     int cpu, rp, sp;
 	GetSysInfo();
     Destroy = false;
-    if (CurrCPUS)
+    if (CurrCPUs)
         SMPCleanup();
     Destroy = false;
-    IvanAllHalt = false;
+    SMPAllHalt = false;
     CondInit(*Wakeup_IO, *Wakeup_Lock_IO);
     SMPFree = 0;
     for (cpu = 0; cpu < NumThreads; cpu++)
@@ -204,7 +204,7 @@ int InitSMP()
         }
     while (init_threads < NumThreads || !io_init)
         NanoSleep(1000000);
-    CurrCPUS = NumThreads;
+    CurrCPUs = NumThreads;
     NanoSleep(1000000);
     return NumThreads;
     }
@@ -217,7 +217,7 @@ static void SPInit()
         LockInit(RootSP[sp].splock);
         }
     }
-void RPinit()
+void RPInit()
     {
     int cpu;
     int rp;

@@ -1,6 +1,6 @@
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
-Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
+Kranium (Norman Schmidt), Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
 Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
 Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart, Andrey Chilantiev, Quoc Vuong.
 Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
@@ -39,7 +39,7 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 #include "black.h"
 #endif
 
-int MyQsearch(typePos *Position, int value, int depth)
+int MyQsearch(typePos* Position, int value, int depth)
     {
     int Value, i, v, best_value;
     uint32 Temp, move, trans_move = 0, trans_depth, move_depth = 0;
@@ -54,7 +54,6 @@ int MyQsearch(typePos *Position, int value, int depth)
     Trans = HashPointer(Position->Dyn->Hash);
     for (i = 0; i < 4; i++, Trans++)
         {
-        HyattHash(Trans, trans);
         if ((trans->hash ^ (Position->Dyn->Hash >> 32)) == 0)
             {
             if (trans->flags & FlagMoveLess)
@@ -62,14 +61,12 @@ int MyQsearch(typePos *Position, int value, int depth)
             if (trans->DepthLower)
                 {
                 Value = HashLowerValue(trans);
-                HashReBound(Value, value);
                 if (Value >= value)
                     return(Value);
                 }
             if (trans->DepthUpper)
                 {
                 Value = HashUpperValue(trans);
-                HashReBound(Value, value);
                 if (Value < value)
                     return(Value);
                 }
@@ -184,7 +181,7 @@ int MyQsearch(typePos *Position, int value, int depth)
     HashUpper(Position->Dyn->Hash, 1, best_value);
     return(best_value);
     }
-int MyQsearchCheck(typePos *Position, int value, int depth)
+int MyQsearchCheck(typePos* Position, int value, int depth)
     {
     int ignored, Value, i;
     int v, best_value, trans_depth, move_depth = 0;
@@ -199,7 +196,6 @@ int MyQsearchCheck(typePos *Position, int value, int depth)
     Trans = HashPointer(Position->Dyn->Hash);
     for (i = 0; i < 4; i++, Trans++)
         {
-        HyattHash(Trans, trans);
         if ((trans->hash ^ (Position->Dyn->Hash >> 32)) == 0)
             {
             if (trans->flags & FlagMoveLess)
@@ -207,14 +203,12 @@ int MyQsearchCheck(typePos *Position, int value, int depth)
             if (trans->DepthLower)
                 {
                 Value = HashLowerValue(trans);
-                HashReBound(Value, value);
                 if (Value >= value)
                     return(Value);
                 }
             if (trans->DepthUpper)
                 {
                 Value = HashUpperValue(trans);
-                HashReBound(Value, value);
                 if (Value < value)
                     return(Value);
                 }

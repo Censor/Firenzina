@@ -1,6 +1,6 @@
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
-Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
+Kranium (Norman Schmidt), Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
 Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
 Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart, Andrey Chilantiev, Quoc Vuong.
 Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
@@ -41,7 +41,7 @@ typeRootMoveList RootMoveList[256];
 #include "black.h"
 #endif
 
-int MyAnalysis(typePos *Position, int Alpha, int Beta, int depth)
+int MyAnalysis(typePos* Position, int Alpha, int Beta, int depth)
     {
     int Cnt, origAlpha, best_value, cnt, move_is_check, new_depth, v;
     typeRootMoveList *p, *q;
@@ -99,13 +99,11 @@ int MyAnalysis(typePos *Position, int Alpha, int Beta, int depth)
         if (!extend && cnt >= 6 && depth >= 10)
             LMR = 2;
         new_depth = depth - 2 + extend - LMR;
-        if (Pos1->cp || move_is_check)
-            extend = 1;
-		if (PassedPawnPush (to, FourthRank (to)))
+		if (Pos1->cp || move_is_check || PassedPawnPush(to, FourthRank(to)))
 			extend = 1;
 
         new_depth = depth - 2 + extend;
-        if (DoOutput && CurrMoveInfo && Analysing && depth >= 24)
+        if (DoOutput && CurrMoveInfo && Analysing && depth >= 24 && !BenchMarking)
 			{
             Send("info currmove %s currmovenumber %d\n", Notate(move, String1[Position->cpu]),(p - RootMoveList) + 1);
 #ifdef Log

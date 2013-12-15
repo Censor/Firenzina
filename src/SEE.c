@@ -1,6 +1,6 @@
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
-Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
+Kranium (Norman Schmidt), Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
 Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
 Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart, Andrey Chilantiev, Quoc Vuong.
 Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
@@ -36,8 +36,8 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 
 static int Value[16] =
 {
-    0, 100, 320, 12345678, 330, 330, 510, 1000,
-    0, 100, 320, 12345678, 330, 330, 510, 1000
+    0, 100, 325, 12345678, 325, 325, 500, 975,
+    0, 100, 325, 12345678, 325, 325, 500, 975,
 };
 
 void SetValueArray()
@@ -50,7 +50,13 @@ void SetValueArray()
     Value[5] = Value[13] = BValue;
     Value[6]=  Value[14] = RValue;
     Value[7] = Value[15] = QValue;
-/* TODO (matthew#5#): Remove this as it is useless, basically */
+
+/* TODO (matthew#5#): Remove this as it is useless, basically
+// Subsequent comment by NS modified by YC 12/03/2013:
+/* to maintain consistency: this function loads previously defined piece values into the Value array for use by SEE
+/* Ippolit uses constants (100, 325, 325, 500, 975) here no matter what values are defined for PValue/NValue/BValue/RValue/QValue in main() or fire.cfg
+/* this function is called when initializing material values: in material_value.c, see InitMaterialValue() */
+
 }
 
 #include "SEE.c"
@@ -59,7 +65,7 @@ void SetValueArray()
 #include "black.h"
 #endif
 
-bool MySEE(typePos *Position, uint32 move)
+bool MySEE(typePos* Position, uint32 move)
 {
     int fr, to, PieceValue, CaptureValue, d, dir;
     uint64 bit, cbf, mask, TableIndex[4], gcm = 0, T;
@@ -166,7 +172,7 @@ bool MySEE(typePos *Position, uint32 move)
             }
         }
         CaptureValue += PieceValue;
-        if (CaptureValue < -60)
+        if (CaptureValue < -SEECutOff)
             return false;
         mask = BitboardMyP & bit;
         if (mask)
@@ -219,7 +225,7 @@ bool MySEE(typePos *Position, uint32 move)
                         {
                             if (!(BitboardMyK & bit))
                                 return false;
-                            if (CaptureValue > 6174)
+							if (CaptureValue > SEELimit)
                                 return true;
                             PieceValue = 23456;
                         }
@@ -229,6 +235,6 @@ bool MySEE(typePos *Position, uint32 move)
         }
         CaptureValue -= PieceValue;
     }
-    while (CaptureValue < -60);
+    while (CaptureValue < -SEECutOff);
     return true;
 }

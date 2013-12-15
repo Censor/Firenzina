@@ -1,6 +1,6 @@
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
-Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
+Kranium (Norman Schmidt), Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
 Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
 Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart, Andrey Chilantiev, Quoc Vuong.
 Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
@@ -53,7 +53,6 @@ void HashLowerAllNew(uint64 Z, int move, int depth, int Value, int ht, int age)
     Value = ValueAdjustStore(Value, ht);
     for (i = 0; i < 4; i++, Trans++)
         {
-        HyattHash(Trans, trans);
         if ((trans->hash ^ (Z >> 32)) == 0 && (!trans->DepthLower || IsAll(trans)) && trans->DepthLower <= depth)
             {
             trans->DepthLower = depth;
@@ -61,7 +60,6 @@ void HashLowerAllNew(uint64 Z, int move, int depth, int Value, int ht, int age)
             trans->ValueLower = Value;
             trans->age = age;
             trans->flags |= FlagLower | FlagAll;
-            HyattHashWrite(trans, Trans);
             return;
             }
         Depth = MAX(trans->DepthLower, trans->DepthUpper);
@@ -81,7 +79,6 @@ void HashLowerAllNew(uint64 Z, int move, int depth, int Value, int ht, int age)
     trans->ValueLower = Value;
     trans->age = age;
     trans->flags = FlagLower | FlagAll;
-    HyattHashWrite(trans, Trans);
     return;
     }
 void HashUpperCutNew(uint64 Z, int depth, int Value, int ht, int age)
@@ -93,14 +90,12 @@ void HashUpperCutNew(uint64 Z, int depth, int Value, int ht, int age)
     Value = ValueAdjustStore(Value, ht);
     for (i = 0; i < 4; i++, Trans++)
         {
-        HyattHash(Trans, trans);
         if (!(trans->hash ^ (Z >> 32)) && (!trans->DepthUpper || IsCut(trans)) && trans->DepthUpper <= depth)
             {
             trans->DepthUpper = depth;
             trans->ValueUpper = Value;
             trans->age = age;
             trans->flags |= FlagUpper | FlagCut;
-            HyattHashWrite(trans, Trans);
             return;
             }
         Depth = MAX(trans->DepthLower, trans->DepthUpper);
@@ -120,7 +115,6 @@ void HashUpperCutNew(uint64 Z, int depth, int Value, int ht, int age)
     trans->ValueUpper = Value;
     trans->age = age;
     trans->flags = FlagUpper | FlagCut;
-    HyattHashWrite(trans, Trans);
     return;
     }
 void HashLowerNew(uint64 Z, int move, int depth, int Value, int Flags, int ht, int age)
@@ -133,7 +127,6 @@ void HashLowerNew(uint64 Z, int move, int depth, int Value, int Flags, int ht, i
     Value = ValueAdjustStore(Value, ht);
     for (i = 0; i < 4; i++, Trans++)
         {
-        HyattHash(Trans, trans);
         if (!(trans->hash ^ (Z >> 32)) && !IsExact(trans) && trans->DepthLower <= depth)
             {
             trans->DepthLower = depth;
@@ -142,7 +135,6 @@ void HashLowerNew(uint64 Z, int move, int depth, int Value, int Flags, int ht, i
             trans->age = age;
             trans->flags &= ~(FlagAll | LowerFromPV);
             trans->flags |= FlagLower | Flags;
-            HyattHashWrite(trans, Trans);
             return;
             }
         Depth = MAX(trans->DepthLower, trans->DepthUpper);
@@ -162,7 +154,6 @@ void HashLowerNew(uint64 Z, int move, int depth, int Value, int Flags, int ht, i
     trans->ValueLower = Value;
     trans->age = age;
     trans->flags = FlagLower | Flags;
-    HyattHashWrite(trans, Trans);
     return;
     }
 void HashUpperNew(uint64 Z, int depth, int Value, int Flags, int ht, int age)
@@ -174,7 +165,6 @@ void HashUpperNew(uint64 Z, int depth, int Value, int Flags, int ht, int age)
     Value = ValueAdjustStore(Value, ht);
     for (i = 0; i < 4; i++, Trans++)
         {
-        HyattHash(Trans, trans);
         if (!(trans->hash ^ (Z >> 32)) && !IsExact(trans) && trans->DepthUpper <= depth)
             {
             trans->DepthUpper = depth;
@@ -182,7 +172,6 @@ void HashUpperNew(uint64 Z, int depth, int Value, int Flags, int ht, int age)
             trans->age = age;
             trans->flags &= ~(FlagCut | UpperFromPV);
             trans->flags |= FlagUpper | Flags;
-            HyattHashWrite(trans, Trans);
             return;
             }
         Depth = MAX(trans->DepthLower, trans->DepthUpper);
@@ -202,7 +191,6 @@ void HashUpperNew(uint64 Z, int depth, int Value, int Flags, int ht, int age)
     trans->ValueUpper = Value;
     trans->age = age;
     trans->flags = FlagUpper | Flags;
-    HyattHashWrite(trans, Trans);
     return;
     }
 static void pv_zobrist(uint64 Z, int move, int depth, int Value, int age)
@@ -213,14 +201,12 @@ static void pv_zobrist(uint64 Z, int move, int depth, int Value, int age)
      for (i = 0; i < 4; i++)
         {
         Trans_pv = PVHashTable + (k + i);
-        HyattHash(Trans_pv, trans_pv);
         if (trans_pv->hash == Z)
             {
             trans_pv->depth = depth;
             trans_pv->Value = Value;
             trans_pv->move = move;
             trans_pv->age = age;
-            HyattHashWrite(trans_pv, Trans_pv);
             return;
             }
         mix = AgeDepthMix(age, trans_pv->age, trans_pv->depth);
@@ -236,7 +222,6 @@ static void pv_zobrist(uint64 Z, int move, int depth, int Value, int age)
     trans_pv->move = move;
     trans_pv->Value = Value;
     trans_pv->age = age;
-    HyattHashWrite(trans_pv, Trans_pv);
     }
 void HashExactNew(uint64 Z, int move, int depth, int Value, int Flags, int ht, int age)
     {
@@ -249,7 +234,6 @@ void HashExactNew(uint64 Z, int move, int depth, int Value, int Flags, int ht, i
     Value = ValueAdjustStore(Value, ht);
     for (i = 0; i < 4; i++, Trans++)
         {
-        HyattHash(Trans, trans);
         if ((trans->hash ^ (Z >> 32)) == 0 && MAX(trans->DepthUpper, trans->DepthLower) <= depth)
             {
             trans->DepthUpper = trans->DepthLower = depth;
@@ -257,16 +241,13 @@ void HashExactNew(uint64 Z, int move, int depth, int Value, int Flags, int ht, i
             trans->ValueUpper = trans->ValueLower = Value;
             trans->age = age;
             trans->flags = Flags;
-            HyattHashWrite(trans, Trans);
             for (j = i + 1; j < 4; j++)
                 {
                 Trans++;
-                HyattHash(Trans, trans);
                 if ((trans->hash ^ (Z >> 32)) == 0 && MAX(trans->DepthUpper, trans->DepthLower) <= depth)
                     {
                     memset(trans, 0, 16);
                     trans->age = age ^ (MaxAge >> 1);
-                    HyattHashWrite(trans, Trans);
                     }
                 }
             return;
@@ -286,6 +267,5 @@ void HashExactNew(uint64 Z, int move, int depth, int Value, int Flags, int ht, i
     trans->ValueUpper = trans->ValueLower = Value;
     trans->age = age;
     trans->flags = Flags;
-    HyattHashWrite(trans, Trans);
     return;
     }

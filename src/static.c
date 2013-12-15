@@ -1,6 +1,6 @@
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
-Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
+Kranium (Norman Schmidt), Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
 Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
 Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart, Andrey Chilantiev, Quoc Vuong.
 Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
@@ -31,7 +31,7 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 *******************************************************************************/
 
 #include "fire.h"
-#define Combine(x,y)(((x) << 16) +(y))
+
 static void BlackFromWhite()
     {
     int sq, pi;
@@ -203,17 +203,17 @@ static int ValueEndK(int sq)
 void InitStatic()
     {
     int sq;
-    for (sq = A1; sq <= H8; sq++)
-        PST(wEnumP, sq) = Combine(ValueOpenP(sq), ValueEndP(sq));
-    for (sq = A1; sq <= H8; sq++)
-        PST(wEnumN, sq) = Combine(ValueOpenN(sq), ValueEndN(sq));
-    for (sq = A1; sq <= H8; sq++)
-        PST(wEnumBL, sq) = PST(wEnumBD, sq) = Combine(ValueOpenB(sq), ValueEndB(sq));
-    for (sq = A1; sq <= H8; sq++)
-        PST(wEnumR, sq) = Combine(ValueOpenR(sq), ValueEndR(sq));
-    for (sq = A1; sq <= H8; sq++)
-        PST(wEnumQ, sq) = Combine(ValueOpenQ(sq), ValueEndQ(sq));
-    for (sq = A1; sq <= H8; sq++)
-        PST(wEnumK, sq) = Combine(ValueOpenK(sq), ValueEndK(sq));
+	for (sq = A1; sq <= H8; sq++)
+		PST(wEnumP, sq) = Score(ValueOpenP(sq), ValueEndP(sq));
+	for (sq = A1; sq <= H8; sq++)
+		PST(wEnumN, sq) = Score(ValueOpenN(sq), ValueEndN(sq));
+	for (sq = A1; sq <= H8; sq++)
+		PST(wEnumBL, sq) = PST(wEnumBD, sq) = Score(ValueOpenB(sq), ValueEndB(sq));
+	for (sq = A1; sq <= H8; sq++)
+		PST(wEnumR, sq) = Score(ValueOpenR(sq), ValueEndR(sq));
+	for (sq = A1; sq <= H8; sq++)
+		PST(wEnumQ, sq) = Score(ValueOpenQ(sq), ValueEndQ(sq));
+	for (sq = A1; sq <= H8; sq++)
+		PST(wEnumK, sq) = Score(ValueOpenK(sq), ValueEndK(sq));
     BlackFromWhite();
     }

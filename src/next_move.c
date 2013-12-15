@@ -1,6 +1,6 @@
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
-Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
+Kranium (Norman Schmidt), Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
 Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
 Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart, Andrey Chilantiev, Quoc Vuong.
 Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
@@ -39,7 +39,7 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 #include "black.h"
 #endif
 
-uint32 MyNext(typePos *Position, typeNext *NextMove)
+uint32 MyNext(typePos* Position, typeNext* NextMove)
     {
     typeMoveList *p, *q, *list;
     uint32 move, Temp;

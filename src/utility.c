@@ -1,6 +1,6 @@
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
-Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
+Kranium (Norman Schmidt), Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
 Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
 Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart, Andrey Chilantiev, Quoc Vuong.
 Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
@@ -74,69 +74,68 @@ char *Notate(uint32 move, char *M)
         }
     return M;
     }
-uint32 FullMove(typePos *Position, uint32 x)
-    {
-    int pi, to = To(x), fr = From(x);
-    if (!x)
-        return x;
-    pi = Position->sq[fr];
-    if (pi == wEnumK || pi == bEnumK)
-        {
-        if (to - fr == 2 || fr - to == 2)
-            x |= FlagOO;
-        }
-    if (To(x) != 0 && To(x) == Position->Dyn->ep && (pi == wEnumP || pi == bEnumP))
-        x |= FlagEP;
-    return x;
-    }
-uint32 NumericMove(typePos *Position, char *str)
-    {
-    int x;
-    x = FullMove(Position, (str[2] - 'a') + ((str[3] - '1') << 3) + ((str[0] - 'a') << 6) + ((str[1] - '1') << 9));
-    if (str[4] == 'b')
-        x |= FlagPromB;
-    if (str[4] == 'n')
-        x |= FlagPromN;
-    if (str[4] == 'r')
-        x |= FlagPromR;
-    if (str[4] == 'q')
-        x |= FlagPromQ;
-    return x;
-    }
-
-void InitBitboards(typePos *Position)
+uint32 FullMove(typePos* Position, uint32 x)
+	{
+	int pi, to = To(x), fr = From(x);
+	if (!x)
+		return x;
+	pi = Position->sq[fr];
+	if (pi == wEnumK || pi == bEnumK)
+		{
+		if (to - fr == 2 || fr - to == 2)
+			x |= FlagOO;
+		}
+	if (To(x) != 0 && To(x) == Position->Dyn->ep && (pi == wEnumP || pi == bEnumP))
+		x |= FlagEP;
+	return x;
+	}
+uint32 NumericMove(typePos* Position, char* str)
+	{
+	int x;
+	x = FullMove(Position, (str[2] - 'a') + ((str[3] - '1') << 3) + ((str[0] - 'a') << 6) + ((str[1] - '1') << 9));
+	if (str[4] == 'b')
+		x |= FlagPromB;
+	if (str[4] == 'n')
+		x |= FlagPromN;
+	if (str[4] == 'r')
+		x |= FlagPromR;
+	if (str[4] == 'q')
+		x |= FlagPromQ;
+	return x;
+	}
+void InitBitboards(typePos* Position)
     {
     int i, pi;
     uint64 O;
 
     BoardIsOk = false;
     for (i = 0; i < 16; i++)
-        Position->bitboard[i] = 0;
-    Position->Dyn->Hash = Position->Dyn->PawnHash = 0;
-    Position->Dyn->material = 0;
-    Position->Dyn->Static = 0;
+       Position->bitboard[i] = 0;
+   Position->Dyn->Hash = Position->Dyn->PawnHash = 0;
+   Position->Dyn->material = 0;
+   Position->Dyn->Static = 0;
     for (i = A1; i <= H8; i++)
         {
         if ((pi = Position->sq[i]))
             {
-            Position->Dyn->Static += PST(pi, i);
-            Position->Dyn->Hash ^= Hash(pi, i);
+           Position->Dyn->Static += PST(pi, i);
+           Position->Dyn->Hash ^= Hash(pi, i);
             if (pi == wEnumP || pi == bEnumP)
-                Position->Dyn->PawnHash ^= Hash(pi, i);
-            Position->Dyn->material += MaterialValue[pi];
+               Position->Dyn->PawnHash ^= Hash(pi, i);
+           Position->Dyn->material += MaterialValue[pi];
             BitSet(i, Position->bitboard[Position->sq[i]]);
             }
         }
     wBitboardOcc = wBitboardK | wBitboardQ | wBitboardR | wBitboardB | wBitboardN | wBitboardP;
     bBitboardOcc = bBitboardK | bBitboardQ | bBitboardR | bBitboardB | bBitboardN | bBitboardP;
-    Position->OccupiedBW = wBitboardOcc | bBitboardOcc;
+   Position->OccupiedBW = wBitboardOcc | bBitboardOcc;
     O = Position->OccupiedBW;
     if (POPCNT(wBitboardQ) > 1 || POPCNT(bBitboardQ) > 1
 		|| POPCNT(wBitboardR) > 2 || POPCNT(bBitboardR) > 2
 		|| POPCNT(wBitboardBL) > 1 || POPCNT(bBitboardBL) > 1
 		|| POPCNT(wBitboardN) > 2 || POPCNT(bBitboardN) > 2
 		|| POPCNT(wBitboardBD) > 1 || POPCNT(bBitboardBD) > 1)
-        Position->Dyn->material |= 0x80000000;
+       Position->Dyn->material |= 0x80000000;
     if (POPCNT(wBitboardK) != 1)
         BoardIsOk = false;
     if (POPCNT(bBitboardK) != 1)
@@ -176,20 +175,20 @@ void InitBitboards(typePos *Position)
     if ((wBitboardP | bBitboardP) & (Rank1 | Rank8))
         BoardIsOk = false;
 
-    Position->wKsq = BSF(wBitboardK);
-    Position->bKsq = BSF(bBitboardK);
+   Position->wKsq = BSF(wBitboardK);
+   Position->bKsq = BSF(bBitboardK);
     if ((WhiteOO && (Position->wKsq != E1 || !(wBitboardR & SqSet[H1])))
        || (WhiteOOO && (Position->wKsq != E1 || !(wBitboardR & SqSet[A1])))
           || (BlackOO && (Position->bKsq != E8 || !(bBitboardR & SqSet[H8])))
           || (BlackOOO && (Position->bKsq != E8 || !(bBitboardR & SqSet[A8]))))
         BoardIsOk = false;
-    Position->Dyn->Hash ^= HashCastling[Position->Dyn->oo];
+   Position->Dyn->Hash ^= HashCastling[Position->Dyn->oo];
     if (Position->Dyn->ep)
-        Position->Dyn->Hash ^= HashEP[Position->Dyn->ep & 7];
-    Position->Dyn->PawnHash ^=
+       Position->Dyn->Hash ^= HashEP[Position->Dyn->ep & 7];
+   Position->Dyn->PawnHash ^=
        HashCastling[Position->Dyn->oo] ^ Tweak ^ Hash(wEnumK, Position->wKsq) ^ Hash(bEnumK, Position->bKsq);
     if (Position->wtm)
-        Position->Dyn->Hash ^= HashWTM;
+       Position->Dyn->Hash ^= HashWTM;
     Mobility(Position);
     if (Position->wtm && Position->Dyn->wAtt & bBitboardK)
         BoardIsOk = false;
@@ -262,7 +261,7 @@ bool TryInput()
     int v;
     fd_set fd[1];
     struct timeval tv[1];
-    if (SuppressInput)
+    if (SupressInput)
         return false;
     if (!SearchIsDone && StallInput)
         return false;
@@ -317,38 +316,38 @@ void ErrorFen(char *fmt, ...)
     vfprintf(stdout, fmt, Value);
     exit(1);
     }
-void NewGame(typePos *Position, bool full)
+void NewGame(typePos* Position, bool full)
     {
     int i;
     for (i = A1; i <= H8; i++)
-        Position->sq[i] = 0;
+       Position->sq[i] = 0;
     memset(Position->DynRoot, 0, (sizeof(typeDynamic) << 8));
-    Position->Dyn = Position->DynRoot + 1;
-    Position->wtm = true;
-    Position->height = 0;
-    Position->Dyn->oo = 0x0f;
-    Position->Dyn->ep = 0;
-    Position->Dyn->reversible = 0;
+   Position->Dyn = Position->DynRoot + 1;
+   Position->wtm = true;
+   Position->height = 0;
+   Position->Dyn->oo = 0x0f;
+   Position->Dyn->ep = 0;
+   Position->Dyn->reversible = 0;
     for (i = A2; i <= H2; i++)
-        Position->sq[i] = wEnumP;
+       Position->sq[i] = wEnumP;
     for (i = A7; i <= H7; i++)
-        Position->sq[i] = bEnumP;
-    Position->sq[D1] = wEnumQ;
-    Position->sq[D8] = bEnumQ;
-    Position->sq[E1] = wEnumK;
-    Position->sq[E8] = bEnumK;
-    Position->sq[A1] = Position->sq[H1] = wEnumR;
-    Position->sq[A8] = Position->sq[H8] = bEnumR;
-    Position->sq[B1] = Position->sq[G1] = wEnumN;
-    Position->sq[B8] = Position->sq[G8] = bEnumN;
-    Position->sq[C1] = wEnumBD;
-    Position->sq[F1] = wEnumBL;
-    Position->sq[C8] = bEnumBL;
-    Position->sq[F8] = bEnumBD;
+       Position->sq[i] = bEnumP;
+   Position->sq[D1] = wEnumQ;
+   Position->sq[D8] = bEnumQ;
+   Position->sq[E1] = wEnumK;
+   Position->sq[E8] = bEnumK;
+   Position->sq[A1] = Position->sq[H1] = wEnumR;
+   Position->sq[A8] = Position->sq[H8] = bEnumR;
+   Position->sq[B1] = Position->sq[G1] = wEnumN;
+   Position->sq[B8] = Position->sq[G8] = bEnumN;
+   Position->sq[C1] = wEnumBD;
+   Position->sq[F1] = wEnumBL;
+   Position->sq[C8] = bEnumBL;
+   Position->sq[F8] = bEnumBD;
     PreviousDepth = 1000;
     PreviousFast = false;
     isNewGame = true;
-    Position->StackHeight = 0;
+   Position->StackHeight = 0;
     InitBitboards(Position);
     if (!full)
         return;
@@ -361,9 +360,10 @@ void NewGame(typePos *Position, bool full)
     }
 void ShowBanner()
     {
-    char *startup_banner = "" Engine " " Vers " " PLatform "\n" // Modification by Yuri Censor for Firenzina, 2/16/2013: 
-        "by Yuri Censor and ZirconiumX, a clone of Fire 2.2 xTreme by Kranium, based on Ippolit\n" // ZirconiumX added, 3/19/2013
-        "compiled by Yuri Censor\n" // Modified by Yuri Censor for Firenzina, 2/23/2013; Was: compiled by NS (i.e., Norman Schmidt)
+    char *startup_banner = "" Engine " " Vers " " Plat "\n"
+ 		"by " Author "\n\n"
+ 		"" Orig "\n\n"
+		"compiled by " Compiler "\n"		
         "" __DATE__ " " __TIME__ "\n\n";
 
     Send(startup_banner);
@@ -509,7 +509,7 @@ int create_log(void)
     time(&now);
     tnow = *localtime(&now);
     strftime(buf, 32, "%d%b-%H%M", &tnow);
-    sprintf(log_filename, "%s %s %s %s.txt", Engine, Vers, PLatform, buf);
+    sprintf(log_filename, "%s %s %s %s.txt", Engine, Vers, Plat, buf);
     log_file = fopen(log_filename, "wt");
 	close_log();
 	return false;

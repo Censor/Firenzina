@@ -1,0 +1,100 @@
+Chess960 added
+Seldepth added
+
+benchmark improved
+now with 32 positions
+10 opening, 11 middlegame, 11 endgame
+type "bench" at the console prompt
+results are written to date/time-stamped file
+for ex: benchmark_02-50_Nov-12.txt
+
+splitdepth benchmark added
+type "sd-bench" at the console prompt
+...this takes a while to complete (30 minutes?)
+results are written to date/time-stamped file
+for ex: sd_benchmark_02-52_Nov-12.txt
+
+empty macros
+__builtin_prefetch,
+HyattHash,
+HashReBound,
+KingDangerAdjust,
+removed
+
+IvanSplit renamed SMPSplit
+StubIvan renamed SMPStub
+IvanAllHalt  renamed SMPAllHalt
+IvanThread renamed SMPThread
+Platform renamed Plat
+
+#define NumberRank1 R8
+#define NumberRank1 R1
+
+ValueRed1 replaced w/ depth
+
+#define BitClear(b, B) B &= (B - 1)
+#define BitSet(b, B) B |=((uint64) 1) << (b)
+moved to fire.h
+
+eval:
+new endgame.c clauses added(from IvanHoe)
+and
+RookConnected
+RookOpenDoubled
+eval terms
+
+RQCrampFile defined
+
+all #defines now located at top of file
+
+new configurable parameters:
+SEECutOff
+SEELimit
+DesiredMillis
+CountLimit
+
+#ifdef Bench added to fire.h
+MaxCPUs reduced to 16 in fire.h
+void gen_def_cfg_file(char *file_name)
+void gen_cur_cfg_file(void)
+type
+"default" -> gen_def_cfg_file("fire.cfg");
+or
+"current" -> gen_cur_cfg_file();
+at command prompt
+in fire.cfg:
+LazyEvalMin 150 0
+change 0 to 1 (or any #...this specified random range)
+on next engine startup a random value for LazyEvalMin will be generated
+type "current" to save this to a new fire.cfg
+(the existing/old fire.cfg is saved/renamed with a date stamp)
+
+rank renamed trans in hash.h etc.
+magic_mult.h created
+
+material.c:
+BishopPawnPenalty added
+TwoRookPenalty defined
+QandRPenalty defined
+MoreMinorsBonus defined
+KnightPawnBonus defined
+RookPawnPenalty defined
+BPNoMinorsBonus defined
+
+Score(x,y) (((x) << 16) + (y)) removed from eval.h and pawn_eval.h
+Combine(x,y)(((x) << 16) +(y)) removed from  static.c
+all moved to fire.h as global Score macro
+
+pawn.eval constants and structs moved to pawn_eval.h
+
+if (v >= ValueMate) v = ValueMate - 1;
+CurrCPUS renamed CurrCPUs
+HistoryThreshold var added to SMP search
+
+top_analysis.c configurable parameter AspirationWindow added
+
+Author
+Orig 
+Compiler
+are defined in fire.cfg for use in startup banner and UCI functions
+

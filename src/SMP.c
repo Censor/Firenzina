@@ -1,6 +1,6 @@
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
-Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
+Kranium (Norman Schmidt), Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
 Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
 Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart, Andrey Chilantiev, Quoc Vuong.
 Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
@@ -37,7 +37,7 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 volatile uint64 SMPFree;
 typePos
 * volatile Working[MaxCPUs];
-void StubIvan()
+void SMPStub()
     {
     typePos *RP00;
     int h, cpu, rp, sp;
@@ -55,7 +55,7 @@ void StubIvan()
     RP00->parent = NULL;
     for (cpu = 0; cpu < NumThreads; cpu++)
         RP00->children[cpu] = NULL;
-    IvanAllHalt = false;
+    SMPAllHalt = false;
     for (cpu = 0; cpu < NumThreads; cpu++)
         for (rp = 0; rp < RPperCPU; rp++)
             {
@@ -88,12 +88,12 @@ void StubIvan()
         }
     SearchIsDone = false;
     }
-static void SMPGoodHistory(typePos *Pos, uint32 m, SplitPoint *sp)
+static void SMPGoodHistory(typePos* Pos, uint32 m, SplitPoint* sp)
     {
     int sv = HistoryValue(Pos, m);
     HistoryValue(Pos, m) = sv +(((0xff00 - sv) * sp->depth) >> 8);
     }
-void FailHigh(SplitPoint *sp, typePos *Position, uint32 m)
+void FailHigh(SplitPoint* sp, typePos* Position, uint32 m)
     {
     int cpu;
     Lock(sp->splock);
@@ -129,44 +129,44 @@ void FailHigh(SplitPoint *sp, typePos *Position, uint32 m)
 #endif
 
 
-static INLINE void SMPBadHistory(typePos *Position, uint32 m, SplitPoint *sp)
+static INLINE void SMPBadHistory(typePos* Position, uint32 m, SplitPoint* sp)
     {
     if ((Position->Dyn + 1)->cp == 0 && MoveHistory(m))
         {
         int sv = HistoryValue(Position, m);
-        if (Position->Dyn->Value > sp->alpha - 50)
+		if (Position->Dyn->Value > sp->alpha - HistoryThreshold)
             HistoryValue(Position, m) = sv -((sv * sp->depth) >> 8);
         }
     }
-static void SearchCutNode(typePos *Position)
+static void SearchCutNode(typePos* Position)
     {
     SplitPoint *sp;
     sp = Position->SplitPoint;
     Lock(sp->splock);
     sp->childs++;
     UnLock(sp->splock);
-    Position->wtm ? WhiteCutSMP(Position) : BlackCutSMP(Position);
+   Position->wtm ? WhiteCutSMP(Position) : BlackCutSMP(Position);
     Lock(sp->splock);
     sp->childs--;
     if (!sp->tot && !sp->childs && !Position->stop)
         HashUpperCut(Position, sp->depth, sp->value);
     UnLock(sp->splock);
     }
-static void SearchAllNode(typePos *Position)
+static void SearchAllNode(typePos* Position)
     {
     SplitPoint *sp;
     sp = Position->SplitPoint;
     Lock(sp->splock);
     sp->childs++;
     UnLock(sp->splock);
-    Position->wtm ? WhiteAllSMP(Position) : BlackAllSMP(Position);
+   Position->wtm ? WhiteAllSMP(Position) : BlackAllSMP(Position);
     Lock(sp->splock);
     sp->childs--;
     if (!sp->tot && !sp->childs && !Position->stop)
         HashUpper(Position->Dyn->Hash, sp->depth, sp->value);
     UnLock(sp->splock);
     }
-void search(typePos *Position)
+void search(typePos* Position)
     {
     SplitPoint *sp;
     sp = Position->SplitPoint;
@@ -183,7 +183,7 @@ void search(typePos *Position)
     Lock(sp->splock);
     sp->childs++;
     UnLock(sp->splock);
-    Position->wtm ? WhitePVNodeSMP(Position) : BlackPVNodeSMP(Position);
+   Position->wtm ? WhitePVNodeSMP(Position) : BlackPVNodeSMP(Position);
     Lock(sp->splock);
     sp->childs--;
     if (!sp->tot && !sp->childs && !Position->stop)
@@ -200,14 +200,14 @@ void search(typePos *Position)
         }
     UnLock(sp->splock);
     }
-static void CopyFromChild(typePos *Parent, typePos *Child)
-    {
-    if (Child->SplitPoint->value >= Child->SplitPoint->beta)
-        Parent->Dyn->move = Child->SplitPoint->move;
-    else
-        Parent->Dyn->move = 0;
-    }
-void ThreadStall(typePos *Parent, int cpu)
+static void CopyFromChild(typePos* Parent, typePos* Child)
+	{
+	if (Child->SplitPoint->value >= Child->SplitPoint->beta)
+		Parent->Dyn->move = Child->SplitPoint->move;
+	else
+		Parent->Dyn->move = 0;
+	}
+void ThreadStall(typePos* Parent, int cpu)
     {
     typePos *W;
     while (true)
@@ -261,7 +261,7 @@ void ThreadStall(typePos *Parent, int cpu)
         UnLock(SMP);
         }
     }
-static void ThreadHalt(typePos *Pos)
+void ThreadHalt(typePos* Pos)
     {
     int n;
     Lock(Pos->padlock);
@@ -273,7 +273,7 @@ static void ThreadHalt(typePos *Pos)
         }
     UnLock(Pos->padlock);
     }
-static typePos *GetPosition(int cpu)
+static typePos* GetPosition(int cpu)
     {
     int u;
     for (u = 0; u < RPperCPU; u++)
@@ -285,7 +285,7 @@ static typePos *GetPosition(int cpu)
     RootPosition[cpu][u].stop = false;
     return &RootPosition[cpu][u];
     }
-static void CopyPosition(typePos *Child, typePos *Parent)
+static void CopyPosition(typePos* Child, typePos* Parent)
     {
     int h;
     memcpy(Child, Parent, NumBytesToCopy);
@@ -295,7 +295,7 @@ static void CopyPosition(typePos *Child, typePos *Parent)
     memcpy(Child->Stack, Parent->Stack, h * sizeof(uint64));
     Child->StackHeight = h;
     }
-static typePos *CopyToChild(int icpu, typePos *Parent)
+typePos* CopyToChild(int icpu, typePos* Parent)
     {
     typePos *Child;
     int cpu;
@@ -307,11 +307,11 @@ static typePos *CopyToChild(int icpu, typePos *Parent)
     CopyPosition(Child, Parent);
     return Child;
     }
-static void EndSplitpoint(SplitPoint *sp)
+static void EndSplitpoint(SplitPoint* sp)
     {
     sp->active = false;
     }
-static SplitPoint *new_splitpoint()
+static SplitPoint* NewSplitpoint()
     {
     int sp;
     for (sp = 0; sp < MaxSP; sp++)
@@ -319,7 +319,7 @@ static SplitPoint *new_splitpoint()
             return &RootSP[sp];
     return NULL;
     }
-bool IvanSplit(typePos *Position, typeNext *NextMove, int depth, int beta, int alpha, int NodeType, int * r)
+bool SMPSplit(typePos* Position, typeNext *NextMove, int depth, int beta, int alpha, int NodeType, int * r)
     {
     int cpu;
     int split;
@@ -335,8 +335,8 @@ bool IvanSplit(typePos *Position, typeNext *NextMove, int depth, int beta, int a
         return false;
         }
     Working[Position->cpu] = NULL;
-    Position->ChildCount = 0;
-    sp = new_splitpoint();
+   Position->ChildCount = 0;
+	sp = NewSplitpoint();
     if (sp == NULL)
         {
         Working[Position->cpu] = Position;
@@ -362,19 +362,19 @@ bool IvanSplit(typePos *Position, typeNext *NextMove, int depth, int beta, int a
     split = 0;
     for (cpu = 0; cpu < NumThreads && split < MaxSplit; cpu++)
         {
-        Position->children[cpu] = NULL;
+       Position->children[cpu] = NULL;
         if (Working[cpu] == NULL)
             {
             Child = CopyToChild(cpu, Position);
             if (!Child)
                 continue;
             split++;
-            Position->children[cpu] = Child;
+           Position->children[cpu] = Child;
             Child->cpu = cpu;
             Child->parent = Position;
             Child->stop = false;
             Child->SplitPoint = sp;
-            Position->ChildCount++;
+           Position->ChildCount++;
             }
         }
     if (split == 0)

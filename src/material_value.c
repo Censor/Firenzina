@@ -1,6 +1,6 @@
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
-Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
+Kranium (Norman Schmidt), Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
 Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
 Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart, Andrey Chilantiev, Quoc Vuong.
 Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
@@ -31,49 +31,8 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 *******************************************************************************/
 
 #include "fire.h"
-#define QueenEnding 1
-#define RookEnding 2
-#define OppositeBishopEnding 3
-#define BishopEnding 4
-#define KnightEnding 5
-#define BishopKnightEnding 6
-#define PawnEnding 7
-#define WhiteMinorOnly 8
-#define BlackMinorOnly 16
-#define BishopKnightMate 32
+#include "material_value.h"
 
-#define Value4(w, x, y, z) \
-	((((uint64) (z)) << 48) + (((uint64) (y)) << 32) + \
-	(((uint64) (x)) << 16) + (((uint64) (w)) << 0))
-#define Value4Scaled(w, x, y, z, av, sc) \
-	Value4 ((w * sc) / av, (x * sc) / av, (y * sc) / av, (z * sc) / av)
-
-#ifdef MatFactors
-#define Factor1 80
-#define Factor2 90
-#define Factor3 110
-#define Factor4 120
-#define ValueP Value4 (PValue * Factor1 / 100, PValue * Factor2 / 100, PValue * Factor3 / 100, PValue * Factor4 / 100)
-#define ValueN Value4 (NValue * Factor1 / 100, NValue * Factor2 / 100, NValue * Factor3 / 100, NValue * Factor4 / 100)
-#define ValueB Value4 (BValue * Factor1 / 100, BValue * Factor2 / 100, BValue * Factor3 / 100, BValue * Factor4 / 100)
-#define ValueR Value4 (RValue * Factor1 / 100, RValue * Factor2 / 100, RValue * Factor3 / 100, RValue * Factor4 / 100)
-#define ValueQ Value4 (QValue * Factor1 / 100, QValue * Factor2 / 100, QValue * Factor3 / 100, QValue * Factor4 / 100)
-#define ValueBP Value4 (BPValue * Factor1 / 100, BPValue * Factor2 / 100, BPValue * Factor3 / 100, BPValue * Factor4 / 100)
-#else
-#define ValueP Value4Scaled (80, 90, 110, 125, 100, PValue)
-#define ValueN Value4Scaled (270, 295, 345, 370, 320, NValue)
-#define ValueB Value4Scaled (280, 305, 355, 380, 330, BValue)
-#define ValueR Value4Scaled (410, 460, 560, 610, 510, RValue)
-#define ValueQ Value4Scaled (850, 925, 1075, 1150, 1000, QValue)
-#define ValueBP Value4Scaled (30, 40, 60, 70, 50, BPValue)
-#endif
-
-#define KnightPawnAdjust Value4 (0, 2, 4, 5)
-#define RookPawnAdjust Value4 (5, 4, 2, 0)
-
-#define Phase_Minor (1)
-#define PhaseRook (3)
-#define PhaseQueen (6)
 
 static int InitFlags(int wP, int wN, int wB, int wBL, int wBD, int wR, int wQ, int bP, int bN, int bB, int bBL,
 	int bBD, int bR, int bQ)
@@ -109,7 +68,7 @@ static int InitFlags(int wP, int wN, int wB, int wBL, int wBD, int wR, int wQ, i
         Flags |= WhiteMinorOnly << 2;
     if (bN == 1 && !bQ && !bR && !bB)
         Flags |= BlackMinorOnly << 2;
-    if (!wN && !wB && !wR && !wQ && !bN && !bB && !bQ && !bR && wP + bP == 1)
+	if (!wN && !wB && !wR && !wQ && !bN && !bB && !bR && !bQ && wP + bP == 1)
         Flags |= PawnEnding << 2;
     if (wN == 1 && wB == 1 && !wR && !wQ && !wP && !bQ && !bR && !bB && !bN && !bP)
         Flags |= BishopKnightMate << 2;
@@ -852,28 +811,34 @@ static uint64 ComputeValue(int wP, int wN, int wB, int wBL, int wBD, int wR, int
     va += (wR - bR) * ValueR;
     va += (wQ - bQ) * ValueQ;
 
-    if (wR == 2)
-        va -= Value4(16, 20, 28, 32);
-    if (bR == 2)
-        va += Value4(16, 20, 28, 32);
-    if (wQ + wR >= 2)
-        va -= Value4(8, 10, 14, 16);
-    if (bQ + bR >= 2)
-        va += Value4(8, 10, 14, 16);
-    if (wMinor > bMinor)
-        va += Value4(20, 15, 10, 5);
-    if (bMinor > wMinor)
-        va -= Value4(20, 15, 10, 5);
-    va -= (wP - 5) * wR * RookPawnAdjust;
-    va += (wP - 5) * wN * KnightPawnAdjust;
-    va += (bP - 5) * bR * RookPawnAdjust;
-    va -= (bP - 5) * bN * KnightPawnAdjust;
-    va -= (wP - 5) * (wB >> 1) * Value4(0, 1, 2, 3);
-    va += (bP - 5) * (bB >> 1) * Value4(0, 1, 2, 3);
-    if (wB == 2 && bMinor == 0)
-        va += Value4(5, 5, 5, 5);
-    if (bB == 2 && wMinor == 0)
-        va -= Value4(5, 5, 5, 5);
+	if (wR == 2)
+		va -=  TwoRookPenalty;
+	if (bR == 2)
+		va +=  TwoRookPenalty;
+
+	if (wQ + wR >= 2)
+		va -= QandRPenalty;
+	if (bQ + bR >= 2)
+		va += QandRPenalty;
+
+	if (wMinor > bMinor)
+		va += MoreMinorsBonus;
+	if (bMinor > wMinor)
+		va -= MoreMinorsBonus;
+
+	va += (wP - 5) * wN * KnightPawnBonus;
+	va -= (bP - 5) * bN * KnightPawnBonus;
+
+	va -= (wP - 5) * wB * BishopPawnPenalty;
+	va += (bP - 5) * bB * BishopPawnPenalty;
+
+	va -= (wP - 5) * wR * RookPawnPenalty;
+	va += (bP - 5) * bR * RookPawnPenalty;
+
+	if (wB == 2 && bMinor == 0)
+		va += BPNoMinorsBonus;
+	if (bB == 2 && wMinor == 0)
+		va -= BPNoMinorsBonus;
     return va;
     }
 

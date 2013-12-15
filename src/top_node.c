@@ -1,6 +1,6 @@
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
-Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
+Kranium (Norman Schmidt), Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
 Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
 Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart, Andrey Chilantiev, Quoc Vuong.
 Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
@@ -44,7 +44,7 @@ typeRootMoveList RootMoveList[256];
 #include "black.h"
 #endif
 
-void MyTop(typePos *Position)
+void MyTop(typePos * Position)
     {
     int i, depth, A, L, U, v, Value = 0, trans_depth;
     int move_depth = 0, ExactDepth = 0;
@@ -80,7 +80,6 @@ void MyTop(typePos *Position)
     Trans = HashPointer(Position->Dyn->Hash);
     for (i = 0; i < 4; i++, Trans++)
         {
-        HyattHash(Trans, trans);
         if ((trans->hash ^ (Position->Dyn->Hash >> 32)) == 0)
             {
             trans_depth = trans->DepthLower;
@@ -204,7 +203,7 @@ void MyTop(typePos *Position)
             {
             to = Position->sq[To(p->move)];
             fr = Position->sq[From(p->move)];
-            p->move |= 0xff000000 +((16 * PieceValue[to] - PieceValue[fr]) << 16);
+			p->move |= 0xff000000 + (((PieceValue[to] << 4) - PieceValue[fr]) << 16);
             }
         }
     for (p = RootMoveList; p < list; p++)
@@ -250,7 +249,7 @@ void MyTop(typePos *Position)
                 U = ValueMate;
             Again:
             v = MyRootNode(Position, L, U, depth);
-            if (IvanAllHalt)
+            if (SMPAllHalt)
                 goto CheckIfDone;
             if (v > L && v < U)
                 goto CheckIfDone;
@@ -275,10 +274,10 @@ void MyTop(typePos *Position)
         if (depth == 2)
             EasyMove = true;
         RootPrevious = RootScore;
-        if (IvanAllHalt)
+        if (SMPAllHalt)
             return;
         CheckDone(Position, depth >> 1);
-        if (IvanAllHalt)
+        if (SMPAllHalt)
             return;
         }
     }

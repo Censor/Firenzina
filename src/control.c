@@ -1,6 +1,6 @@
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
-Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
+Kranium (Norman Schmidt), Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
 Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
 Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart, Andrey Chilantiev, Quoc Vuong.
 Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
@@ -58,7 +58,7 @@ void HaltSearch(int d, int rank)
     DoPonder = false;
     DoInfinite = false;
     SuppressInput = true;
-        IvanAllHalt = true;
+        SMPAllHalt = true;
         if (d == 0)
             EndSMP();
     }
@@ -164,12 +164,12 @@ void Info(sint64 x)
     CPUtime += u;
     }
 
-void CheckDone(typePos *Position, int d)
+void CheckDone(typePos * Position, int d)
     {
     sint64 x;
     if (!RootBestMove)
         return;
-    if (IvanAllHalt)
+    if (SMPAllHalt)
         {
         HaltSearch(d, 1);
         return;
@@ -184,7 +184,7 @@ void CheckDone(typePos *Position, int d)
         HaltSearch(d, 1);
         return;
         }
-    if (x - LastMessage > 1000000)
+    if (!BenchMarking  && x - LastMessage > 1000000)
         Info(x);
     if (DoPonder)
         goto End;
@@ -219,14 +219,23 @@ void CheckDone(typePos *Position, int d)
     End:
     if (d)
         return;
-    while (TryInput())
-        {
-        Input(Position);
-        if (d == 0 && !SMPisActive)
-            return;
-        }
-    }
 
+#ifdef Bench
+	if (!BenchMarking)
+		{
+#endif
+
+		while (TryInput())
+			{
+			Input(Position);
+			if (d == 0 && !SMPisActive)
+				return;
+			}
+#ifdef Bench
+		}
+#endif
+
+	}
 void TimeManager(sint64 Time, sint64 OppTime, sint64 Increment, int mtg)
     {
 	if (mtg)
@@ -258,12 +267,13 @@ void TimeManager(sint64 Time, sint64 OppTime, sint64 Increment, int mtg)
     NormalTime = (DesiredTime * NormalFactor) / 100;
     }
 
-void InitSearch(typePos *Position, char *str)
+void InitSearch(typePos * Position, char *str)
     {
     char *p;
     sint64 wtime = Infinity, btime = Infinity, winc = 0, binc = 0, Time, OppTime, mtg = 0;
     int sm = 0;
     Depth = 255;
+	seldepth = 0;
     AbsoluteTime = DesiredTime = Infinity;
     Stop = false;
     DoInfinite = false;

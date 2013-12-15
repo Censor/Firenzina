@@ -1,6 +1,6 @@
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
-Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
+Kranium (Norman Schmidt), Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
 Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
 Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart, Andrey Chilantiev, Quoc Vuong.
 Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
@@ -41,7 +41,7 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 #define IsRepetition(x)                                  \
   (value > x && Pos0->reversible >= 2 &&                 \
    ((To(move) << 6) | From(move)) == (Pos0 - 1)->move && \
-   Position->sq[To(move)] == 0)
+  Position->sq[To(move)] == 0)
 #define IsInterpose(x) (x & (1 << 15))
 #define EasySEE(x) (x & 0x300000)
 #define PassedPawnPush(to, x) \

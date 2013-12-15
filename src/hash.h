@@ -1,6 +1,6 @@
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
-Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
+Kranium (Norman Schmidt), Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
 Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
 Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart, Andrey Chilantiev, Quoc Vuong.
 Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
@@ -81,17 +81,14 @@ uint64 HashMask, GlobalAge;
 #define HashExact(Pos, mv, dp, v, FL) \
 	HashExactNew (Pos->Dyn->Hash, mv, dp, v, FL, Height (Position), AgePass)
 #define ValueAdjustStore(Value, height) (Value)
-#define HashUpperValue(rank) (rank->ValueUpper)
-#define HashLowerValue(rank) (rank->ValueLower)
-#define HashUpperBound(rank) (rank->ValueUpper)
-#define HashLowerBound(rank) (rank->ValueLower)
-#define HashReBound(Va, VA)
+#define HashUpperValue(trans) (trans->ValueUpper)
+#define HashLowerValue(trans) (trans->ValueLower)
+#define HashUpperBound(trans) (trans->ValueUpper)
+#define HashLowerBound(trans) (trans->ValueLower)
 #define Trans trans
 #define Trans_pv trans_pv
 #define TransDeclare() typeHash *trans
 #define TransPVDeclare() typePVHash *trans_pv
-#define HyattHash(x, y)
-#define HyattHashWrite(x, y)
 #define UpdateAge() trans->age = (AgePass);
 typedef struct
     {

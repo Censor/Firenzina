@@ -1,6 +1,6 @@
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
-Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
+Kranium (Norman Schmidt), Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
 Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
 Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart, Andrey Chilantiev, Quoc Vuong.
 Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
@@ -36,6 +36,28 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 #define MoveIsCheckWhite (Pos1->wKcheck)
 #define MoveIsCheckBlack (Pos1->bKcheck)
 #define Height(x) ((x)->height)
+#define MaxPly 2048
+#define WhiteOO (Position->Dyn->oo & 0x1)
+#define WhiteOOO (Position->Dyn->oo & 0x2)
+#define BlackOO (Position->Dyn->oo & 0x4)
+#define BlackOOO (Position->Dyn->oo & 0x8)
+#define FlagEP 030000
+#define FlagOO 010000
+#define FlagMask 070000
+#define FlagPromQ 070000
+#define FlagPromR 060000
+#define FlagPromB 050000
+#define FlagPromN 040000
+#define MoveIsEP(x) (((x) & FlagMask) == FlagEP)
+#define MoveIsProm(x) (((x) & FlagMask) >= FlagPromN)
+#define MoveIsOO(x) (((x) & FlagMask) == FlagOO)
+#define MoveHistory(x) (((x) & 060000) == 0)
+#define Direction_h1a8 0
+#define Direction_a1h8 1
+#define Direction_horz 2
+#define Direction_vert 3
+#define BadDirection 37
+#define MoveNone 0
 typedef struct
     {
     uint32 move;
@@ -54,11 +76,7 @@ typedef struct
     typeMoveList List[256];
     uint32 BadCaps[64];
     } typeNext;
-#define MaxPly 2048
-#define WhiteOO (Position->Dyn->oo & 0x1)
-#define WhiteOOO (Position->Dyn->oo & 0x2)
-#define BlackOO (Position->Dyn->oo & 0x4)
-#define BlackOOO (Position->Dyn->oo & 0x8)
+
 typedef enum
     {
     Trans1,
@@ -77,26 +95,10 @@ typedef enum
     CaptureGen3,
     CaptureMoves3,
     QuietChecks3,
-    PositionalGainPhase,
+   PositionalGainPhase,
     Fase0
     } EnumPhases;
-#define FlagEP 030000
-#define FlagOO 010000
-#define FlagMask 070000
-#define FlagPromQ 070000
-#define FlagPromR 060000
-#define FlagPromB 050000
-#define FlagPromN 040000
-#define MoveIsEP(x) (((x) & FlagMask) == FlagEP)
-#define MoveIsProm(x) (((x) & FlagMask) >= FlagPromN)
-#define MoveIsOO(x) (((x) & FlagMask) == FlagOO)
-#define MoveHistory(x) (((x) & 060000) == 0)
-#define Direction_h1a8 0
-#define Direction_a1h8 1
-#define Direction_horz 2
-#define Direction_vert 3
-#define BadDirection 37
-#define MoveNone 0
+
 typedef struct
     {
     uint32 move;

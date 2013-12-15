@@ -1,6 +1,6 @@
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
-Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
+Kranium (Norman Schmidt), Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
 Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
 Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart, Andrey Chilantiev, Quoc Vuong.
 Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
@@ -33,127 +33,6 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 #include "fire.h"
 #include "pawn_eval.h"
 
-typedef struct
-    {
-    uint64 Edge, Middle, Center;
-    uint8 ShelterEdge[8], ShelterMiddle[8], ShelterCenter[8];
-    uint8 StormEdge[8], StormMiddle[8], StormCenter[8], ShelterDiag[8], Zero, ValueZero;
-    } typePawnPtr;
-
-typePawnPtr PawnPtr[8];
-
-const uint8 ShelterAA[8] =
-    {
-    30, 0, 5, 15, 20, 25, 25, 25
-    };
-const uint8 ShelterAB[8] =
-    {
-    55, 0, 15, 40, 50, 55, 55, 55
-    };
-const uint8 ShelterAC[8] =
-    {
-    30, 0, 10, 20, 25, 30, 30, 30
-    };
-const uint8 StormAA[8] =
-    {
-    5, 0, 35, 15, 5, 0, 0, 0
-    };
-const uint8 StormAB[8] =
-    {
-    10, 0, 50, 20, 10, 0, 0, 0
-    };
-const uint8 StormAC[8] =
-    {
-    10, 0, 50, 20, 10, 0, 0, 0
-    };
-const uint8 ShelterBA[8] =
-    {
-    30, 0, 5, 15, 20, 25, 25, 25
-    };
-const uint8 ShelterBB[8] =
-    {
-    55, 0, 15, 40, 50, 55, 55, 55
-    };
-const uint8 ShelterBC[8] =
-    {
-    30, 0, 10, 20, 25, 30, 30, 30
-    };
-const uint8 StormBA[8] =
-    {
-    5, 0, 35, 15, 5, 0, 0, 0
-    };
-const uint8 StormBB[8] =
-    {
-    10, 0, 50, 20, 10, 0, 0, 0
-    };
-const uint8 StormBC[8] =
-    {
-    10, 0, 50, 20, 10, 0, 0, 0
-    };
-const uint8 ShelterCB[8] =
-    {
-    30, 0, 5, 15, 20, 25, 25, 25
-    };
-const uint8 ShelterCC[8] =
-    {
-    55, 0, 15, 40, 50, 55, 55, 55
-    };
-const uint8 ShelterCD[8] =
-    {
-    30, 0, 10, 20, 25, 30, 30, 30
-    };
-const uint8 StormCB[8] =
-    {
-    5, 0, 35, 15, 5, 0, 0, 0
-    };
-const uint8 StormCC[8] =
-    {
-    10, 0, 50, 20, 10, 0, 0, 0
-    };
-const uint8 StormCD[8] =
-    {
-    10, 0, 50, 20, 10, 0, 0, 0
-    };
-const uint8 ShelterDC[8] =
-    {
-    30, 0, 5, 15, 20, 25, 25, 25
-    };
-const uint8 ShelterDD[8] =
-    {
-    55, 0, 15, 40, 50, 55, 55, 55
-    };
-const uint8 ShelterDE[8] =
-    {
-    30, 0, 10, 20, 25, 30, 30, 30
-    };
-const uint8 StormDC[8] =
-    {
-    5, 0, 35, 15, 5, 0, 0, 0
-    };
-const uint8 StormDD[8] =
-    {
-    10, 0, 50, 20, 10, 0, 0, 0
-    };
-const uint8 StormDE[8] =
-    {
-    10, 0, 50, 20, 10, 0, 0, 0
-    };
-const uint8 ShelterLongDiagA[8] =
-    {
-    10, 0, 2, 4, 6, 8, 10, 10
-    };
-const uint8 ShelterLongDiagB[8] =
-    {
-    8, 0, 2, 4, 6, 7, 8, 8
-    };
-const uint8 ShelterLongDiagC[8] =
-    {
-    6, 0, 2, 3, 4, 5, 6, 6
-    };
-const uint8 ShelterLongDiagD[8] =
-    {
-    4, 0, 1, 2, 3, 4, 4, 4
-    };
 void InitPawns()
     {
     int file, rank;
@@ -375,7 +254,7 @@ static int BlackKingDanger(typePos *Position, int bKs)
     v += e;
     return v;
     }
-void PawnEval(typePos *Position, typePawnEval *Result)
+void PawnEval(typePos * Position, typePawnEval *Result)
     {
     int c, Value = 0, B, DistanceWhiteKing, DistanceBlackKing, BestWhiteKingDistance, BestBlackKingDistance;
     int wKs = Position->wKsq, bKs = Position->bKsq;

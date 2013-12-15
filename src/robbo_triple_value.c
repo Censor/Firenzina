@@ -1,6 +1,6 @@
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
-Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
+Kranium (Norman Schmidt), Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
 Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
 Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart, Andrey Chilantiev, Quoc Vuong.
 Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
@@ -487,7 +487,7 @@ static bool TripleWork(typePos *Position, int *r, bool ProbingWeak, bool Probing
                 return false;
             *r = 2 - (*r);
             }
-        Position->tbhits++;
+       Position->tbhits++;
         return true;
         }
     while (PiSq->Blocked && PiSq->n < 4)
@@ -507,7 +507,7 @@ static bool TripleWork(typePos *Position, int *r, bool ProbingWeak, bool Probing
                     return false;
                 *r = 2 - (*r);
                 }
-            Position->tbhits++;
+           Position->tbhits++;
             return true;
             }
         }
@@ -527,7 +527,7 @@ bool TripleValue(typePos *Position, int *Value, bool ProbingWeak, bool ProbingIm
     if (((H ^ Position->Dyn->Hash) & 0xfffffffffffffff0) == 0)
         {
         *Value = (H & 0xf) - 1;
-        Position->tbhits++;
+       Position->tbhits++;
         return true;
         }
     if (InCheck)

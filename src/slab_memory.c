@@ -1,6 +1,6 @@
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
-Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
+Kranium (Norman Schmidt), Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
 Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
 Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart, Andrey Chilantiev, Quoc Vuong.
 Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
@@ -31,9 +31,8 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 *******************************************************************************/
 
 #include "fire.h"
-static uint8 *SlabRootLoc = NULL;
-static uint8 *CurrentSlabLoc;
-static sint64 CurrentSlabSize = 0;
+
+
 void *FromSlab(uint64 sz)
     {
     void *A;
@@ -52,9 +51,6 @@ void *FromSlab(uint64 sz)
         }
     return A;
     }
-
-static int SlabNumber = -1;
-static bool LargeSlab = false;
 void DeleteSlab()
     {
     FreeMem(SlabRootLoc, &SlabNumber, &LargeSlab);

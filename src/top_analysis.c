@@ -1,6 +1,6 @@
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
-Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
+Kranium (Norman Schmidt), Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
 Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
 Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart, Andrey Chilantiev, Quoc Vuong.
 Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
@@ -44,7 +44,7 @@ typeRootMoveList RootMoveList[256];
 #include "black.h"
 #endif
 
-void MyTopAnalysis(typePos *Position)
+void MyTopAnalysis(typePos* Position)
     {
     int i, depth, A, L, U, v, Value = 0, trans_depth;
     int move_depth = 0, ExactDepth = 0;
@@ -74,7 +74,6 @@ void MyTopAnalysis(typePos *Position)
     Trans = HashPointer(Position->Dyn->Hash);
     for (i = 0; i < 4; i++, Trans++)
         {
-        HyattHash(Trans, trans);
         if ((trans->hash ^ (Position->Dyn->Hash >> 32)) == 0)
             {
             trans_depth = trans->DepthLower;
@@ -236,7 +235,7 @@ void MyTopAnalysis(typePos *Position)
         {
         if (depth >= TopMinDepth && RootScore <= DeltaCutoff && -DeltaCutoff <= RootScore && MultiPV == 1)
             {
-            A = 8;
+			A = AspirationWindow;
             L = RootScore - A;
             U = RootScore + A;
             if (L < -DeltaCutoff)
@@ -245,7 +244,7 @@ void MyTopAnalysis(typePos *Position)
                 U = ValueMate;
             Again:
             v = MyAnalysis(Position, L, U, depth);
-            if (IvanAllHalt)
+            if (SMPAllHalt)
                 goto CheckIfDone;
             if (v > L && v < U)
                 goto CheckIfDone;
@@ -268,10 +267,10 @@ void MyTopAnalysis(typePos *Position)
             v = MyAnalysis(Position, -ValueMate, ValueMate, depth);
         CheckIfDone:
         RootPrevious = RootScore;
-        if (IvanAllHalt)
+        if (SMPAllHalt)
             return;
         CheckDone(Position, depth >> 1);
-        if (IvanAllHalt)
+        if (SMPAllHalt)
             return;
         }
     }

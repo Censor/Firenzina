@@ -1,6 +1,6 @@
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
-Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
+Kranium (Norman Schmidt), Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
 Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
 Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart, Andrey Chilantiev, Quoc Vuong.
 Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
@@ -116,6 +116,7 @@ void InitGlobals()
 	
 // Search Vars
 	AspirationWindow = DEFAULT_ASPIRATION_WINDOW; 
+	CountLimit = DEFAULT_COUNT_LIMIT; 
 	DeltaCutoff = DEFAULT_DELTA_CUTOFF;
 	DepthRedMin = DEFAULT_DEPTH_RED_MIN;
 	ExtendInCheck = false;
@@ -128,6 +129,8 @@ void InitGlobals()
 	QSAlphaThreshold = DEFAULT_QS_ALPHA_THRESHOLD;
 	SearchDepthMin = DEFAULT_SEARCH_DEPTH_MIN; 
 	SearchDepthReduction = DEFAULT_SEARCH_DEPTH_REDUCTION; 
+	SEECutOff = DEFAULT_SEE_CUTOFF;
+	SEELimit = DEFAULT_SEE_LIMIT;
 	TopMinDepth = DEFAULT_TOP_MIN_DEPTH; 
 	UndoCountThreshold = DEFAULT_UNDO_COUNT_THRESHOLD; 
 	ValueCut = DEFAULT_VALUE_CUT;
@@ -145,7 +148,8 @@ void InitGlobals()
 	BattleFactor = DEFAULT_BATTLE_FACTOR; 
 	EasyFactor = DEFAULT_EASY_FACTOR; 
 	EasyFactorPonder = DEFAULT_EASY_FACTOR_PONDER;
-	NormalFactor = DEFAULT_NORMAL_FACTOR; 
+	NormalFactor = DEFAULT_NORMAL_FACTOR;
+	DesiredMillis = DEFAULT_DESIRED_MILLIS;
 
 //UCI Info Strings
 	CPULoadInfo = false;
@@ -162,8 +166,18 @@ void InitGlobals()
 #endif
 
 //Miscellaneous
+
+#ifdef Bench
+	BenchMarking = false;
+#endif
+
 	CfgFile = 0;
 	CfgFound = false;
+
+#ifdef FischerRandom
+	Chess960 = false;
+#endif
+
     InfiniteLoop = false;
     MultiPV = DEFAULT_MULTIPV;
     NumThreads = 1;
@@ -206,7 +220,7 @@ int main()
 	InitHashTables();
 	InitRootPosition();
 	InitGlobals();
-    RPinit();
+    RPInit();
 
 #ifdef InitCFG
     read_cfg_file("fire.cfg");

@@ -1,6 +1,6 @@
 /*******************************************************************************
 Firenzina is a UCI chess playing engine by
-Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
+Kranium (Norman Schmidt), Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
 Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
 Special thanks to: Norman Schmidt, Jose Maria Velasco, Jim Ablett, Jon Dart, Andrey Chilantiev, Quoc Vuong.
 Firenzina is a clone of Fire 2.2 xTreme by Kranium (Norman Schmidt). 
@@ -123,6 +123,7 @@ UCItype UCIOptions[256] =
 	{ "Lazy_Eval_Max", "Search", UCISpin, 1, MAX_LAZY_EVAL_MAX, DEFAULT_LAZY_EVAL_MAX, &LazyEvalMax, NULL },
 // Search Vars
     { "Aspiration_Window", "Search", UCISpin, 1, MAX_ASPIRATION_WINDOW, DEFAULT_ASPIRATION_WINDOW, &AspirationWindow, NULL },
+    { "Count_Limit", "Search", UCISpin, 1, MAX_COUNT_LIMIT, DEFAULT_COUNT_LIMIT, &CountLimit, NULL },
     { "Delta_Cutoff", "Search", UCISpin, MIN_DELTA_CUTOFF, MAX_DELTA_CUTOFF, DEFAULT_DELTA_CUTOFF, &DeltaCutoff, NULL },
     { "Depth_Red_Min", "Search", UCISpin, 1, MAX_DEPTH_RED_MIN, DEFAULT_DEPTH_RED_MIN, &DepthRedMin, NULL },
     { "Height_Multiplier", "Search", UCISpin, 1, MAX_HEIGHT_MULTIPLIER, DEFAULT_HEIGHT_MULTIPLIER, &HeightMultiplier, NULL },
@@ -131,22 +132,24 @@ UCItype UCIOptions[256] =
     { "Min_Depth_Multiplier", "Search", UCISpin, 1, MAX_MIN_DEPTH_MULTIPLIER, DEFAULT_MIN_DEPTH_MULTIPLIER, &MinDepthMultiplier, NULL },
     { "Min_Trans_Move_Depth", "Search", UCISpin, 1, MAX_MIN_TRANS_MOVE_DEPTH, DEFAULT_MIN_TRANS_MOVE_DEPTH, &MinTransMoveDepth, NULL },
 	{ "Null_Reduction", "Search", UCISpin, 1, MAX_NULL_REDUCTION, DEFAULT_NULL_REDUCTION, &NullReduction, NULL },
+    { "QS_Alpha_Threshold", "Search", UCISpin, 1, MAX_QS_ALPHA_THRESHOLD, DEFAULT_QS_ALPHA_THRESHOLD, &QSAlphaThreshold, NULL },
+    { "Search_Depth_Min", "Search", UCISpin, 1, MAX_SEARCH_DEPTH_MIN, DEFAULT_SEARCH_DEPTH_MIN, &SearchDepthMin, NULL },
+    { "Search_Depth_Reduction", "Search", UCISpin, 1, MAX_SEARCH_DEPTH_REDUCTION, DEFAULT_SEARCH_DEPTH_REDUCTION, &SearchDepthReduction, NULL },
+    { "SEE_CutOff", "Search", UCISpin, 1, MAX_SEE_CUTOFF, DEFAULT_SEE_CUTOFF, &SEECutOff, NULL },
+    { "SEE_Limit", "Search", UCISpin, 1, MAX_SEE_LIMIT, DEFAULT_SEE_LIMIT, &SEELimit, NULL },
+    { "Top_Min_Depth", "Search", UCISpin, 1, MAX_TOP_MIN_DEPTH, DEFAULT_TOP_MIN_DEPTH, &TopMinDepth, NULL },
+    { "Undo_Count_Threshold", "Search", UCISpin, 1, MAX_UNDO_COUNT_THRESHOLD, DEFAULT_UNDO_COUNT_THRESHOLD, &UndoCountThreshold, NULL },
+	{ "Value_Cut", "Search", UCISpin, MIN_VALUE_CUT, MAX_VALUE_CUT, DEFAULT_VALUE_CUT, &ValueCut, NULL },
+	{ "Verify_Reduction", "Search", UCISpin, 1, MAX_VERIFY_REDUCTION, DEFAULT_VERIFY_REDUCTION, &VerifyReduction, NULL },
 // Prune Thresholds
     { "Prune_Check", "Search", UCISpin, 1, MAX_PRUNE_CHECK, DEFAULT_PRUNE_CHECK, &PruneCheck, NULL },
     { "Prune_Pawn", "Search", UCISpin, 1, MAX_PRUNE_PAWN, DEFAULT_PRUNE_PAWN, &PrunePawn, NULL },
     { "Prune_Minor", "Search", UCISpin, 1, MAX_PRUNE_MINOR, DEFAULT_PRUNE_MINOR, &PruneMinor, NULL },
     { "Prune_Rook", "Search", UCISpin, 1, MAX_PRUNE_ROOK, DEFAULT_PRUNE_ROOK, &PruneRook, NULL },
-// More Search Vars
-    { "QS_Alpha_Threshold", "Search", UCISpin, 1, MAX_QS_ALPHA_THRESHOLD, DEFAULT_QS_ALPHA_THRESHOLD, &QSAlphaThreshold, NULL },
-    { "Search_Depth_Min", "Search", UCISpin, 1, MAX_SEARCH_DEPTH_MIN, DEFAULT_SEARCH_DEPTH_MIN, &SearchDepthMin, NULL },
-    { "Search_Depth_Reduction", "Search", UCISpin, 1, MAX_SEARCH_DEPTH_REDUCTION, DEFAULT_SEARCH_DEPTH_REDUCTION, &SearchDepthReduction, NULL },
-    { "Top_Min_Depth", "Search", UCISpin, 1, MAX_TOP_MIN_DEPTH, DEFAULT_TOP_MIN_DEPTH, &TopMinDepth, NULL },
-    { "Undo_Count_Threshold", "Search", UCISpin, 1, MAX_UNDO_COUNT_THRESHOLD, DEFAULT_UNDO_COUNT_THRESHOLD, &UndoCountThreshold, NULL },
-	{ "Value_Cut", "Search", UCISpin, MIN_VALUE_CUT, MAX_VALUE_CUT, DEFAULT_VALUE_CUT, &ValueCut, NULL },
-	{ "Verify_Reduction", "Search", UCISpin, 1, MAX_VERIFY_REDUCTION, DEFAULT_VERIFY_REDUCTION, &VerifyReduction, NULL },
 // Time Management
     { "Absolute_Factor", "Time", UCISpin, 1, MAX_ABSOLUTE_FACTOR, DEFAULT_ABSOLUTE_FACTOR, &AbsoluteFactor, NULL },
     { "Battle_Factor", "Time", UCISpin, 1, MAX_BATTLE_FACTOR, DEFAULT_BATTLE_FACTOR, &BattleFactor, NULL },
+    { "Desired_Millis ", "Time", UCISpin, 1, MAX_DESIRED_MILLIS, DEFAULT_DESIRED_MILLIS, &DesiredMillis, NULL },
     { "Easy_Factor", "Time", UCISpin, 1, MAX_EASY_FACTOR, DEFAULT_EASY_FACTOR, &EasyFactor, NULL },
     { "Easy_Factor_Ponder", "Time", UCISpin, 1, MAX_EASY_FACTOR_PONDER, DEFAULT_EASY_FACTOR_PONDER, &EasyFactorPonder, NULL },
     { "Normal_Factor", "Time", UCISpin, 1, MAX_NORMAL_FACTOR, DEFAULT_NORMAL_FACTOR, &NormalFactor, NULL},
@@ -197,6 +200,11 @@ UCItype BaseUCIOptions[256] =
     { "Max_Threads", "SMP", UCISpin, 1, MaxCPUs, MaxCPUs, &OptMaxThreads, &InitSMP },
 	{ "Min_Threads", "SMP", UCISpin, 1, MaxCPUs, 1, &OptMinThreads, &InitSMP }, // Added 5/22/2013 by Yuri Censor for Firenzina
     { "MultiPV", "System", UCISpin, 1, MAX_MULTIPV, DEFAULT_MULTIPV, &MultiPV, NULL },
+
+#ifdef FischerRandom
+    { "UCI_Chess960", "Other", UCICheck, 0, 0, false, &Chess960, NULL },
+#endif
+
     { "", "", -1, 0, 0, false, NULL, NULL }
     };
 
@@ -209,14 +217,14 @@ static void uci()
         {
 		"spin", "check", "button", "string", "combo"
         };
-	Send("id name %s %s %s\n", Engine, Vers, PLatform);
+	Send("id name %s %s %s\n", Engine, Vers, Plat);
     Send("id author %s\n", Author);
 
 #ifdef Log
 	if (WriteLog)
 		{
 		log_file = fopen(log_filename, "a");
-		fprintf(log_file, "id name %s %s %s\n", Engine, Vers, PLatform);
+		fprintf(log_file, "id name %s %s %s\n", Engine, Vers, Plat);
 		fprintf(log_file, "id author %s\n", Author);
 		close_log();
 		}
@@ -612,10 +620,17 @@ static void ParseInput(typePos *Position, char *I)
     if (JumpIsSet)
         return;
 
-    if (!strcmp(I, "benchmark"))
+#ifdef Bench
+    if (!strcmp(I, "bench"))
         BenchMark(Position, "go movetime 1000"); // Returned 5/22/2013. Since 4/13/2013 was: "go depth 10"
     else if (!memcmp(I, "benchmark", 9))
         BenchMark(Position, I + 10);
+
+	if (!strcmp(I, "sd-bench"))
+        SDBenchMark(Position, "go movetime 1000"); // Returned 5/22/2013. Since 4/13/2013 was: "go depth 10"
+    else if (!memcmp(I, "benchmark", 9))
+        SDBenchMark(Position, I + 10);
+#endif
 
 #ifdef RobboBases
     if (!memcmp(I, "mainline", 8))
@@ -636,42 +651,10 @@ static void ParseInput(typePos *Position, char *I)
         uci();
 		
 #ifdef InitCFG
-    //if (!strcmp(I, "default"))
     if (!strcmp(I, "default"))
-		{
-        CfgFile = 0;
-		gen_cfg_file("fire.cfg");
-		}
-    else if (!strcmp(I, "random"))
-		{
-        CfgFile = 1;
-		gen_cfg_file("fire.cfg");
-		}
-    else if (!strcmp(I, "rand_eval"))
-		{
-        CfgFile = 2;
-		gen_cfg_file("fire.cfg");
-		}
-    else if (!strcmp(I, "rand_material"))
-		{
-        CfgFile = 3;
-		gen_cfg_file("fire.cfg");
-		}
-    else if (!strcmp(I, "rand_prune"))
-		{
-        CfgFile = 4;
-		gen_cfg_file("fire.cfg");
-		}
-    else if (!strcmp(I, "rand_search"))
-		{
-        CfgFile = 5;
-		gen_cfg_file("fire.cfg");
-		}
-    else if (!strcmp(I, "rand_time"))
-		{
-        CfgFile = 6;
-		gen_cfg_file("fire.cfg");
-		}
+		gen_def_cfg_file("fire.cfg");
+    if (!strcmp(I, "current"))
+		gen_cur_cfg_file();
 #endif	
 	
     SuppressInput = false;
@@ -680,7 +663,7 @@ static void ParseInput(typePos *Position, char *I)
 #if defined(_WIN32) || defined(_WIN64)
 #include <io.h>
 #include <conio.h>
-void Input(typePos *Position)
+void Input(typePos * Position)
     {
     int r = 0;
     if (SuppressInput)
@@ -721,7 +704,7 @@ void Input(typePos *Position)
 void Input(typePos *Position)
     {
     int i, r = 0;
-    if (SuppressInput)
+    if (SupressInput)
         return;
     if (QuitDemand)
         ParseInput(Position, "quit");
