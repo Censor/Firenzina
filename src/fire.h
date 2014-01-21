@@ -29,13 +29,16 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see http://www.gnu.org/licenses/.
 *******************************************************************************/
+// Safeguard added by YC on 1/9/2014:
+#ifndef __FIRE_H_INCLUDED__   // if fire.h hasn't been included yet...
+#define __FIRE_H_INCLUDED__   // #define this so the compiler knows it has been included
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <memory.h>
 
 #define Engine "Firenzina"
-#define Vers "2.4 xTreme"
+#define Vers "2.4.1 xTreme"
 #define Orig "based on Ippolit"
 #define Author "Kranium, Yuri Censor and ZirconiumX, a derivative of Fire by Kranium" 
 // ZirconiumX added, 3/19/2013
@@ -82,7 +85,7 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 #define HasPreFetch
 #define HasIntrinsics
 #define InitCFG            // was commented out by NS; uncommented by YC, 12/03/2013 
-//#define Log              // was commented out by NS
+#define Log                // was commented out by NS; uncommented by YC, 01/15/2014
 #define MatFactors         // was commented out by NS; uncommented by YC, 12/03/2013
 //#define MultiplePosGain  // was commented out by NS
 //#define MultipleHistory  // was commented out by NS
@@ -160,7 +163,7 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 #define MAX_DYNAMIC_TRIPLE_BASE_CACHE 65536
 
 // Search Vars
-#define DEFAULT_ASPIRATION_WINDOW 8      // Original: 8; Conservative: 8; Aggressive: 6
+#define DEFAULT_ASPIRATION_WINDOW 6      // Original: 8; Conservative: 8; Aggressive: 6
 #define MAX_ASPIRATION_WINDOW 100
 #define DEFAULT_COUNT_LIMIT 5
 #define MAX_COUNT_LIMIT 10
@@ -227,20 +230,20 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 #define MAX_NORMAL_FACTOR 200
 
 // Weights
-#define DEFAULT_DRAW_WEIGHT 100          // Original: 100
-#define MAX_DRAW_WEIGHT 200
-#define DEFAULT_KING_SAFETY_WEIGHT 100   // Original: 100; Conservative: 130; Aggressive: 120
-#define MAX_KING_SAFETY_WEIGHT 200
-#define DEFAULT_MATERIAL_WEIGHT 100      // Original: 100
-#define MAX_MATERIAL_WEIGHT 200
-#define DEFAULT_MOBILITY_WEIGHT 100      // Original: 100; Conservative: 115; Aggressive: 130
-#define MAX_MOBILITY_WEIGHT 200
-#define DEFAULT_PAWN_WEIGHT 100          // Original: 100; DO NOT ALTER! IT SETS THE SCALE. Yuri Censor, 03/25/2013
-#define MAX_PAWN_WEIGHT 200
-#define DEFAULT_POSITIONAL_WEIGHT 100    // Original: 100; Conservative: 120; Aggressive: 110
-#define MAX_POSITIONAL_WEIGHT 200
-#define DEFAULT_PST_WEIGHT 100           // Original: 100
-#define MAX_PST_WEIGHT 200
+#define DEFAULT_DRAW_WEIGHT 128          // Original: 100
+#define MAX_DRAW_WEIGHT 256
+#define DEFAULT_KING_SAFETY_WEIGHT 128   // Original: 100; Conservative: 130; Aggressive: 120
+#define MAX_KING_SAFETY_WEIGHT 256
+#define DEFAULT_MATERIAL_WEIGHT 128     // Original: 100
+#define MAX_MATERIAL_WEIGHT 256
+#define DEFAULT_MOBILITY_WEIGHT 128      // Original: 100; Conservative: 115; Aggressive: 130
+#define MAX_MOBILITY_WEIGHT 256
+#define DEFAULT_PAWN_WEIGHT 128          // Original: 100
+#define MAX_PAWN_WEIGHT 256
+#define DEFAULT_POSITIONAL_WEIGHT 128    // Original: 100; Conservative: 120; Aggressive: 110
+#define MAX_POSITIONAL_WEIGHT 256
+#define DEFAULT_PST_WEIGHT 128           // Original: 100
+#define MAX_PST_WEIGHT 256
 
 #include "win-linux.h"
 #include "hash.h"
@@ -294,9 +297,9 @@ typedef struct
 #define ABS(x) (((x) >= 0) ? (x) : -(x))
 #define FileDistance(x, y) (ABS(File(x) - File(y)))
 #define RankDistance(x, y) (ABS(Rank(x) - Rank(y)))
+//#define ValueRed (depth >> 1)
+//#define DepthRed (MIN (12, ValueRed))
 
-#define DepthRed (MIN (12, depth >> 1))
-#define ValueRed (depth << 1)
 
 #define BitClear(b, B) B &= (B - 1)
 #define BitSet(b, B) B |=((uint64) 1) << (b)
@@ -492,3 +495,4 @@ char String3[MaxCPUs][64], String4[MaxCPUs][64];
 #endif
 
 char *InputBuffer, *input_ptr;
+#endif

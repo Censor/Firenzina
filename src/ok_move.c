@@ -39,7 +39,7 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 #include "black.h"
 #endif
 
-boolean MyOK(typePos* Position, uint32 move)
+bool MyOK(typePos* Position, uint32 move)
     {
 	int fr, to, pi, cp;
     uint64 toSet;

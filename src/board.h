@@ -29,7 +29,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see http://www.gnu.org/licenses/.
 *******************************************************************************/
-
+#include "fire.h" // Added by YC on 1/9/2014
 #define File(s) ((s) & 7)
 #define Rank(s) ((s) >> 3)
 #define From(s) (((s) >> 6) & 077)
@@ -107,7 +107,7 @@ typedef struct
 #define AttFile(sq) (AttR (sq) & FileArray[File (sq)])
 #define AttQ(fr) (AttR(fr) | AttB(fr))
 #define MaxStack 256
-#define NumBytesToCopy (64 + 128 + 32 + 128 + 4)
+#define NumBytesToCopy 356 // (64 + 128 + 32 + 128 + 4)
 
 struct TP
     {

@@ -39,7 +39,7 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 #include "black.h"
 #endif
 
-int MyPVQsearch(typePos* Position, int Alpha, int Beta, int depth)
+int MyPVQsearch(typePos *Position, int Alpha, int Beta, int depth)
     {
     int i;
     uint32 good_move = 0, trans_move = 0, move, BadCaps[64];
@@ -277,7 +277,7 @@ int MyPVQsearch(typePos* Position, int Alpha, int Beta, int depth)
     HashUpper(Position->Dyn->Hash, 1, best_value);
     return(best_value);
     }
-int MyPVQsearchCheck(typePos* Position, int Alpha, int Beta, int depth)
+int MyPVQsearchCheck(typePos *Position, int Alpha, int Beta, int depth)
     {
     int i;
     uint32 trans_move = 0, good_move = 0, move, Temp;

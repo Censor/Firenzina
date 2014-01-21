@@ -36,7 +36,7 @@ along with this program. If not, see http://www.gnu.org/licenses/.
    HistoryValue (Position, move) = sv + (((0xff00 - sv) * depth) >> Shift); \
    if (move != Position->Dyn->killer1)                                        \
      { Position->Dyn->killer2 = Position->Dyn->killer1;                       \
-      Position->Dyn->killer1 = move; } }
+       Position->Dyn->killer1 = move; } }
 #define HistoryBad(move, depth)                                              \
   { int sv = HistoryValue (Position, move);                                  \
     if (Pos0->Value > value - HistoryThreshold)                                             \

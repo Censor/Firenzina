@@ -29,14 +29,18 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see http://www.gnu.org/licenses/.
 *******************************************************************************/
-
+#include "fire.h" // Added by YC on 1/9/2014
 #define HashWTM (0x1220ab8c00000004)
 
 #ifdef OneDimensional
-#define InterPose(x, y) Interpose[64 * (x) + (y)]
-#define Evade(x, y) Evade[64 * (x) + (y)]
-#define Line(x, y) Line[64 * (x) + (y)]
-#define Hash(pi, sq) Zobrist[64 * (pi) + (sq)]
+//#define InterPose(x, y) Interpose[64 * (x) + (y)]
+//#define Evade(x, y) Evade[64 * (x) + (y)]
+//#define Line(x, y) Line[64 * (x) + (y)]
+//#define Hash(pi, sq) Zobrist[64 * (pi) + (sq)]
+#define InterPose(x, y) Interpose[((x)<<6) + (y)]
+#define Evade(x, y) Evade[((x)<<6) + (y)]
+#define Line(x, y) Line[((x)<<6) + (y)]
+#define Hash(pi, sq) Zobrist[((pi)<<6) + (sq)]
 SlabDeclare3(uint64, Interpose, 0100 * 0100);
 SlabDeclare3(uint64, Evade, 0100 * 0100);
 SlabDeclare3(sint8, Line, 0100 * 0100);

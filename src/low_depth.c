@@ -41,7 +41,7 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 #include "black.h"
 #endif
 
-int MyLowDepth(typePos* Position, int value, int depth)
+int MyLowDepth(typePos *Position, int value, int depth)
     {
     int cnt, Value, best_value, v, i, trans_move = 0;
     int move, move_depth = 0, trans_depth, to, fr;
@@ -221,7 +221,7 @@ int MyLowDepth(typePos* Position, int value, int depth)
     HashUpper(Position->Dyn->Hash, depth, best_value);
     return(best_value);
     }
-int MyLowDepthCheck(typePos * Position, int value, int depth)
+int MyLowDepthCheck(typePos *Position, int value, int depth)
     {
     int ignored, trans_move = 0, trans_depth, move_depth = 0;
     int Value, i, move, best_value, v, new_depth;

@@ -30,13 +30,32 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see http://www.gnu.org/licenses/.
 *******************************************************************************/
 
-#include <time.h>
 #include "fire.h"
 
+#if defined(__GNUC__) && !defined(__MINGW32__) && !defined(__MINGW64__)
+
+#include <sys/time.h>
+
+
+
+static int GetTickCount() {
+
+    struct timeval t;
+
+    gettimeofday(&t, NULL);
+
+    return t.tv_sec*1000 + t.tv_usec/1000;
+
+}
+#else
+#include <time.h>
+#endif
+
+#ifdef InitCFG
 FILE *fp;
 FILE *cfgFile;
 char filename[256];
-int RandRange = 0;
+
 
 static int get_rand_num(int min, int max)
 	{
@@ -53,7 +72,7 @@ static void parse_option(const char *str)
 #ifdef RobboBases
 	char *s;
 #endif
-
+	RandRange = 0;
     char arg[6][256];
     arg[0][0] = arg[1][0] = arg[2][0] = '\0';
     sscanf(str, "%s %s %s", arg[0], arg[1], arg[2]);
@@ -208,6 +227,10 @@ static void parse_option(const char *str)
         {
         int input = atoi(arg[1]);
 		MultiPV = input;
+		if (MultiPV <= 0)
+			MultiPV = DEFAULT_MULTIPV;
+		else if (MultiPV > MAX_MULTIPV)
+			MultiPV = MAX_MULTIPV;
 		Send("MultiPV: %d\n", MultiPV);
 		if (VerboseUCI)
 			Send("info string MultiPV: %d\n", MultiPV);
@@ -359,7 +382,7 @@ static void parse_option(const char *str)
 		TotalBaseCache = input;
 		if (TotalBaseCache < 1)
 			TotalBaseCache = 1;
-		if (TotalBaseCache > MAX_TOTAL_BASE_CACHE)
+		else if (TotalBaseCache > MAX_TOTAL_BASE_CACHE)
 			TotalBaseCache = MAX_TOTAL_BASE_CACHE;
 		InitTotalBaseCache(TotalBaseCache);
 		Send("TotalBase Cache: %d Mb\n", TotalBaseCache);
@@ -436,7 +459,7 @@ static void parse_option(const char *str)
         TripleBaseHash = atoi(arg[1]);
 		if (TripleBaseHash < 1)
 			TripleBaseHash = 1;
-		if (TripleBaseHash > MAX_TRIPLE_BASE_HASH)
+		else if (TripleBaseHash > MAX_TRIPLE_BASE_HASH)
 			TripleBaseHash = MAX_TRIPLE_BASE_HASH;
         Send("TripleBase Hash: %d Mb\n", TripleBaseHash);
 		if (VerboseUCI)
@@ -457,7 +480,7 @@ static void parse_option(const char *str)
         DynamicTripleBaseCache = atoi(arg[1]);
 		if (DynamicTripleBaseCache < 1)
 			DynamicTripleBaseCache = 1;
-		if (DynamicTripleBaseCache > MAX_DYNAMIC_TRIPLE_BASE_CACHE)
+		else if (DynamicTripleBaseCache > MAX_DYNAMIC_TRIPLE_BASE_CACHE)
 			DynamicTripleBaseCache = MAX_DYNAMIC_TRIPLE_BASE_CACHE;
         Send("Dynamic TripleBase Cache: %d Mb\n", DynamicTripleBaseCache);
 		if (VerboseUCI)
@@ -486,6 +509,10 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			LazyEvalMin = get_rand_num(LazyEvalMin * (100 - RandRange) / 100, LazyEvalMin * (100  + RandRange) / 100);
 			}
+		if (LazyEvalMin < 1)
+			LazyEvalMin = 1;
+		else if (LazyEvalMin > MAX_LAZY_EVAL_MIN)
+			LazyEvalMin = MAX_LAZY_EVAL_MIN;
         Send("Lazy Eval Min: %d\n", LazyEvalMin);
         }
     if (!strcmp(arg[0], "LazyEvalMax"))
@@ -497,6 +524,10 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			LazyEvalMax = get_rand_num(LazyEvalMax * (100 - RandRange) / 100, LazyEvalMax * (100  + RandRange) / 100);
 			}
+		if (LazyEvalMax < 1)
+			LazyEvalMax = 1;
+		else if (LazyEvalMax > MAX_LAZY_EVAL_MAX)
+			LazyEvalMax = MAX_LAZY_EVAL_MAX;
         Send("Lazy Eval Max: %d\n", LazyEvalMax);
         }
 
@@ -512,6 +543,10 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			PValue = get_rand_num(PValue * (100 - RandRange) / 100, PValue * (100  + RandRange) / 100);
 			}
+		if (PValue < 1)
+			PValue = 1;
+		else if (PValue > MAX_PAWN_VALUE)
+			PValue = MAX_PAWN_VALUE;
         Send("PawnValue: %d\n", PValue);
         }
     if (!strcmp(arg[0], "KnightValue"))
@@ -523,6 +558,10 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			NValue = get_rand_num(NValue * (100 - RandRange) / 100, NValue * (100  + RandRange) / 100);
 			}
+		if (NValue < 1)
+			NValue = 1;
+		else if (NValue > MAX_KNIGHT_VALUE)
+			NValue = MAX_KNIGHT_VALUE;
         Send("KnightValue: %d\n", NValue);
         }
     if (!strcmp(arg[0], "BishopValue"))
@@ -534,6 +573,10 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			BValue = get_rand_num(BValue * (100 - RandRange) / 100, BValue * (100  + RandRange) / 100);
 			}
+		if (BValue < 1)
+			BValue = 1;
+		else if (BValue > MAX_BISHOP_VALUE)
+			BValue = MAX_BISHOP_VALUE;
         Send("BishopValue: %d\n", BValue);
         }
     if (!strcmp(arg[0], "RookValue"))
@@ -545,6 +588,10 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			RValue = get_rand_num(RValue * (100 - RandRange) / 100, RValue * (100  + RandRange) / 100);
 			}
+		if (RValue < 1)
+			RValue = 1;
+		else if (RValue > MAX_ROOK_VALUE)
+			RValue = MAX_ROOK_VALUE;
         Send("RookValue: %d\n", RValue);
         }
     if (!strcmp(arg[0], "QueenValue"))
@@ -556,6 +603,10 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			QValue = get_rand_num(QValue * (100 - RandRange) / 100, QValue * (100  + RandRange) / 100);
 			}
+		if (QValue < 1)
+			QValue = 1;
+		else if (QValue > MAX_QUEEN_VALUE)
+			QValue = MAX_QUEEN_VALUE;
         Send("QueenValue: %d\n", QValue);
         }
     if (!strcmp(arg[0], "BishopPairValue"))
@@ -567,6 +618,10 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			BPValue = get_rand_num(BPValue * (100 - RandRange) / 100, BPValue * (100  + RandRange) / 100);
 			}
+		if (BPValue < 1)
+			BPValue = 1;
+		else if (BPValue > MAX_BISHOP_PAIR_VALUE)
+			BPValue = MAX_BISHOP_PAIR_VALUE;
         Send("BishopPairValue: %d\n", BPValue);
         }
 
@@ -581,6 +636,10 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			PruneCheck = get_rand_num(PruneCheck * (100 - RandRange) / 100, PruneCheck * (100  + RandRange) / 100);
 			}
+		if (PruneCheck < 1)
+			PruneCheck = 1;
+		else if (PruneCheck > MAX_PRUNE_CHECK)
+			PruneCheck = MAX_PRUNE_CHECK;
         Send("PruneCheck: %d\n", PruneCheck);
         }
     if (!strcmp(arg[0], "PrunePawn"))
@@ -592,6 +651,10 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			PrunePawn = get_rand_num(PrunePawn * (100 - RandRange) / 100, PrunePawn * (100  + RandRange) / 100);
 			}
+		if (PrunePawn < 1) // Bug fix by Yuri Censor for Firenzina, 3/27/2013:
+			PrunePawn = 1; // Was: PruneCheck
+		else if (PrunePawn > MAX_PRUNE_PAWN)
+			PrunePawn = MAX_PRUNE_PAWN;
         Send("PrunePawn: %d\n", PrunePawn);
         }
     if (!strcmp(arg[0], "PruneMinor"))
@@ -603,6 +666,10 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			PruneMinor = get_rand_num(PruneMinor * (100 - RandRange) / 100, PruneMinor * (100  + RandRange) / 100);
 			}
+		if (PruneMinor < 1) // Bug fix by Yuri Censor for Firenzina, 3/27/2013:
+			PruneMinor = 1; // Was: PruneCheck
+		else if (PruneMinor > MAX_PRUNE_MINOR)
+			PruneMinor = MAX_PRUNE_MINOR;
         Send("PruneMinor: %d\n", PruneMinor);
         }
     if (!strcmp(arg[0], "PruneRook"))
@@ -614,6 +681,10 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			PruneRook = get_rand_num(PruneRook * (100 - RandRange) / 100, PruneRook * (100  + RandRange) / 100);
 			}
+		if (PruneRook < 1) // Bug fix by Yuri Censor for Firenzina, 3/27/2013:
+			PruneRook = 1; // Was: PruneCheck
+		else if (PruneRook > MAX_PRUNE_ROOK)
+			PruneRook = MAX_PRUNE_ROOK;
         Send("PruneRook: %d\n", PruneRook);
         }
 
@@ -628,6 +699,15 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			AspirationWindow = get_rand_num(AspirationWindow * (100 - RandRange) / 100, AspirationWindow * (100  + RandRange) / 100);
 			}
+		if (AspirationWindow < 1)
+			AspirationWindow = 1;
+		else if (AspirationWindow > MAX_ASPIRATION_WINDOW)
+			AspirationWindow = MAX_ASPIRATION_WINDOW;
+		// YC inserted and commented out this check to see if cfg parameter changes are made.
+		/*
+		if (AspirationWindow != DEFAULT_ASPIRATION_WINDOW)
+			Beep(523,500);
+		*/
         Send("AspirationWindow: %d\n", AspirationWindow);
         }
     if (!strcmp(arg[0], "CountLimit"))
@@ -639,6 +719,10 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			CountLimit = get_rand_num(CountLimit * (100 - RandRange) / 100, CountLimit * (100  + RandRange) / 100);
 			}
+		if (CountLimit < 1) 
+			CountLimit = 1; 
+		else if (CountLimit > MAX_COUNT_LIMIT)
+			CountLimit = MAX_COUNT_LIMIT;
         Send("CountLimit: %d\n", CountLimit);
         }
    if (!strcmp(arg[0], "DeltaCutoff"))
@@ -650,6 +734,10 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			DeltaCutoff = get_rand_num(DeltaCutoff * (100 - RandRange) / 100, DeltaCutoff * (100  + RandRange) / 100);
 			}
+		if (DeltaCutoff < MIN_DELTA_CUTOFF)
+			DeltaCutoff = MIN_DELTA_CUTOFF;
+		else if (DeltaCutoff > MAX_DELTA_CUTOFF) 
+			DeltaCutoff = MAX_DELTA_CUTOFF;
         Send("DeltaCutoff: %d\n", DeltaCutoff);
         }
 	if (!strcmp(arg[0], "ExtendInCheck"))
@@ -681,6 +769,10 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			HistoryThreshold = get_rand_num(HistoryThreshold * (100 - RandRange) / 100, HistoryThreshold * (100  + RandRange) / 100);
 			}
+		if (HistoryThreshold < 1)
+			HistoryThreshold = 1;
+		else if (HistoryThreshold > MAX_HISTORY_THRESHOLD) 
+			HistoryThreshold = MAX_HISTORY_THRESHOLD;
         Send("History Threshold: %d\n", HistoryThreshold);
         }
    if (!strcmp(arg[0], "LowDepthMargin"))
@@ -692,6 +784,11 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			LowDepthMargin = get_rand_num(LowDepthMargin * (100 - RandRange) / 100, LowDepthMargin * (100  + RandRange) / 100);
 			}
+		LowDepthMargin = atoi(arg[1]);
+		if (LowDepthMargin < 1)
+			LowDepthMargin = 1;
+		else if (LowDepthMargin > MAX_LOW_DEPTH_MARGIN)
+			LowDepthMargin = MAX_LOW_DEPTH_MARGIN;
         Send("LowDepthCutOff: %d\n", LowDepthMargin);
         }
     if (!strcmp(arg[0], "MinDepthMultiplier"))
@@ -703,6 +800,10 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			MinDepthMultiplier = get_rand_num(MinDepthMultiplier * (100 - RandRange) / 100, MinDepthMultiplier * (100  + RandRange) / 100);
 			}
+		if (MinDepthMultiplier < 1)
+			MinDepthMultiplier = 1;
+		else if (MinDepthMultiplier > MAX_MIN_DEPTH_MULTIPLIER) 
+			MinDepthMultiplier = MAX_MIN_DEPTH_MULTIPLIER; 
         Send("MinDepthMultiplier: %d\n", MinDepthMultiplier);
         }
     if (!strcmp(arg[0], "MinTransMoveDepth"))
@@ -714,6 +815,10 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			MinTransMoveDepth = get_rand_num(MinTransMoveDepth * (100 - RandRange) / 100, MinTransMoveDepth * (100  + RandRange) / 100);
 			}
+		if (MinTransMoveDepth < 1)
+			MinTransMoveDepth = 1;
+		else if (MinTransMoveDepth > MAX_MIN_TRANS_MOVE_DEPTH) 
+			MinTransMoveDepth = MAX_MIN_TRANS_MOVE_DEPTH;
         Send("MinTransMoveDepth: %d\n", MinTransMoveDepth);
         }
     if (!strcmp(arg[0], "NullReduction"))
@@ -725,6 +830,10 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			NullReduction = get_rand_num(NullReduction * (100 - RandRange) / 100, NullReduction * (100  + RandRange) / 100);
 			}
+		if (NullReduction < 1)
+			NullReduction = 1;
+		else if (NullReduction > MAX_NULL_REDUCTION)
+			NullReduction = MAX_NULL_REDUCTION;
         Send("NullReduction: %d\n", NullReduction);
         }
     if (!strcmp(arg[0], "QSAlphaThreshold"))
@@ -736,6 +845,10 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			QSAlphaThreshold = get_rand_num(QSAlphaThreshold * (100 - RandRange) / 100, QSAlphaThreshold * (100  + RandRange) / 100);
 			}
+		if (QSAlphaThreshold < 1)
+			QSAlphaThreshold = 1;
+		else if (QSAlphaThreshold > MAX_QS_ALPHA_THRESHOLD) 
+			QSAlphaThreshold = MAX_QS_ALPHA_THRESHOLD; 
         Send("QSAlphaThreshold: %d\n", QSAlphaThreshold);
         }
     if (!strcmp(arg[0], "SearchDepthMin"))
@@ -747,6 +860,10 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			SearchDepthMin = get_rand_num(SearchDepthMin * (100 - RandRange) / 100, SearchDepthMin * (100  + RandRange) / 100);
 			};
+		if (SearchDepthMin < 1)
+			SearchDepthMin = 1;
+		else if (SearchDepthMin > MAX_SEARCH_DEPTH_MIN)
+			SearchDepthMin = MAX_SEARCH_DEPTH_MIN;
         Send("SearchDepthMin: %d\n", SearchDepthMin);
         }
    if (!strcmp(arg[0], "SearchDepthReduction"))
@@ -758,6 +875,10 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			SearchDepthReduction = get_rand_num(SearchDepthReduction * (100 - RandRange) / 100, SearchDepthReduction * (100  + RandRange) / 100);
 			}
+		if (SearchDepthReduction < 1)
+			SearchDepthReduction = 1;
+		else if (SearchDepthReduction > MAX_SEARCH_DEPTH_REDUCTION)
+			SearchDepthReduction = MAX_SEARCH_DEPTH_REDUCTION;
         Send("SearchDepthReduction: %d\n", SearchDepthReduction);
         }
     if (!strcmp(arg[0], "SEECutOff"))
@@ -769,6 +890,10 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			SEECutOff = get_rand_num(SEECutOff * (100 - RandRange) / 100, SEECutOff * (100  + RandRange) / 100);
 			};
+		if (SEECutOff < 1)
+			SEECutOff = 1;
+		else if (SEECutOff > MAX_SEE_CUTOFF)
+			SEECutOff = MAX_SEE_CUTOFF;
         Send("SEECutOff: %d\n", SEECutOff);
         }
     if (!strcmp(arg[0], "SEELimit"))
@@ -780,6 +905,10 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			SEELimit = get_rand_num(SEELimit * (100 - RandRange) / 100, SEELimit * (100  + RandRange) / 100);
 			};
+		if (SEELimit < 1)
+			SEELimit = 1;
+		else if (SEELimit > MAX_SEE_LIMIT)
+			SEELimit = MAX_SEE_LIMIT;
         Send("SEELimit: %d\n", SEELimit);
         }
    if (!strcmp(arg[0], "TopMinDepth"))
@@ -791,6 +920,10 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			TopMinDepth = get_rand_num(TopMinDepth * (100 - RandRange) / 100, TopMinDepth * (100  + RandRange) / 100);
 			}
+		if (TopMinDepth < 1)
+			TopMinDepth = 1;
+		else if (TopMinDepth > MAX_TOP_MIN_DEPTH) 
+			TopMinDepth = MAX_TOP_MIN_DEPTH;
         Send("TopMinDepth: %d\n", TopMinDepth);
         }
     if (!strcmp(arg[0], "UndoCountThreshold"))
@@ -802,6 +935,10 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			UndoCountThreshold = get_rand_num(UndoCountThreshold * (100 - RandRange) / 100, UndoCountThreshold * (100  + RandRange) / 100);
 			}
+		if (UndoCountThreshold < 1)
+			UndoCountThreshold = 1;
+		else if (UndoCountThreshold > MAX_UNDO_COUNT_THRESHOLD) 
+			UndoCountThreshold = MAX_UNDO_COUNT_THRESHOLD;
         Send("UndoCountThreshold: %d\n", UndoCountThreshold);
         }
     if (!strcmp(arg[0], "ValueCut"))
@@ -813,6 +950,10 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			ValueCut = get_rand_num(ValueCut * (100 - RandRange) / 100, ValueCut * (100  + RandRange) / 100);
 			}
+		if (ValueCut < MIN_VALUE_CUT)
+			ValueCut = MIN_VALUE_CUT;
+		else if (ValueCut > MAX_VALUE_CUT)
+			ValueCut = MAX_VALUE_CUT;
         Send("ValueCut: %d\n", ValueCut);
         }
 	if (!strcmp(arg[0], "VerifyNull"))
@@ -844,6 +985,10 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			VerifyReduction = get_rand_num(VerifyReduction * (100 - RandRange) / 100, VerifyReduction * (100  + RandRange) / 100);
 			}
+		if (VerifyReduction < 1)
+			VerifyReduction = 1;
+		else if (VerifyReduction > MAX_VERIFY_REDUCTION)
+			VerifyReduction = MAX_VERIFY_REDUCTION;
         Send("VerifyReduction: %d\n", VerifyReduction);
         }
 
@@ -878,6 +1023,10 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			ANSplitDepth = get_rand_num(ANSplitDepth * (100 - RandRange) / 100, ANSplitDepth * (100  + RandRange) / 100);
 			}
+		if (ANSplitDepth < MIN_AN_SPLIT_DEPTH) 
+			ANSplitDepth = MIN_AN_SPLIT_DEPTH; 
+		else if (ANSplitDepth > MAX_AN_SPLIT_DEPTH)
+			ANSplitDepth = MAX_AN_SPLIT_DEPTH;
         Send("ANSplitDepth: %d\n", ANSplitDepth);
         }
     if (!strcmp(arg[0], "CNSplitDepth"))
@@ -889,6 +1038,10 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			CNSplitDepth = get_rand_num(CNSplitDepth * (100 - RandRange) / 100, CNSplitDepth * (100  + RandRange) / 100);
 			}
+		if (CNSplitDepth < MIN_CN_SPLIT_DEPTH) 
+			CNSplitDepth = MIN_CN_SPLIT_DEPTH; 
+		else if (CNSplitDepth > MAX_CN_SPLIT_DEPTH)
+			CNSplitDepth = MAX_CN_SPLIT_DEPTH;
         Send("CNSplitDepth: %d\n", CNSplitDepth);
         }
     if (!strcmp(arg[0], "PVSplitDepth"))
@@ -900,6 +1053,10 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			PVSplitDepth = get_rand_num(PVSplitDepth * (100 - RandRange) / 100, PVSplitDepth * (100  + RandRange) / 100);
 			}
+		if (PVSplitDepth < MIN_PV_SPLIT_DEPTH) 
+			PVSplitDepth = MIN_PV_SPLIT_DEPTH; 
+		else if (PVSplitDepth > MAX_PV_SPLIT_DEPTH)
+			PVSplitDepth = MAX_PV_SPLIT_DEPTH;
         Send("PVSplitDepth: %d\n", PVSplitDepth);
         }
 	// Time Management
@@ -913,6 +1070,10 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			AbsoluteFactor = get_rand_num(AbsoluteFactor * (100 - RandRange) / 100, AbsoluteFactor * (100  + RandRange) / 100);
 			}
+		if (AbsoluteFactor < 1)
+			AbsoluteFactor = 1;
+		else if (AbsoluteFactor > MAX_ABSOLUTE_FACTOR)
+			AbsoluteFactor = MAX_ABSOLUTE_FACTOR;
         Send("AbsoluteFactor: %d\n", AbsoluteFactor);
         }
     if (!strcmp(arg[0], "BattleFactor"))
@@ -924,6 +1085,10 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			BattleFactor = get_rand_num(BattleFactor * (100 - RandRange) / 100, BattleFactor * (100  + RandRange) / 100);
 			}
+		if (BattleFactor < 1)
+			BattleFactor = 1;
+		else if (BattleFactor > MAX_BATTLE_FACTOR)
+			BattleFactor = MAX_BATTLE_FACTOR;
         Send("BattleFactor: %d\n", BattleFactor);
         }
     if (!strcmp(arg[0], "DesiredMillis"))
@@ -935,6 +1100,10 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			DesiredMillis = get_rand_num(DesiredMillis * (100 - RandRange) / 100, DesiredMillis * (100  + RandRange) / 100);
 			}
+		if (DesiredMillis < 1)
+			DesiredMillis = 1;
+		else if (DesiredMillis > MAX_DESIRED_MILLIS)
+			DesiredMillis = MAX_DESIRED_MILLIS;
         Send("DesiredMillis: %d\n", DesiredMillis);
         }
     if (!strcmp(arg[0], "EasyFactor"))
@@ -946,6 +1115,10 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			EasyFactor = get_rand_num(EasyFactor * (100 - RandRange) / 100, EasyFactor * (100  + RandRange) / 100);
 			}
+		if (EasyFactor < 1)
+			EasyFactor = 1;
+		else if (EasyFactor > MAX_EASY_FACTOR)
+			EasyFactor = MAX_EASY_FACTOR;
         Send("EasyFactor: %d\n", EasyFactor);
         }
     if (!strcmp(arg[0], "EasyFactorPonder"))
@@ -957,6 +1130,10 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			EasyFactorPonder = get_rand_num(EasyFactorPonder * (100 - RandRange) / 100, EasyFactorPonder * (100  + RandRange) / 100);
 			}
+		if (EasyFactorPonder < 1)
+			EasyFactorPonder = 1;
+		else if (EasyFactorPonder > MAX_EASY_FACTOR_PONDER)
+			EasyFactorPonder = MAX_EASY_FACTOR_PONDER;
         Send("EasyFactorPonder: %d\n", EasyFactorPonder);
         }
     if (!strcmp(arg[0], "NormalFactor"))
@@ -968,6 +1145,10 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			NormalFactor = get_rand_num(NormalFactor * (100 - RandRange) / 100, NormalFactor * (100  + RandRange) / 100);
 			}
+		if (NormalFactor < 1)
+			NormalFactor = 1;
+		else if (NormalFactor > MAX_NORMAL_FACTOR)
+			NormalFactor = MAX_NORMAL_FACTOR;
         Send("NormalFactor: %d\n", NormalFactor);
         }
 
@@ -982,6 +1163,10 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			DrawWeight = get_rand_num(DrawWeight * (100 - RandRange) / 100,DrawWeight * (100  + RandRange) / 100);
 			}
+		if (DrawWeight < 1)
+			DrawWeight = 1;
+		else if (DrawWeight > MAX_DRAW_WEIGHT)
+			DrawWeight = MAX_DRAW_WEIGHT;
         Send("DrawWeight: %d\n", DrawWeight);
         }
     if (!strcmp(arg[0], "KingSafetyWeight"))
@@ -993,6 +1178,10 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			KingSafetyWeight = get_rand_num(KingSafetyWeight * (100 - RandRange) / 100, KingSafetyWeight * (100  + RandRange) / 100);
 			}
+		if (KingSafetyWeight < 1)
+			KingSafetyWeight = 1;
+		else if (KingSafetyWeight > MAX_KING_SAFETY_WEIGHT)
+			KingSafetyWeight = MAX_KING_SAFETY_WEIGHT;
         Send("KingSafetyWeight: %d\n", KingSafetyWeight);
         }
     if (!strcmp(arg[0], "MaterialWeight"))
@@ -1004,6 +1193,10 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			MaterialWeight = get_rand_num(MaterialWeight * (100 - RandRange) / 100, MaterialWeight * (100  + RandRange) / 100);
 			}
+		if (MaterialWeight < 1)
+			MaterialWeight = 1;
+		else if (MaterialWeight > MAX_MATERIAL_WEIGHT)
+			MaterialWeight = MAX_MATERIAL_WEIGHT;
         Send("MaterialWeight: %d\n", MaterialWeight);
         }
     if (!strcmp(arg[0], "MobilityWeight"))
@@ -1015,6 +1208,10 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			MobilityWeight = get_rand_num(MobilityWeight * (100 - RandRange) / 100, MobilityWeight * (100  + RandRange) / 100);
 			}
+		if (MobilityWeight < 1)
+			MobilityWeight = 1;
+		else if (MobilityWeight > MAX_MOBILITY_WEIGHT)
+			MobilityWeight = MAX_MOBILITY_WEIGHT;
         Send("MobilityWeight: %d\n", MobilityWeight);
         }
     if (!strcmp(arg[0], "PawnWeight"))
@@ -1026,6 +1223,10 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			PawnWeight = get_rand_num(PawnWeight * (100 - RandRange) / 100, PawnWeight * (100  + RandRange) / 100);
 			}
+		if (PawnWeight < 1)
+			PawnWeight = 1;
+		else if (PawnWeight > MAX_PAWN_WEIGHT)
+			PawnWeight = MAX_PAWN_WEIGHT;
         Send("PawnWeight: %d\n", PawnWeight);
         }
     if (!strcmp(arg[0], "PositionalWeight"))
@@ -1037,6 +1238,10 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			PositionalWeight = get_rand_num(PSTWeight * (100 - RandRange) / 100, PositionalWeight * (100  + RandRange) / 100);
 			}
+		if (PositionalWeight < 1)
+			PositionalWeight = 1;
+		else if (PositionalWeight > MAX_POSITIONAL_WEIGHT)
+			PositionalWeight = MAX_POSITIONAL_WEIGHT;
         Send("PositionalWeight: %d\n", PositionalWeight);
         }	
     if (!strcmp(arg[0], "PSTWeight"))
@@ -1048,6 +1253,10 @@ static void parse_option(const char *str)
 			RandRange = atoi(arg[2]);
 			PSTWeight = get_rand_num(PSTWeight * (100 - RandRange) / 100, PSTWeight * (100  + RandRange) / 100);
 			}
+		if (PSTWeight < 1)
+			PSTWeight = 1;
+		else if (PSTWeight > MAX_PST_WEIGHT)
+			PSTWeight = MAX_PST_WEIGHT;
         Send("PSTWeight: %d\n", PSTWeight);
         }	
 	}
@@ -1274,3 +1483,4 @@ void gen_cur_cfg_file()
 	fclose(fp);
     Send("done\n\n");
     }
+#endif

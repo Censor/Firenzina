@@ -138,21 +138,21 @@ static INLINE void MakeWhiteOO(typePos *Position, int to)
         {
         wBitboardOcc ^= F1H1;
         wBitboardR ^= F1H1;
-       Position->OccupiedBW ^= F1H1;
-       Position->Dyn->Static += PST(wEnumR, F1) - PST(wEnumR, H1);
-       Position->Dyn->Hash ^= Hash(wEnumR, F1) ^ Hash(wEnumR, H1);
-       Position->sq[H1] = 0;
-       Position->sq[F1] = wEnumR;
+        Position->OccupiedBW ^= F1H1;
+        Position->Dyn->Static += PST(wEnumR, F1) - PST(wEnumR, H1);
+        Position->Dyn->Hash ^= Hash(wEnumR, F1) ^ Hash(wEnumR, H1);
+        Position->sq[H1] = 0;
+        Position->sq[F1] = wEnumR;
         }
     else if (to == C1)
         {
         wBitboardOcc ^= A1D1;
         wBitboardR ^= A1D1;
-       Position->OccupiedBW ^= A1D1;
-       Position->Dyn->Static += PST(wEnumR, D1) - PST(wEnumR, A1);
-       Position->Dyn->Hash ^= Hash(wEnumR, A1) ^ Hash(wEnumR, D1);
-       Position->sq[A1] = 0;
-       Position->sq[D1] = wEnumR;
+        Position->OccupiedBW ^= A1D1;
+        Position->Dyn->Static += PST(wEnumR, D1) - PST(wEnumR, A1);
+        Position->Dyn->Hash ^= Hash(wEnumR, A1) ^ Hash(wEnumR, D1);
+        Position->sq[A1] = 0;
+        Position->sq[D1] = wEnumR;
         }
     }
 static INLINE void MakeBlackOO(typePos *Position, int to)
@@ -161,21 +161,21 @@ static INLINE void MakeBlackOO(typePos *Position, int to)
         {
         bBitboardOcc ^= F8H8;
         bBitboardR ^= F8H8;
-       Position->OccupiedBW ^= F8H8;
-       Position->Dyn->Static += PST(bEnumR, F8) - PST(bEnumR, H8);
-       Position->Dyn->Hash ^= Hash(bEnumR, F8) ^ Hash(bEnumR, H8);
-       Position->sq[H8] = 0;
-       Position->sq[F8] = bEnumR;
+        Position->OccupiedBW ^= F8H8;
+        Position->Dyn->Static += PST(bEnumR, F8) - PST(bEnumR, H8);
+        Position->Dyn->Hash ^= Hash(bEnumR, F8) ^ Hash(bEnumR, H8);
+        Position->sq[H8] = 0;
+        Position->sq[F8] = bEnumR;
         }
     else if (to == C8)
         {
         bBitboardOcc ^= A8D8;
         bBitboardR ^= A8D8;
-       Position->OccupiedBW ^= A8D8;
-       Position->Dyn->Static += PST(bEnumR, D8) - PST(bEnumR, A8);
-       Position->Dyn->Hash ^= Hash(bEnumR, A8) ^ Hash(bEnumR, D8);
-       Position->sq[A8] = 0;
-       Position->sq[D8] = bEnumR;
+        Position->OccupiedBW ^= A8D8;
+        Position->Dyn->Static += PST(bEnumR, D8) - PST(bEnumR, A8);
+        Position->Dyn->Hash ^= Hash(bEnumR, A8) ^ Hash(bEnumR, D8);
+        Position->sq[A8] = 0;
+        Position->sq[D8] = bEnumR;
         }
     }
 static INLINE void Castle960White( typePos *Position, int move, int to, int fr )
@@ -311,68 +311,67 @@ void MakeWhite( typePos* Position, uint32 move )
 #endif
 
     pi = Position->sq[fr];
-   Position->Dyn++;
-   Position->Dyn->reversible++;
-   Position->Dyn->move = move;
+    Position->Dyn++;
+    Position->Dyn->reversible++;
+    Position->Dyn->move = move;
     fl = CastleTable[fr] & CastleTable[to] & Position->Dyn->oo;
-   Position->Dyn->Hash ^= HashCastling[Position->Dyn->oo ^ fl];
-   Position->Dyn->PawnHash ^= HashCastling[Position->Dyn->oo ^ fl];
-	if(Position->Dyn->oo != fl)
-		Position->Dyn->oo = fl;
+    Position->Dyn->Hash ^= HashCastling[Position->Dyn->oo ^ fl];
+    Position->Dyn->PawnHash ^= HashCastling[Position->Dyn->oo ^ fl];
+    Position->Dyn->oo = fl;
     if (Position->Dyn->ep)
         {
-       Position->Dyn->Hash ^= HashEP[Position->Dyn->ep & 7];
-       Position->Dyn->ep = 0;
+        Position->Dyn->Hash ^= HashEP[Position->Dyn->ep & 7];
+        Position->Dyn->ep = 0;
         }
-   Position->sq[fr] = 0;
+    Position->sq[fr] = 0;
     mask = SqClear[fr];
     wBitboardOcc &= mask;
-   Position->bitboard[pi] &= mask;
+    Position->bitboard[pi] &= mask;
     ClearOccupied(mask, fr);
-   Position->Dyn->Static += PST(pi, to) - PST(pi, fr);
+    Position->Dyn->Static += PST(pi, to) - PST(pi, fr);
     mask = Hash(pi, fr) ^ Hash(pi, to);
     cp = Position->sq[to];
-   Position->Dyn->cp = cp;
-   Position->Dyn->Hash ^= mask;
+    Position->Dyn->cp = cp;
+    Position->Dyn->Hash ^= mask;
     if (pi == wEnumP)
-		Position->Dyn->PawnHash ^= mask;
-   Position->wtm ^= 1;
-   Position->height++;
-   UpdateSeldepth(Position);
-   Position->Dyn->Hash ^= HashWTM;
+        Position->Dyn->PawnHash ^= mask;
+    Position->wtm ^= 1;
+    Position->height++;
+	UpdateSeldepth(Position);
+    Position->Dyn->Hash ^= HashWTM;
     if (pi == wEnumK)
         {
-       Position->Dyn->PawnHash ^= mask;
-       Position->wKsq = to;
+        Position->Dyn->PawnHash ^= mask;
+        Position->wKsq = to;
         }
     if (cp)
         {
         mask = SqClear[to];
         bBitboardOcc &= mask;
-       Position->bitboard[cp] &= mask;
-       Position->Dyn->material -= MaterialValue[cp];
-       Position->Dyn->Static -= PST(cp, to);
-		if (cp == bEnumP)
-			Position->Dyn->PawnHash ^= Hash(cp, to);
-		Position->Dyn->Hash ^= Hash(cp, to);
-		Position->Dyn->reversible = 0;
-		}
-	else
-		{
-		mask = SqSet[to];
-		SetOccupied(mask, to);
-		if (MoveIsOO(move))
-			{
-			RevCastle(Position);
-			MakeWhiteOO(Position, to);
-			}
+        Position->bitboard[cp] &= mask;
+        Position->Dyn->material -= MaterialValue[cp];
+        Position->Dyn->Static -= PST(cp, to);
+        if (cp == bEnumP)
+            Position->Dyn->PawnHash ^= Hash(cp, to);
+        Position->Dyn->Hash ^= Hash(cp, to);
+        Position->Dyn->reversible = 0;
         }
-   Position->sq[to] = pi;
+    else
+        {
+        mask = SqSet[to];
+        SetOccupied(mask, to);
+        if (MoveIsOO(move))
+            {
+            RevCastle(Position);
+            MakeWhiteOO(Position, to);
+            }
+        }
+    Position->sq[to] = pi;
     wBitboardOcc |= SqSet[to];
-   Position->bitboard[pi] |= SqSet[to];
+    Position->bitboard[pi] |= SqSet[to];
     if (pi == wEnumP)
         {
-       Position->Dyn->reversible = 0;
+        Position->Dyn->reversible = 0;
         if (MoveIsEP(move))
             {
             z = to ^ 8;
@@ -380,51 +379,50 @@ void MakeWhite( typePos* Position, uint32 move )
             bBitboardOcc &= mask;
             bBitboardP &= mask;
             ClearOccupied(mask, z);
-           Position->Dyn->material -= MaterialValue[bEnumP];
-           Position->Dyn->Static -= PST(bEnumP, z);
-           Position->Dyn->Hash ^= Hash(bEnumP, z);
-           Position->Dyn->PawnHash ^= Hash(bEnumP, z);
-           Position->sq[z] = 0;
+            Position->Dyn->material -= MaterialValue[bEnumP];
+            Position->Dyn->Static -= PST(bEnumP, z);
+            Position->Dyn->Hash ^= Hash(bEnumP, z);
+            Position->Dyn->PawnHash ^= Hash(bEnumP, z);
+            Position->sq[z] = 0;
             }
         else if (MoveIsProm(move))
             {
             pi = PromW[(move & FlagMask) >> 12];
             if (pi == wEnumBL && SqSet[to] & Black)
                 pi = wEnumBD;
-           Position->sq[to] = pi;
+            Position->sq[to] = pi;
             if (Position->bitboard[pi])
                Position->Dyn->material |= 0x80000000;
             wBitboardP &= SqClear[to];
-           Position->bitboard[pi] |= SqSet[to];
-           Position->Dyn->material += MaterialValue[pi] - MaterialValue[wEnumP];
-           Position->Dyn->Static += PST(pi, to) - PST(wEnumP, to);
-           Position->Dyn->Hash ^= Hash(pi, to) ^ Hash(wEnumP, to);
-           Position->Dyn->PawnHash ^= Hash(wEnumP, to);
+            Position->bitboard[pi] |= SqSet[to];
+            Position->Dyn->material += MaterialValue[pi] - MaterialValue[wEnumP];
+            Position->Dyn->Static += PST(pi, to) - PST(wEnumP, to);
+            Position->Dyn->Hash ^= Hash(pi, to) ^ Hash(wEnumP, to);
+            Position->Dyn->PawnHash ^= Hash(wEnumP, to);
             }
         else if ((to ^ fr) == 16)
             {
             if (WhiteEP[to & 7] & bBitboardP)
                 {
                 z = (fr + to) >> 1;
-               Position->Dyn->ep = z;
-               Position->Dyn->Hash ^= HashEP[z & 7];
+                Position->Dyn->ep = z;
+                Position->Dyn->Hash ^= HashEP[z & 7];
                 }
             }
         }
-   Position->Stack[++(Position->StackHeight)] = Position->Dyn->Hash;
-	
+    Position->Stack[++(Position->StackHeight)] = Position->Dyn->Hash;
 #ifdef HasPreFetch
-		if(Position->Dyn->PawnHash != (Position->Dyn - 1)->PawnHash) // Code by Quoc Vuong
-			prefetch(PawnHash + (Position->Dyn->PawnHash & ((uint64)(CurrentPHashSize - 1))));
-		prefetch(HashTable + (Position->Dyn->Hash & HashMask));
+	if(Position->Dyn->PawnHash != (Position->Dyn - 1)->PawnHash) // Code by Quoc Vuong
+		prefetch(PawnHash + (Position->Dyn->PawnHash & ((uint64)(CurrentPHashSize - 1))));
+	prefetch(HashTable + (Position->Dyn->Hash & HashMask));
 #endif
 
     }
-void MakeBlack( typePos* Position, uint32 move )
+void MakeBlack(typePos *Position, uint32 move)
     {
     int fr, to, pi, fl, cp, z;
     uint64 mask;
-   Position->nodes++;
+    Position->nodes++;
     memcpy(Position->Dyn + 1, Position->Dyn, 32);
     fr = From(move);
     to = To(move);
@@ -438,29 +436,28 @@ void MakeBlack( typePos* Position, uint32 move )
 #endif
 
     pi = Position->sq[fr];
-   Position->Dyn++;
-   Position->Dyn->reversible++;
-   Position->Dyn->move = move;
+    Position->Dyn++;
+    Position->Dyn->reversible++;
+    Position->Dyn->move = move;
     fl = CastleTable[fr] & CastleTable[to] & Position->Dyn->oo;
-   Position->Dyn->Hash ^= HashCastling[Position->Dyn->oo ^ fl];
-   Position->Dyn->PawnHash ^= HashCastling[Position->Dyn->oo ^ fl];
-	Position->Dyn->oo = fl;
-
+    Position->Dyn->Hash ^= HashCastling[Position->Dyn->oo ^ fl];
+    Position->Dyn->PawnHash ^= HashCastling[Position->Dyn->oo ^ fl];
+    Position->Dyn->oo = fl;
     if (Position->Dyn->ep)
         {
-       Position->Dyn->Hash ^= HashEP[Position->Dyn->ep & 7];
-       Position->Dyn->ep = 0;
+        Position->Dyn->Hash ^= HashEP[Position->Dyn->ep & 7];
+        Position->Dyn->ep = 0;
         }
-   Position->sq[fr] = 0;
+    Position->sq[fr] = 0;
     mask = SqClear[fr];
     bBitboardOcc &= mask;
-   Position->bitboard[pi] &= mask;
+    Position->bitboard[pi] &= mask;
     ClearOccupied(mask, fr);
-   Position->Dyn->Static += PST(pi, to) - PST(pi, fr);
+    Position->Dyn->Static += PST(pi, to) - PST(pi, fr);
     mask = Hash(pi, fr) ^ Hash(pi, to);
     cp = Position->sq[to];
-   Position->Dyn->cp = cp;
-   Position->Dyn->Hash ^= mask;
+    Position->Dyn->cp = cp;
+    Position->Dyn->Hash ^= mask;
 	if (pi == bEnumP)
 		Position->Dyn->PawnHash ^= mask;
 	Position->wtm ^= 1;
@@ -494,12 +491,12 @@ void MakeBlack( typePos* Position, uint32 move )
 			MakeBlackOO(Position, to);
 			}
         }
-   Position->sq[to] = pi;
+    Position->sq[to] = pi;
     bBitboardOcc |= SqSet[to];
-   Position->bitboard[pi] |= SqSet[to];
+    Position->bitboard[pi] |= SqSet[to];
     if (pi == bEnumP)
         {
-       Position->Dyn->reversible = 0;
+        Position->Dyn->reversible = 0;
         if (MoveIsEP(move))
             {
             z = to ^ 8;
@@ -507,58 +504,57 @@ void MakeBlack( typePos* Position, uint32 move )
             wBitboardOcc &= mask;
             wBitboardP &= mask;
             ClearOccupied(mask, z);
-           Position->Dyn->material -= MaterialValue[wEnumP];
-           Position->Dyn->Static -= PST(wEnumP, z);
-           Position->Dyn->Hash ^= Hash(wEnumP, z);
-           Position->Dyn->PawnHash ^= Hash(wEnumP, z);
-           Position->sq[z] = 0;
+            Position->Dyn->material -= MaterialValue[wEnumP];
+            Position->Dyn->Static -= PST(wEnumP, z);
+            Position->Dyn->Hash ^= Hash(wEnumP, z);
+            Position->Dyn->PawnHash ^= Hash(wEnumP, z);
+            Position->sq[z] = 0;
             }
         else if (MoveIsProm(move))
             {
             pi = PromB[(move & FlagMask) >> 12];
             if (pi == bEnumBL && SqSet[to] & Black)
                 pi = bEnumBD;
-           Position->sq[to] = pi;
+            Position->sq[to] = pi;
             if (Position->bitboard[pi])
-               Position->Dyn->material |= 0x80000000;
-           Position->bitboard[bEnumP] &= SqClear[to];
-           Position->bitboard[pi] |= SqSet[to];
-           Position->Dyn->material += MaterialValue[pi] - MaterialValue[bEnumP];
-           Position->Dyn->Static += PST(pi, to) - PST(bEnumP, to);
-           Position->Dyn->Hash ^= Hash(pi, to) ^ Hash(bEnumP, to);
-           Position->Dyn->PawnHash ^= Hash(bEnumP, to);
+                Position->Dyn->material |= 0x80000000;
+            Position->bitboard[bEnumP] &= SqClear[to];
+            Position->bitboard[pi] |= SqSet[to];
+            Position->Dyn->material += MaterialValue[pi] - MaterialValue[bEnumP];
+            Position->Dyn->Static += PST(pi, to) - PST(bEnumP, to);
+            Position->Dyn->Hash ^= Hash(pi, to) ^ Hash(bEnumP, to);
+            Position->Dyn->PawnHash ^= Hash(bEnumP, to);
             }
         else if ((to ^ fr) == 16)
             {
             if (BlackEP[to & 7] & wBitboardP)
                 {
                 z = (fr + to) >> 1;
-               Position->Dyn->ep = z;
-               Position->Dyn->Hash ^= HashEP[z & 7];
+                Position->Dyn->ep = z;
+                Position->Dyn->Hash ^= HashEP[z & 7];
                 }
             }
         }
-   Position->Stack[++(Position->StackHeight)] = Position->Dyn->Hash;
-
+    Position->Stack[++(Position->StackHeight)] = Position->Dyn->Hash;
 #ifdef HasPreFetch
-		if(Position->Dyn->PawnHash != (Position->Dyn - 1)->PawnHash) // Code by Quoc Vuong
-			prefetch(PawnHash + (Position->Dyn->PawnHash & ((uint64)(CurrentPHashSize - 1))));
-		prefetch(HashTable + (Position->Dyn->Hash & HashMask));
+	if(Position->Dyn->PawnHash != (Position->Dyn - 1)->PawnHash) // Code by Quoc Vuong
+		prefetch(PawnHash + (Position->Dyn->PawnHash & ((uint64)(CurrentPHashSize - 1))));
+	prefetch(HashTable + (Position->Dyn->Hash & HashMask));
 #endif
 
     }
-void Make(typePos* Position, uint32 move)
+void Make(typePos *Position, uint32 move)
     {
     if (Position->wtm)
         {
         if (NodeCheck & 4095)
             NodeCheck--;
-       Position->nodes--;
+        Position->nodes--;
         MakeWhite(Position, move);
         }
     else
         {
-       Position->nodes--;
+        Position->nodes--;
         MakeBlack(Position, move);
         }
     }

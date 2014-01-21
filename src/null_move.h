@@ -36,32 +36,32 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 
 static INLINE void MakeNull(typePos* Position)
     {
-   Position->nodes++;
-   Position->Dyn->SavedFlags = Position->Dyn->flags;
+    Position->nodes++;
+    Position->Dyn->SavedFlags = Position->Dyn->flags;
     memcpy(Position->Dyn + 1, Position->Dyn, 64);
-   Position->Dyn++;
-   Position->Dyn->Hash ^= HashWTM;
-   Position->wtm ^= 1;
-   Position->height++;
+    Position->Dyn++;
+    Position->Dyn->Hash ^= HashWTM;
+    Position->wtm ^= 1;
+    Position->height++;
 	UpdateSeldepth(Position);
-   Position->Dyn->reversible++;
+    Position->Dyn->reversible++;
     if (Position->Dyn->ep)
         {
-       Position->Dyn->Hash ^= HashEP[Position->Dyn->ep & 7];
-       Position->Dyn->ep = 0;
+        Position->Dyn->Hash ^= HashEP[Position->Dyn->ep & 7];
+        Position->Dyn->ep = 0;
         }
-   Position->Dyn->Value = -((Position->Dyn - 1)->Value + TempoValue);
-   Position->Dyn->PositionalValue = (Position->Dyn - 1)->PositionalValue;
-   Position->Dyn->lazy = (Position->Dyn - 1)->lazy;
-   Position->Dyn->flags &= ~3;
-   Position->Dyn->move = 0;
-   Position->Stack[++(Position->StackHeight)] = Position->Dyn->Hash;
+    Position->Dyn->Value = -((Position->Dyn - 1)->Value + TempoValue);
+    Position->Dyn->PositionalValue = (Position->Dyn - 1)->PositionalValue;
+    Position->Dyn->lazy = (Position->Dyn - 1)->lazy;
+    Position->Dyn->flags &= ~3;
+    Position->Dyn->move = 0;
+    Position->Stack[++(Position->StackHeight)] = Position->Dyn->Hash;
     }
-static INLINE void UndoNull(typePos* Position)
+static INLINE void UndoNull(typePos *Position)
     {
-   Position->Dyn--;
-   Position->StackHeight--;
-   Position->height--;
-   Position->wtm ^= 1;
-   Position->Dyn->flags = Position->Dyn->SavedFlags;
+    Position->Dyn--;
+    Position->StackHeight--;
+    Position->height--;
+    Position->wtm ^= 1;
+    Position->Dyn->flags = Position->Dyn->SavedFlags;
     }

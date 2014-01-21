@@ -41,13 +41,14 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 #include "black.h"
 #endif
 
+//#define ValueRed (depth >> 1)
 int MyPV(typePos* Position, int Alpha, int Beta, int depth, int check)
     {
     typeNext NextMove[1];
     TransDeclare();
     int good_move, v, Value, i, trans_depth, move, move_depth = 0, trans_move = 0, hash_depth;
     typeMoveList *list, *p, *q;
-    int extend, best_value, new_depth, move_is_check, to, fr;
+    int extend, best_value, new_depth, half_depth, near_half_depth, move_is_check, to, fr;
     typeDynamic *Pos0 = Position->Dyn;
     int singular, LMR, cnt, Median, Margin;
     bool Split, see;
@@ -183,20 +184,22 @@ int MyPV(typePos* Position, int Alpha, int Beta, int depth, int check)
     if (depth >= MinTransMoveDepth && NextMove->trans_move && singular < 2 && MyOK(Position, NextMove->trans_move))
         {
         move = NextMove->trans_move;
+		half_depth = depth >> 1;
+		near_half_depth = depth - (MIN (12, half_depth));
         if (check)
-            v = MyExcludeCheck(Position, Alpha - depth, depth - DepthRed, move & 0x7fff);
+            v = MyExcludeCheck(Position, Alpha - depth, near_half_depth, move & 0x7fff);
         else
-            v = MyExclude(Position, Alpha - depth, depth - DepthRed, move & 0x7fff);
+            v = MyExclude(Position, Alpha - depth, near_half_depth, move & 0x7fff);
         CheckHalt();
         if (v < Alpha - depth)
             {
             singular = 1;
-            if (check)
-                v = MyExcludeCheck(Position, Alpha - (depth << 1), depth - DepthRed, move & 0x7fff);
+			if (check)
+                v = MyExcludeCheck(Position, Alpha - half_depth, near_half_depth, move & 0x7fff);
             else
-                v = MyExclude(Position, Alpha - (depth << 1), depth - DepthRed, move & 0x7fff);
+                v = MyExclude(Position, Alpha - half_depth, near_half_depth, move & 0x7fff);
             CheckHalt();
-            if (v < Alpha - (depth << 1))
+            if (v < Alpha - half_depth)
                 singular = 2;
             }
         }

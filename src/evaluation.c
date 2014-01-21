@@ -56,7 +56,7 @@ void InitRandom32(uint64 x)
         Rand[cpu].RandKey = x;
         }
     }
-static void AdjustPositionalGain(typePos* Position, int move)
+static void AdjustPositionalGain(typePos *Position, int move)
     {
     int v, p, m;
     if (Position->Dyn->cp)
@@ -71,7 +71,7 @@ static void AdjustPositionalGain(typePos* Position, int move)
         MaxPosGain(p, m)--;
     }
 
-static int MaterialValue(typePos* Position)
+static int MaterialValue(typePos *Position)
     {
     int Value = QValue * (POPCNT(wBitboardQ) - POPCNT(bBitboardQ));
     Value += RValue * (POPCNT(wBitboardR) - POPCNT(bBitboardR));
@@ -83,23 +83,17 @@ static int MaterialValue(typePos* Position)
         Value += BPValue;
     if (bBitboardBL && bBitboardBD)
         Value -= BPValue;
-
-    Value *= (MaterialWeight << 10) / 100;
-    Value >>= 10;
-	if (Value > 2000)
-		Value -= (Value - 2000) >> 1;
-	if (Value < -2000)
-		Value -= (Value + 2000) >> 1;	
-    return Value;
+	
+    return (Value * MaterialWeight) >> 7;
     }
-static void KingPawnWhite(typePos* Position, int matval, uint8 Token, typePawnEval* PawnInfo)
+static void KingPawnWhite(typePos *Position, int matval, uint8 Token, typePawnEval *PawnInfo)
     {
     int Value, WhiteLeader, BlackLeader, sq, rank;
     uint8 C;
     uint64 A, T, wPatt, bPatt;
     if (PawnInfo->PawnHash != Position->Dyn->PawnHash)
         PawnEval(Position, PawnInfo);
-   Position->Dyn->wXray = Position->Dyn->bXray = 0;
+    Position->Dyn->wXray = Position->Dyn->bXray = 0;
     Value = ((Position->Dyn->Static)+(PawnInfo->Score));
     Value = (sint16)(Value & 0xffff);
     WhiteLeader = 0;
@@ -136,37 +130,37 @@ static void KingPawnWhite(typePos* Position, int matval, uint8 Token, typePawnEv
         else if (BlackLeader <= rank)
             BlackLeader = rank;
         }
-   Position->Dyn->Value = (Token * (Value + matval)) >> 7;
-   Position->Dyn->bKcheck = Position->Dyn->wKcheck = 0;
+    Position->Dyn->Value = (Token * (Value + matval)) >> 7;
+    Position->Dyn->bKcheck = Position->Dyn->wKcheck = 0;
     if (WhiteLeader > BlackLeader && (bBitboardP & InFrontB[R8 - WhiteLeader + 1]) == 0)
        Position->Dyn->Value += 150 + 50 * WhiteLeader;
     else if (BlackLeader > WhiteLeader + 1 && (wBitboardP & InFrontW[BlackLeader - 2]) == 0)
        Position->Dyn->Value -= 150 + 50 * BlackLeader;
     A = (wBitboardP &(~FileA)) << 7;
     T = A & bBitboardK;
-   Position->Dyn->bKcheck |= (T >> 7);
-   Position->Dyn->wAtt = A;
+    Position->Dyn->bKcheck |= (T >> 7);
+    Position->Dyn->wAtt = A;
     A = (wBitboardP &(~FileH)) << 9;
     T = A & bBitboardK;
-   Position->Dyn->bKcheck |= (T >> 9);
-   Position->Dyn->wAtt |= A;
+    Position->Dyn->bKcheck |= (T >> 9);
+    Position->Dyn->wAtt |= A;
     wPatt = Position->Dyn->wAtt;
-   Position->Dyn->wAtt |= AttK[Position->wKsq];
+    Position->Dyn->wAtt |= AttK[Position->wKsq];
     A = (bBitboardP &(~FileH)) >> 7;
     T = A & wBitboardK;
-   Position->Dyn->wKcheck |= (T << 7);
-   Position->Dyn->bAtt = A;
+    Position->Dyn->wKcheck |= (T << 7);
+    Position->Dyn->bAtt = A;
     A = (bBitboardP &(~FileA)) >> 9;
     T = A & wBitboardK;
-   Position->Dyn->wKcheck |= (T << 9);
-   Position->Dyn->bAtt |= A;
+    Position->Dyn->wKcheck |= (T << 9);
+    Position->Dyn->bAtt |= A;
     bPatt = Position->Dyn->bAtt;
-   Position->Dyn->bAtt |= AttK[Position->bKsq];
+    Position->Dyn->bAtt |= AttK[Position->bKsq];
     if (bBitboardK & AttK[Position->wKsq])
-        {
-       Position->Dyn->bKcheck |= SqSet[Position->wKsq];
-       Position->Dyn->wKcheck |= SqSet[Position->bKsq];
-        }
+    {
+        Position->Dyn->bKcheck |= SqSet[Position->wKsq];
+        Position->Dyn->wKcheck |= SqSet[Position->bKsq];
+    }
     if (Position->Dyn->Value > 0 && !wBitboardP)
        Position->Dyn->Value = 0;
     else if (Position->Dyn->Value < 0 && !bBitboardP)
@@ -176,7 +170,7 @@ static void KingPawnWhite(typePos* Position, int matval, uint8 Token, typePawnEv
         if ((wBitboardP & ~FileH) == 0 && (bBitboardK | AttK[Position->bKsq]) & SqSet[H8])
            Position->Dyn->Value = 0;
         if ((wBitboardP & ~FileA) == 0 && (bBitboardK | AttK[Position->bKsq]) & SqSet[A8])
-			Position->Dyn->Value = 0;
+		   Position->Dyn->Value = 0;
 		if (Position->sq[B6] == wEnumP && Position->sq[B7] == bEnumP && !(wBitboardP & ~FileB)
 			&& (bBitboardK | AttK[Position->bKsq]) & SqSet[A8])
 			Position->Dyn->Value = 0;
@@ -199,7 +193,7 @@ static void KingPawnWhite(typePos* Position, int matval, uint8 Token, typePawnEv
         if ((bBitboardP & ~FileH) == 0 && (wBitboardK | AttK[Position->wKsq]) & SqSet[H1])
            Position->Dyn->Value = 0;
         if ((bBitboardP & ~FileA) == 0 && (wBitboardK | AttK[Position->wKsq]) & SqSet[A1])
-			Position->Dyn->Value = 0;
+		   Position->Dyn->Value = 0;
 		if (Position->sq[B3] == bEnumP && Position->sq[B2] == wEnumP && !(bBitboardP & ~FileB)
 			&& (wBitboardK | AttK[Position->wKsq]) & SqSet[A1])
 			Position->Dyn->Value = 0;
@@ -216,19 +210,19 @@ static void KingPawnWhite(typePos* Position, int matval, uint8 Token, typePawnEv
             else
                Position->Dyn->Value = ((sint16)(Position->Dyn->Static & 0xffff)) - 75 * rank - 250;
             }
-		}
-	if (Position->Dyn->Value < 0 && !((wBitboardP << 8) & ~Position->OccupiedBW) && !(wPatt &bBitboardOcc)
+		if (!((wBitboardP << 8) & ~Position->OccupiedBW) && !(wPatt & bBitboardOcc)
 			&& !Position->Dyn->ep && !(AttK[Position->wKsq]& ~Position->Dyn->bAtt) && !Position->Dyn->wKcheck)
 			Position->Dyn->Value = 0;
+        }
     }
-static void KingPawnBlack(typePos* Position, int matval, uint8 Token, typePawnEval* PawnInfo)
+static void KingPawnBlack(typePos *Position, int matval, uint8 Token, typePawnEval *PawnInfo)
     {
     int Value, WhiteLeader, BlackLeader, sq, rank;
     uint8 C;
     uint64 A, T, wPatt, bPatt;
     if (PawnInfo->PawnHash != Position->Dyn->PawnHash)
         PawnEval(Position, PawnInfo);
-   Position->Dyn->wXray = Position->Dyn->bXray = 0;
+    Position->Dyn->wXray = Position->Dyn->bXray = 0;
     Value = ((Position->Dyn->Static)+(PawnInfo->Score));
     Value = (sint16)(Value & 0xffff);
     WhiteLeader = 0;
@@ -265,37 +259,37 @@ static void KingPawnBlack(typePos* Position, int matval, uint8 Token, typePawnEv
         else if (BlackLeader <= rank)
             BlackLeader = rank;
         }
-   Position->Dyn->Value = -(Token * (Value + matval)) >> 7;
-   Position->Dyn->bKcheck = Position->Dyn->wKcheck = 0;
+    Position->Dyn->Value = -(Token * (Value + matval)) >> 7;
+    Position->Dyn->bKcheck = Position->Dyn->wKcheck = 0;
     if (WhiteLeader > BlackLeader + 1 && (bBitboardP & InFrontB[R8 - WhiteLeader + 2]) == 0)
        Position->Dyn->Value -= 150 + 50 * WhiteLeader;
     else if (BlackLeader > WhiteLeader && (wBitboardP & InFrontW[BlackLeader - 1]) == 0)
        Position->Dyn->Value += 150 + 50 * BlackLeader;
     A = (wBitboardP &(~FileA)) << 7;
     T = A & bBitboardK;
-   Position->Dyn->bKcheck |= (T >> 7);
-   Position->Dyn->wAtt = A;
+    Position->Dyn->bKcheck |= (T >> 7);
+    Position->Dyn->wAtt = A;
     A = (wBitboardP &(~FileH)) << 9;
     T = A & bBitboardK;
-   Position->Dyn->bKcheck |= (T >> 9);
-   Position->Dyn->wAtt |= A;
+    Position->Dyn->bKcheck |= (T >> 9);
+    Position->Dyn->wAtt |= A;
     wPatt = Position->Dyn->wAtt;
-   Position->Dyn->wAtt |= AttK[Position->wKsq];
+    Position->Dyn->wAtt |= AttK[Position->wKsq];
     A = (bBitboardP &(~FileH)) >> 7;
     T = A & wBitboardK;
-   Position->Dyn->wKcheck |= (T << 7);
-   Position->Dyn->bAtt = A;
+    Position->Dyn->wKcheck |= (T << 7);
+    Position->Dyn->bAtt = A;
     A = (bBitboardP &(~FileA)) >> 9;
     T = A & wBitboardK;
-   Position->Dyn->wKcheck |= (T << 9);
-   Position->Dyn->bAtt |= A;
+    Position->Dyn->wKcheck |= (T << 9);
+    Position->Dyn->bAtt |= A;
     bPatt = Position->Dyn->bAtt;
-   Position->Dyn->bAtt |= AttK[Position->bKsq];
+    Position->Dyn->bAtt |= AttK[Position->bKsq];
     if (bBitboardK & AttK[Position->wKsq])
-        {
+    {
        Position->Dyn->bKcheck |= SqSet[Position->wKsq];
        Position->Dyn->wKcheck |= SqSet[Position->bKsq];
-        }
+    }
     if (Position->Dyn->Value < 0 && !wBitboardP)
        Position->Dyn->Value = 0;
     else if (Position->Dyn->Value > 0 && !bBitboardP)
@@ -351,7 +345,7 @@ static void KingPawnBlack(typePos* Position, int matval, uint8 Token, typePawnEv
         }
     }
 
-void Eval(typePos * Position, int min, int max, int move, int depth)
+void Eval(typePos *Position, int min, int max, int move, int depth)
     {
     typePawnEval *PawnPointer;
     int index, matval, Value, MobValue = 0;
@@ -370,8 +364,8 @@ void Eval(typePos * Position, int min, int max, int move, int depth)
     PawnPointer = PawnHash + (Position->Dyn->PawnHash &(CurrentPHashSize - 1));
     index = (Position->Dyn->material >> 8) & 0x7ffff;
     Token = Material[index].token;
-   Position->Dyn->flags = Material[index].flags;
-   Position->Dyn->exact = false;
+    Position->Dyn->flags = Material[index].flags;
+    Position->Dyn->exact = false;
     if (!(Position->Dyn->material & 0x80000000))
         matval = Material[index].Value;
     else
@@ -382,7 +376,7 @@ void Eval(typePos * Position, int min, int max, int move, int depth)
             {
             Token = 0x80;
             matval = MaterialValue(Position);
-           Position->Dyn->flags = 0;
+            Position->Dyn->flags = 0;
             if (wBitboardQ | wBitboardR | wBitboardB | wBitboardN)
                Position->Dyn->flags |= 2;
             if (bBitboardQ | bBitboardR | bBitboardB | bBitboardN)
@@ -397,16 +391,16 @@ void Eval(typePos * Position, int min, int max, int move, int depth)
         else
             {
             matval = Material[index].Value;
-           Position->Dyn->material &= 0x7fffffff;
+            Position->Dyn->material &= 0x7fffffff;
             }
         }
     if (((Position->Dyn->Hash ^ GetEvalHash(Position->Dyn->Hash)) & 0xffffffffffff0000) == 0)
         {
         Value = (int)((sint16)(GetEvalHash(Position->Dyn->Hash) & 0xffff));
-       Position->Dyn->lazy = 0;
+        Position->Dyn->lazy = 0;
         Mobility(Position);
-       Position->Dyn->PositionalValue = ((Position->wtm) ? Value : -Value) - matval;
-       Position->Dyn->Value = Value;
+        Position->Dyn->PositionalValue = ((Position->wtm) ? Value : -Value) - matval;
+        Position->Dyn->Value = Value;
         if (move && !(Position->Dyn - 1)->lazy)
             AdjustPositionalGain(Position, move);
         if (Value > ValueCut || Value < -ValueCut)
@@ -449,10 +443,10 @@ void Eval(typePos * Position, int min, int max, int move, int depth)
     PawnInfo->PawnHash ^= (((uint64 *)(PawnInfo)) + 0x3)[0];
     if ((Position->Dyn->material & 0xff) == 0)
         {
-       Position->wtm
+        Position->wtm
            ? KingPawnWhite(Position, matval, Token, PawnInfo) : KingPawnBlack(Position, matval, Token, PawnInfo);
-       Position->Dyn->lazy = 1;
-       Position->Dyn->PositionalValue = 0;
+        Position->Dyn->lazy = 1;
+        Position->Dyn->PositionalValue = 0;
         if (Position->Dyn->Value == 0)
            Position->Dyn->Value = 1;
         GetEvalHash(Position->Dyn->Hash) =
@@ -484,9 +478,9 @@ void Eval(typePos * Position, int min, int max, int move, int depth)
             v = positional + matval;
             if (v < -max - (int)((Position->Dyn - 1)->lazy << 4) || v > -min + (int)((Position->Dyn - 1)->lazy << 4))
                 {
-               Position->Dyn->lazy = (Position->Dyn - 1)->lazy + 1;
-               Position->Dyn->Value = v;
-               Position->Dyn->PositionalValue = positional;
+                Position->Dyn->lazy = (Position->Dyn - 1)->lazy + 1;
+                Position->Dyn->Value = v;
+                Position->Dyn->PositionalValue = positional;
                 Mobility(Position);
                 return;
                 }
@@ -508,9 +502,9 @@ void Eval(typePos * Position, int min, int max, int move, int depth)
             v = positional + matval;
             if (v < min - (int)((Position->Dyn - 1)->lazy << 4) || v > max + (int)((Position->Dyn - 1)->lazy << 4))
                 {
-               Position->Dyn->lazy = (Position->Dyn - 1)->lazy + 1;
-               Position->Dyn->Value = -v;
-               Position->Dyn->PositionalValue = positional;
+                Position->Dyn->lazy = (Position->Dyn - 1)->lazy + 1;
+                Position->Dyn->Value = -v;
+                Position->Dyn->PositionalValue = positional;
                 Mobility(Position);
                 return;
                 }
@@ -526,30 +520,28 @@ void Eval(typePos * Position, int min, int max, int move, int depth)
     Value = (PawnInfo->Score);
     end = (sint16)(Position->Dyn->Static & 0xffff);
     open = (end < 0) + (sint16)((Position->Dyn->Static >> 16) & 0xffff);
-    open *= (PSTWeight << 10) / 100;
-    open >>= 10;
-    end *= (PSTWeight << 10) / 100;
-    end >>= 10;
+    open = (open * PSTWeight) >> 7;
+    end = (end * PSTWeight) >> 7;
     Value += Score(open, end);
-   Position->Dyn->wXray = 0;
+    Position->Dyn->wXray = 0;
     A = (wBitboardP &(~FileA)) << 7;
     T = A & bBitboardK;
-   Position->Dyn->bKcheck = (T >> 7);
+    Position->Dyn->bKcheck = (T >> 7);
     wPatt = A;
     A = (wBitboardP &(~FileH)) << 9;
     T = A & bBitboardK;
-   Position->Dyn->bKcheck |= (T >> 9);
+    Position->Dyn->bKcheck |= (T >> 9);
     wPatt |= A;
-   Position->Dyn->wAtt = wPatt;
+    Position->Dyn->wAtt = wPatt;
     A = (bBitboardP &(~FileH)) >> 7;
     T = A & wBitboardK;
-   Position->Dyn->wKcheck = (T << 7);
+    Position->Dyn->wKcheck = (T << 7);
     bPatt = A;
     A = (bBitboardP &(~FileA)) >> 9;
     T = A & wBitboardK;
-   Position->Dyn->wKcheck |= (T << 9);
+    Position->Dyn->wKcheck |= (T << 9);
     bPatt |= A;
-   Position->Dyn->bAtt = bPatt;
+    Position->Dyn->bAtt = bPatt;
     bOKxray = (~bBitboardP) &~wPatt;
     wOKxray = (~wBitboardP) &~bPatt;
     wGoodMinor = (wBitboardN | wBitboardB) & wPatt;
@@ -574,8 +566,8 @@ void Eval(typePos * Position, int min, int max, int move, int depth)
             if (T)
                 {
                 Value += wQxrayD[Position->sq[BSF(T)]];
-               Position->Dyn->wXray |= T;
-               Position->XrayW[BSF(T)] = b;
+                Position->Dyn->wXray |= T;
+                Position->XrayW[BSF(T)] = b;
                 }
             }
         else if (bBitboardK & Ortho[b])
@@ -584,13 +576,13 @@ void Eval(typePos * Position, int min, int max, int move, int depth)
             if (T)
                 {
                 Value += wQxrayO[Position->sq[BSF(T)]];
-               Position->Dyn->wXray |= T;
-               Position->XrayW[BSF(T)] = b;
+                Position->Dyn->wXray |= T;
+                Position->XrayW[BSF(T)] = b;
                 }
             }
         A = AttB | AttR;
         T = A & wSafeMob;
-       Position->Dyn->wAtt |= A;
+        Position->Dyn->wAtt |= A;
         if (A & bKatt)
             bKhit += HitQ;
         if (A & bBitboardK)
@@ -621,15 +613,15 @@ void Eval(typePos * Position, int min, int max, int move, int depth)
         b = BSF(U);
         BitClear(b, U);
         A = AttR(b);
-       Position->Dyn->wAtt |= A;
+        Position->Dyn->wAtt |= A;
         if (bBitboardK & Ortho[b])
             {
             T = AttR(bKs) & A;
             if (T)
                 {
                 Value += wRxray[Position->sq[BSF(T)]];
-               Position->Dyn->wXray |= T;
-               Position->XrayW[BSF(T)] = b;
+                Position->Dyn->wXray |= T;
+                Position->XrayW[BSF(T)] = b;
                 }
             }
 
@@ -717,15 +709,15 @@ void Eval(typePos * Position, int min, int max, int move, int depth)
         b = BSF(U);
         BitClear(b, U);
         A = AttB(b);
-       Position->Dyn->wAtt |= A;
+        Position->Dyn->wAtt |= A;
         if (bBitboardK & Diag[b])
             {
             T = AttB(bKs) & A;
             if (T)
                 {
                 Value += wBxray[Position->sq[BSF(T)]];
-               Position->Dyn->wXray |= T;
-               Position->XrayW[BSF(T)] = b;
+                Position->Dyn->wXray |= T;
+                Position->XrayW[BSF(T)] = b;
                 }
             }
 
@@ -782,7 +774,7 @@ void Eval(typePos * Position, int min, int max, int move, int depth)
         b = BSF(U);
         BitClear(b, U);
         A = AttN[b];
-       Position->Dyn->wAtt |= A;
+        Position->Dyn->wAtt |= A;
         if (A &(bKatt | bBitboardK))
             bKhit += HitN;
         if (A & bBitboardK)
@@ -828,7 +820,7 @@ void Eval(typePos * Position, int min, int max, int move, int depth)
     else
         wKhit = 0;
     U = (Position->OccupiedBW << 8) & bBitboardP;
-   Position->Dyn->bXray = 0;
+    Position->Dyn->bXray = 0;
 	MobValue += POPCNT(U) * PawnAntiMobility;
     bSafeMob = ~(wPatt | bBitboardOcc);
     U = bBitboardQ;
@@ -844,8 +836,8 @@ void Eval(typePos * Position, int min, int max, int move, int depth)
             if (T)
                 {
                 Value -= bQxrayD[Position->sq[BSF(T)]];
-               Position->Dyn->bXray |= T;
-               Position->XrayB[BSF(T)] = b;
+                Position->Dyn->bXray |= T;
+                Position->XrayB[BSF(T)] = b;
                 }
             }
         else if (wBitboardK & Ortho[b])
@@ -854,13 +846,13 @@ void Eval(typePos * Position, int min, int max, int move, int depth)
             if (T)
                 {
                 Value -= bQxrayO[Position->sq[BSF(T)]];
-               Position->Dyn->bXray |= T;
-               Position->XrayB[BSF(T)] = b;
+                Position->Dyn->bXray |= T;
+                Position->XrayB[BSF(T)] = b;
                 }
             }
         A = AttB | AttR;
         T = A & bSafeMob;
-       Position->Dyn->bAtt |= A;
+        Position->Dyn->bAtt |= A;
         if (A & wKatt)
             wKhit += HitQ;
         if (A & wBitboardK)
@@ -891,15 +883,15 @@ void Eval(typePos * Position, int min, int max, int move, int depth)
         b = BSF(U);
         BitClear(b, U);
         A = AttR(b);
-       Position->Dyn->bAtt |= A;
+        Position->Dyn->bAtt |= A;
         if (wBitboardK & Ortho[b])
             {
             T = A & AttR(wKs);
             if (T)
                 {
                 Value -= bRxray[Position->sq[BSF(T)]];
-               Position->Dyn->bXray |= T;
-               Position->XrayB[BSF(T)] = b;
+                Position->Dyn->bXray |= T;
+                Position->XrayB[BSF(T)] = b;
                 }
             }
 
@@ -987,15 +979,15 @@ void Eval(typePos * Position, int min, int max, int move, int depth)
         b = BSF(U);
         BitClear(b, U);
         A = AttB(b);
-       Position->Dyn->bAtt |= A;
+        Position->Dyn->bAtt |= A;
         if (wBitboardK & Diag[b])
             {
             T = A & AttB(wKs);
             if (T)
                 {
                 Value -= bBxray[Position->sq[BSF(T)]];
-               Position->Dyn->bXray |= T;
-               Position->XrayB[BSF(T)] = b;
+                Position->Dyn->bXray |= T;
+                Position->XrayB[BSF(T)] = b;
                 }
             }
 
@@ -1054,7 +1046,7 @@ void Eval(typePos * Position, int min, int max, int move, int depth)
         b = BSF(U);
         BitClear(b, U);
         A = AttN[b];
-       Position->Dyn->bAtt |= A;
+        Position->Dyn->bAtt |= A;
         if (A &(wKatt | wBitboardK))
             wKhit += HitN;
         if (A & wBitboardK)
@@ -1097,18 +1089,16 @@ void Eval(typePos * Position, int min, int max, int move, int depth)
         }
     end = (sint16)(MobValue & 0xffff);
     open = (end < 0) + (sint16)((MobValue >> 16) & 0xffff);
-    open *= (MobilityWeight << 10) / 100;
-    open >>= 10;
-    end *= (MobilityWeight << 10) / 100;
-    end >>= 10;
+    open = (open * MobilityWeight) >> 7;
+    end = (end * MobilityWeight) >> 7;
     MobValue = Score(open, end);
     Value += MobValue;
-   Position->Dyn->wAtt |= wKatt;
-   Position->Dyn->bAtt |= bKatt;
+    Position->Dyn->wAtt |= wKatt;
+    Position->Dyn->bAtt |= bKatt;
     if (bKatt & wBitboardK)
         {
-       Position->Dyn->wKcheck |= SqSet[Position->bKsq];
-       Position->Dyn->bKcheck |= SqSet[Position->wKsq];
+        Position->Dyn->wKcheck |= SqSet[Position->bKsq];
+        Position->Dyn->bKcheck |= SqSet[Position->wKsq];
         }
     if ((~Position->Dyn->bAtt) &wKatt & bBitboardP)
         Value += KingAttUnguardedPawn;
@@ -1129,8 +1119,8 @@ void Eval(typePos * Position, int min, int max, int move, int depth)
         wKhit += HitK;
     ch = (((KingSafetyMult[wKhit >> 16] * (wKhit & 0xffff)) / KingSafetyDivider) << 16) + PawnInfo->wKdanger;
     ch >>= 16;
-    ch *= (KingSafetyWeight << 10) / 100;
-    ch >>= 10;
+    ch = (ch * KingSafetyWeight) >> 7;
+    //ch >>= 10;
     ch <<= 16;
     if (!bBitboardQ)
         {
@@ -1139,7 +1129,7 @@ void Eval(typePos * Position, int min, int max, int move, int depth)
         ch >>= 3;
         ch <<= 16;
         }
-   Position->Dyn->wKdanger = (uint8)(((uint32)(ch * phase)) >> 23);
+    Position->Dyn->wKdanger = (uint8)(((uint32)(ch * phase)) >> 23);
     Value -= ch;
     if ((~Position->Dyn->wAtt) &bKatt & wBitboardP)
         {
@@ -1161,8 +1151,8 @@ void Eval(typePos * Position, int min, int max, int move, int depth)
         bKhit += HitK;
     ch = (((KingSafetyMult[bKhit >> 16] * (bKhit & 0xffff)) / KingSafetyDivider) << 16) + PawnInfo->bKdanger;
     ch >>= 16;
-    ch *=  (KingSafetyWeight << 10) / 100;
-    ch >>= 10;
+    ch = (ch * KingSafetyWeight) >> 7;
+    // ch >>= 10;
     ch <<= 16;
     if (!wBitboardQ)
         {
@@ -1171,7 +1161,7 @@ void Eval(typePos * Position, int min, int max, int move, int depth)
         ch >>= 3;
         ch <<= 16;
         }
-   Position->Dyn->bKdanger = (uint8)(((uint32)(ch * phase)) >> 23);
+    Position->Dyn->bKdanger = (uint8)(((uint32)(ch * phase)) >> 23);
     Value += ch;
     if (wGoodAtt >= 2)
         Value += MultipleAtt;
@@ -1264,12 +1254,12 @@ void Eval(typePos * Position, int min, int max, int move, int depth)
     open = (end < 0) + (sint16)((Value >> 16) & 0xffff);
     antiphase = 32 - phase;
     Value = end * antiphase + open * phase;
-    Value = ((Value >> 5) * PositionalWeight / 100) + matval;
+    Value = (((Value >> 5) * PositionalWeight) >> 7) + matval;
     Value = (Value * Token) >> 7;
     if (Value > 0)
-        Value -= ((PawnInfo->wDrawWeight * MIN(Value, 100)) >> 6) * DrawWeight / 100;
+        Value -= (((PawnInfo->wDrawWeight * MIN(Value, 100)) >> 6) * DrawWeight)>>7;
     else
-        Value += ((PawnInfo->bDrawWeight * MIN(-Value, 100)) >> 6) * DrawWeight / 100;
+        Value += (((PawnInfo->bDrawWeight * MIN(-Value, 100)) >> 6) * DrawWeight)>>7;
 
     Value = EvalEnding(Position, Value, wPatt, bPatt);
 	
@@ -1298,9 +1288,9 @@ void Eval(typePos * Position, int min, int max, int move, int depth)
             r >>= 1;
             }
         }
-   Position->Dyn->Value = Position->wtm ? Value : -Value;
-   Position->Dyn->PositionalValue = Value - matval;
-   Position->Dyn->lazy = 0;
+    Position->Dyn->Value = Position->wtm ? Value : -Value;
+    Position->Dyn->PositionalValue = Value - matval;
+    Position->Dyn->lazy = 0;
     GetEvalHash(Position->Dyn->Hash) = (Position->Dyn->Hash & 0xffffffffffff0000) | (Position->Dyn->Value & 0xffff);
     if (move && !(Position->Dyn - 1)->lazy)
         AdjustPositionalGain(Position, move);

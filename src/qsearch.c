@@ -39,7 +39,7 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 #include "black.h"
 #endif
 
-int MyQsearch(typePos* Position, int value, int depth)
+int MyQsearch(typePos *Position, int value, int depth)
     {
     int Value, i, v, best_value;
     uint32 Temp, move, trans_move = 0, trans_depth, move_depth = 0;
@@ -181,7 +181,7 @@ int MyQsearch(typePos* Position, int value, int depth)
     HashUpper(Position->Dyn->Hash, 1, best_value);
     return(best_value);
     }
-int MyQsearchCheck(typePos* Position, int value, int depth)
+int MyQsearchCheck(typePos *Position, int value, int depth)
     {
     int ignored, Value, i;
     int v, best_value, trans_depth, move_depth = 0;

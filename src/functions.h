@@ -29,7 +29,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see http://www.gnu.org/licenses/.
 *******************************************************************************/
-
+#include "fire.h" // Added by YC on 1/9/2014
 void NanoSleep(int);
 int InitPawnHash(int);
 int InitPawnHashWrapper(int);
@@ -182,7 +182,7 @@ bool SubsumeTripleSMP();
 
 bool SMPSplit(typePos*, typeNext *, int, int, int, int, int *);
 void FailHigh(SplitPoint*, typePos *, uint32);
-void FailHigh(SplitPoint* sp, typePos* Position, uint32 m);
+//void FailHigh(SplitPoint* sp, typePos* Position, uint32 m);
 
 void SMPStub();
 void ThreadHalt(typePos*);

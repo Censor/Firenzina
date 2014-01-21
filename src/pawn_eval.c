@@ -254,7 +254,7 @@ static int BlackKingDanger(typePos *Position, int bKs)
     v += e;
     return v;
     }
-void PawnEval(typePos * Position, typePawnEval *Result)
+void PawnEval(typePos *Position, typePawnEval *Result)
     {
     int c, Value = 0, B, DistanceWhiteKing, DistanceBlackKing, BestWhiteKingDistance, BestBlackKingDistance;
     int wKs = Position->wKsq, bKs = Position->bKsq;
@@ -549,10 +549,8 @@ void PawnEval(typePos * Position, typePawnEval *Result)
         Value -= KingOOO;
 	v1 = (sint16)(Value & 0xffff);
 	v2 = (v1 < 0) + (sint16)((Value >> 16) & 0xffff);
-	v1 *= (PawnWeight << 10) / 100;
-	v1 >>= 10;
-	v2 *= (PawnWeight << 10) / 100;
-	v2 >>= 10;
+	v1 = (v1 * PawnWeight) >> 7;
+	v2 = (v2 * PawnWeight) >> 7;
 	Value = Score(v2, v1);
     Result->Score = Value;
     v = WhiteKingDanger(Position, wKs);

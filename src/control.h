@@ -29,16 +29,16 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see http://www.gnu.org/licenses/.
 *******************************************************************************/
-
+#include "fire.h"
 #if defined(_WIN32) || defined(_WIN64)
 #include <setjmp.h>
 #include <time.h>
 #endif
 
-boolean EasyMove;
-boolean BadMove;
-boolean BattleMove;
-boolean Analysing;
+bool EasyMove;
+bool BadMove;
+bool BattleMove;
+bool Analysing;
 
 extern jmp_buf J;
 
@@ -52,4 +52,4 @@ uint32 RootBestMove;
 uint64 StartClock;
 uint64 CPUtime;
 
-volatile boolean JumpIsSet;
+volatile bool JumpIsSet;

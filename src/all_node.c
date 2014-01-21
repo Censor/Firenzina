@@ -41,7 +41,7 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 #include "black.h"
 #endif
 
-int MyAll(typePos* Position, int value, int depth)
+int MyAll(typePos *Position, int value, int depth)
     {
     int move, i;
     TransDeclare();
@@ -119,7 +119,7 @@ int MyAll(typePos* Position, int value, int depth)
         if (VerifyNull && v >= value)
             {
             int Flags = Position->Dyn->flags;
-           Position->Dyn->flags &= ~3;
+            Position->Dyn->flags &= ~3;
             new_depth -= VerifyReduction;
             if (QSearchCondition)
                 v = MyQsearch(Position, value, 0);
@@ -127,7 +127,7 @@ int MyAll(typePos* Position, int value, int depth)
                 v = MyLowDepth(Position, value, new_depth);
             else
                 v = MyAll(Position, value, new_depth);
-           Position->Dyn->flags = Flags;
+            Position->Dyn->flags = Flags;
             CheckHalt();
             }
         if (v >= value)
@@ -256,7 +256,7 @@ int MyAll(typePos* Position, int value, int depth)
     HashUpper(Position->Dyn->Hash, depth, v);
     return(v);
     }
-int MyAllCheck(typePos* Position, int value, int depth)
+int MyAllCheck(typePos *Position, int value, int depth)
     {
     int move, cnt;
     int trans_depth, move_depth = 0, trans_move = 0, Value, new_depth, v, i;

@@ -115,31 +115,30 @@ void SortOrdinary(typeMoveList *m1, typeMoveList *m2, uint32 s1, uint32 s2, uint
    }                                                   \
       q--;                                             \
       q->move = move; }
-typeMoveList* EvasionMoves(typePos* Position, typeMoveList* list, uint64 mask)
-	{
-	if (Position->wtm)
-		return WhiteEvasions(Position, list, mask);
-	return BlackEvasions(Position, list, mask);
-	}
-typeMoveList* OrdinaryMoves(typePos* Position, typeMoveList* list)
-	{
-	if (Position->wtm)
-		return WhiteOrdinary(Position, list);
-	return BlackOrdinary(Position, list);
-	}
-typeMoveList* CaptureMoves(typePos* Position, typeMoveList* list, uint64 mask)
-	{
-	if (Position->wtm)
-		return WhiteCaptures(Position, list, mask & bBitboardOcc);
-	return BlackCaptures(Position, list, mask & wBitboardOcc);
-	}
+typeMoveList *EvasionMoves(typePos *Position, typeMoveList *list, uint64 mask)
+    {
+    if (Position->wtm)
+        return WhiteEvasions(Position, list, mask);
+    return BlackEvasions(Position, list, mask);
+    }
+typeMoveList *OrdinaryMoves(typePos *Position, typeMoveList *list)
+    {
+    if (Position->wtm)
+        return WhiteOrdinary(Position, list);
+    return BlackOrdinary(Position, list);
+    }
+typeMoveList *CaptureMoves(typePos *Position, typeMoveList *list, uint64 mask)
+    {
+    if (Position->wtm)
+        return WhiteCaptures(Position, list, mask & bBitboardOcc);
+    return BlackCaptures(Position, list, mask & wBitboardOcc);
+    }
 #include "move_gen.c"
 #include "white.h"
 #else
 #include "black.h"
 #endif
-
-typeMoveList* MyEvasion(typePos* Position, typeMoveList* List, uint64 c2)
+typeMoveList *MyEvasion(typePos *Position, typeMoveList *List, uint64 c2)
     {
     uint64 U, T, att, mask;
     int sq, to, fr, c, king, pi;
@@ -252,7 +251,7 @@ typeMoveList* MyEvasion(typePos* Position, typeMoveList* List, uint64 c2)
     List->move = 0;
     return List;
     }
-typeMoveList* MyPositionalGain(typePos* Position, typeMoveList* List, int av)
+typeMoveList *MyPositionalGain(typePos *Position, typeMoveList *List, int av)
     {
     uint64 empty = ~Position->OccupiedBW, U, T;
     int to, sq;
@@ -303,7 +302,7 @@ typeMoveList* MyPositionalGain(typePos* Position, typeMoveList* List, int av)
     Sort;
     return List;
     }
-typeMoveList* MyCapture(typePos* Position, typeMoveList* List, uint64 mask)
+typeMoveList *MyCapture(typePos *Position, typeMoveList *List, uint64 mask)
     {
     uint64 U, T, AttR, AttB;
     int sq, to, c;
@@ -395,7 +394,7 @@ typeMoveList* MyCapture(typePos* Position, typeMoveList* List, uint64 mask)
     List->move = 0;
     return List;
     }
-typeMoveList* MyOrdinary(typePos* Position, typeMoveList* List)
+typeMoveList *MyOrdinary(typePos *Position, typeMoveList *List)
     {
     uint64 empty = ~Position->OccupiedBW, U, T, Rook, Bishop, Pawn;
     int to, sq, opks = OppKingSq;
@@ -541,7 +540,7 @@ typeMoveList* MyOrdinary(typePos* Position, typeMoveList* List)
     List->move = 0;
     return List;
     }
-typeMoveList* MyQuietChecks(typePos* Position, typeMoveList* List, uint64 mask)
+typeMoveList *MyQuietChecks(typePos *Position, typeMoveList *List, uint64 mask)
     {
     int opks, king, sq, to, fr, pi;
     uint64 U, T, V;

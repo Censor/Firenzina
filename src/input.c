@@ -704,7 +704,7 @@ void Input(typePos * Position)
 void Input(typePos *Position)
     {
     int i, r = 0;
-    if (SupressInput)
+    if (SuppressInput)
         return;
     if (QuitDemand)
         ParseInput(Position, "quit");

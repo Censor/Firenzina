@@ -184,7 +184,7 @@ void InitGlobals()
     OptMaxThreads = MaxCPUs;
 	OptMinThreads = 1; // Added 5/22/2013 by Yuri Censor for Firenzina
     Ponder = false;
-	RandRange = 20;
+	RandRange = 0;
     SearchIsDone = true;
     SMPisActive = false;
     StallMode = false;

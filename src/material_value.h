@@ -29,7 +29,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see http://www.gnu.org/licenses/.
 *******************************************************************************/
-
+#include "fire.h"
 #define I(a,b,c) ((a & 0xff) | (b << 8) | (0 << 27))
 #define QueenEnding 1
 #define RookEnding 2

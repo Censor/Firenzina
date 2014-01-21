@@ -68,7 +68,7 @@ static int InitFlags(int wP, int wN, int wB, int wBL, int wBD, int wR, int wQ, i
         Flags |= WhiteMinorOnly << 2;
     if (bN == 1 && !bQ && !bR && !bB)
         Flags |= BlackMinorOnly << 2;
-	if (!wN && !wB && !wR && !wQ && !bN && !bB && !bR && !bQ && wP + bP == 1)
+    if (!wN && !wB && !wR && !wQ && !bN && !bB && !bQ && !bR && wP + bP == 1)
         Flags |= PawnEnding << 2;
     if (wN == 1 && wB == 1 && !wR && !wQ && !wP && !bQ && !bR && !bB && !bN && !bP)
         Flags |= BishopKnightMate << 2;
@@ -849,21 +849,21 @@ static void CalculateMaterialValue(int c)
     uint64 va;
     n = c;
     wQ = n & 1;
-    n /= 2;
+    n >>= 1;
     bQ = n & 1;
-    n /= 2;
+    n >>= 1;
     wR = n % 3;
     n /= 3;
     bR = n % 3;
     n /= 3;
     wBL = n & 1;
-    n /= 2;
+    n >>= 1;
     wBD = n & 1;
-    n /= 2;
+    n >>= 1;
     bBL = n & 1;
-    n /= 2;
+    n >>= 1;
     bBD = n & 1;
-    n /= 2;
+    n >>= 1;
     wN = n % 3;
     n /= 3;
     bN = n % 3;
@@ -912,8 +912,7 @@ static void CalculateMaterialValue(int c)
         wt = bWeight;
     Value *= wt;
     Value /= 10;
-    Value *= (MaterialWeight << 10) / 100;
-    Value >>= 10;
+	Value = (Value * MaterialWeight) >> 7;
     Material[c].Value = Value;
     Material[c].token = InitTokens(wP, wN, wB, wBL, wBD, wR, wQ, bP, bN, bB, bBL, bBD, bR, bQ);
     Material[c].flags = InitFlags(wP, wN, wB, wBL, wBD, wR, wQ, bP, bN, bB, bBL, bBD, bR, bQ);

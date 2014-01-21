@@ -46,7 +46,7 @@ int MyCut(typePos* Position, int value, int depth)
     int height, move, i, singular;
     TransDeclare();
     int trans_depth, move_depth = 0, trans_move = 0, Value, cnt;
-    int v, extend, new_depth, move_is_check;
+    int v, extend, new_depth, half_depth, near_half_depth, move_is_check;
     typeNext NextMove[1];
     typeDynamic *Pos0 = Position->Dyn;
     uint64 zob = Position->Dyn->Hash;
@@ -150,7 +150,9 @@ int MyCut(typePos* Position, int value, int depth)
     singular = 0;
     if (depth >= MinTransMoveDepth && trans_move && MyOK(Position, trans_move))
         {
-        v = MyExclude(Position, value - depth, depth - DepthRed, trans_move & 0x7fff);
+		half_depth = depth >> 1;
+		near_half_depth = depth - (MIN (12, half_depth));
+        v = MyExclude(Position, value - depth, near_half_depth, trans_move & 0x7fff);
         CheckHalt();
         if (v < value - depth)
             {
@@ -158,9 +160,10 @@ int MyCut(typePos* Position, int value, int depth)
             height = Height(Position);
             if (height << 2 <= depth)
                 singular++;
-            v = MyExclude(Position, value - ValueRed, depth - DepthRed, trans_move & 0x7fff);
+			
+            v = MyExclude(Position, value - half_depth, near_half_depth, trans_move & 0x7fff);
             CheckHalt();
-            if (v < value - ValueRed)
+            if (v < value - half_depth)
                 {
                 singular++;
                 if (height << 3 <= depth)
@@ -295,10 +298,10 @@ int MyCut(typePos* Position, int value, int depth)
     HashUpperCut(Position, depth, v);
     return(v);
     }
-int MyCutCheck(typePos * Position, int value, int depth)
+int MyCutCheck(typePos *Position, int value, int depth)
     {
     int height, move, cnt, Reduction, extend;
-    int trans_depth, move_depth = 0, trans_move = 0, Value, new_depth, v, i;
+    int trans_depth, move_depth = 0, trans_move = 0, Value, new_depth, near_half_depth, v, i;
     TransDeclare();
     typeMoveList List[256], *list, *p, *q;
     uint64 zob = Position->Dyn->Hash;
@@ -363,7 +366,8 @@ int MyCutCheck(typePos * Position, int value, int depth)
     singular = 0;
     if (depth >= MinTransMoveDepth && trans_move)
         {
-        v = MyExcludeCheck(Position, value - depth, depth - DepthRed, trans_move & 0x7fff);
+		near_half_depth = depth - (MIN (12, depth >> 1));
+        v = MyExcludeCheck(Position, value - depth, near_half_depth, trans_move & 0x7fff);
         CheckHalt();
         if (v < value - depth)
             {
@@ -371,7 +375,7 @@ int MyCutCheck(typePos * Position, int value, int depth)
             height = Height(Position);
             if (height << 2 <= depth)
                 singular++;
-            v = MyExcludeCheck(Position, value - 2 * depth, depth - DepthRed, trans_move & 0x7fff);
+            v = MyExcludeCheck(Position, value - 2 * depth, near_half_depth, trans_move & 0x7fff);
             CheckHalt();
             if (v < value - 2 *depth)
                 {

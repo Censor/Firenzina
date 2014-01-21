@@ -31,7 +31,7 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 *******************************************************************************/
 
 
-
+#include "fire.h" // Added by YC on 1/9/2014
 #if defined(__GNUC__)
 
 #include <limits.h>

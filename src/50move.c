@@ -32,7 +32,7 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 
 #include "fire.h"
 
-int Move50(typePos * Position)
+int Move50(typePos *Position)
     {
     typeMoveList List[256];
     typeMoveList *p;
