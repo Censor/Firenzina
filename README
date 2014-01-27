@@ -1,4 +1,4 @@
-Firenzina 2.4 xTreme is a free, open-source UCI chess engine by Kranium (Norman Schmidt), Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades), 
+Firenzina 2.4.1 xTreme is a free, open-source UCI chess engine by Kranium (Norman Schmidt), Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades), 
 a derivative of Fire 2.2 xTreme by Kranium (Norman Schmidt),
 a derivative (via Fire) of FireBird by Kranium (Norman Schmidt) and Sentinel (Milos Stanisavljevic),
 based on (via Fire and FireBird) IppoLit engines
@@ -7,6 +7,9 @@ Yusuf Ralf Weisskopf, Ivan Skavinsky Skavar and all Decembrists.
 
 Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio. 
 Acknowledgments: Yuri Censor (Dmitri Gusev) thanks Kranium (Norman Schmidt), Jose Velasco (Velmarin), Jon Dart, Jim Ablett, and Andrey Chilantiev for their support, help and advice.  
+
+Firenzina 2.4.1 xTreme by Kranium, Yuri Censor and ZirconiumX
+Minor changes and speedups by Yuri Censor.
 
 Firenzina 2.4 xTreme by Kranium, Yuri Censor and ZirconiumX
 Multiple changes by Kranium (see 2-4_changes.txt) with minor alterations by Yuri Censor (uncommented MatFactors, kept Suppress). Reduced MaxCPUs to 16.
