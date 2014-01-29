@@ -261,7 +261,7 @@ bool TryInput()
     int v;
     fd_set fd[1];
     struct timeval tv[1];
-    if (SupressInput)
+    if (SuppressInput)
         return false;
     if (!SearchIsDone && StallInput)
         return false;

@@ -335,14 +335,14 @@ volatile bool Stop;
 volatile bool UCINewGame;
 
 #ifdef FischerRandom
-boolean Chess960;
+bool Chess960;
 uint8 Chess960KingRookFile;
 uint8 Chess960QueenRookFile;
 uint8 Chess960KingFile;
 #endif
 
 #ifdef Bench
-boolean BenchMarking;
+bool BenchMarking;
 #endif
 
 bool Ponder;

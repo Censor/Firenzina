@@ -53,10 +53,10 @@ typedef struct
 t_args ARGS[MaxCPUs];
 volatile int init_threads;
 volatile int io_init;
-static boolean SMPInit = false;
+static bool SMPInit = false;
 static int CurrCPUs = 0;
-static boolean volatile Destroy;
-static boolean volatile Destroyed;
+static bool volatile Destroy;
+static bool volatile Destroyed;
 typePos* volatile Working[MaxCPUs];
 
 void EndSMP()

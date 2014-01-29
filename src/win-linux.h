@@ -29,7 +29,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see http://www.gnu.org/licenses/.
 *******************************************************************************/
-
+#include "fire.h" // added by YC 01/29/2014 to provide bool
 #if defined(_WIN32) || defined(_WIN64)
 #include <windows.h>
 #define NomeWindows
@@ -59,7 +59,7 @@ typedef __int8 sint8;
 typedef __int16 sint16;
 typedef __int32 sint32;
 typedef __int64 sint64;
-typedef unsigned __int8 boolean;
+typedef unsigned __int8 bool;
 typedef unsigned __int8 uint8;
 typedef unsigned __int16 uint16;
 typedef unsigned __int32 uint32;

@@ -33,7 +33,10 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>Intel C++ Compiler XE 13.0</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>NotSet</CharacterSet>
+    <ProfileGuidedOptimization>PGOOptimize</ProfileGuidedOptimization>
+    <InterproceduralOptimization>true</InterproceduralOptimization>
+    <UseIntelIPP>Sequential</UseIntelIPP>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -54,7 +57,7 @@
     <InterproceduralOptimization>true</InterproceduralOptimization>
     <UseIntelIPP>Sequential</UseIntelIPP>
     <UseIntelMKL>No</UseIntelMKL>
-    <ProfileGuidedOptimization>PGOInstrument</ProfileGuidedOptimization>
+    <ProfileGuidedOptimization>PGOOptimize</ProfileGuidedOptimization>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -85,7 +88,11 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
+      <Optimization>MaxSpeedHighLevel</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -130,7 +137,7 @@
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <C99Support>true</C99Support>
-      <FloatingPointModel>Precise</FloatingPointModel>
+      <FloatingPointModel>Fast2</FloatingPointModel>
       <VectorizerDiagnosticLevel>LoopsSuccessUnsuccessVect2</VectorizerDiagnosticLevel>
       <PreprocessorDefinitions>_WIN64;_MBCS;%(PreprocessorDefinitions);NOALIAS</PreprocessorDefinitions>
       <Parallelization>false</Parallelization>
@@ -141,10 +148,10 @@
       <StringPooling>true</StringPooling>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <CheckUndimensionedArrays>false</CheckUndimensionedArrays>
+      <CheckUndimensionedArrays>true</CheckUndimensionedArrays>
       <DisableIntelLangExtensions>false</DisableIntelLangExtensions>
       <OptimizeForWindowsApplication>true</OptimizeForWindowsApplication>
-      <StructMemberAlignment>Default</StructMemberAlignment>
+      <StructMemberAlignment>8Bytes</StructMemberAlignment>
       <DisableSpecificWarnings>
       </DisableSpecificWarnings>
       <OmitFramePointers>true</OmitFramePointers>
@@ -152,12 +159,13 @@
       <Optimization>MaxSpeedHighLevel</Optimization>
       <ExceptionHandling>Sync</ExceptionHandling>
       <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <CompileAs>CompileAsC</CompileAs>
     </ClCompile>
     <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>NotSet</SubSystem>
       <InterproceduralOptimization>true</InterproceduralOptimization>
     </Link>
   </ItemDefinitionGroup>
