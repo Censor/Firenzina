@@ -75,7 +75,9 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <EmbedManifest>false</EmbedManifest>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -137,7 +139,7 @@
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <C99Support>true</C99Support>
-      <FloatingPointModel>Fast2</FloatingPointModel>
+      <FloatingPointModel>Precise</FloatingPointModel>
       <VectorizerDiagnosticLevel>LoopsSuccessUnsuccessVect2</VectorizerDiagnosticLevel>
       <PreprocessorDefinitions>_WIN64;_MBCS;%(PreprocessorDefinitions);NOALIAS</PreprocessorDefinitions>
       <Parallelization>false</Parallelization>
@@ -151,7 +153,7 @@
       <CheckUndimensionedArrays>true</CheckUndimensionedArrays>
       <DisableIntelLangExtensions>false</DisableIntelLangExtensions>
       <OptimizeForWindowsApplication>true</OptimizeForWindowsApplication>
-      <StructMemberAlignment>8Bytes</StructMemberAlignment>
+      <StructMemberAlignment>16Bytes</StructMemberAlignment>
       <DisableSpecificWarnings>
       </DisableSpecificWarnings>
       <OmitFramePointers>true</OmitFramePointers>
@@ -159,13 +161,13 @@
       <Optimization>MaxSpeedHighLevel</Optimization>
       <ExceptionHandling>Sync</ExceptionHandling>
       <DisableLanguageExtensions>false</DisableLanguageExtensions>
-      <CompileAs>CompileAsC</CompileAs>
+      <CompileAs>Default</CompileAs>
     </ClCompile>
     <Link>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <SubSystem>NotSet</SubSystem>
+      <SubSystem>Console</SubSystem>
       <InterproceduralOptimization>true</InterproceduralOptimization>
     </Link>
   </ItemDefinitionGroup>

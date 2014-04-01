@@ -39,13 +39,13 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 static INLINE int BSF(UINT64 x)
     {
     int r;
-    _BitScanForward64(&r, x);
+    _BitScanForward64((DWORD *)&r, x);
     return r;
     }
 static INLINE int BSR(UINT64 x)
     {
     int r;
-    _BitScanReverse64(&r, x);
+    _BitScanReverse64((DWORD *)&r, x);
     return r;
     }
 #ifdef HasIntrinsics

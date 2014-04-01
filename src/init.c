@@ -72,8 +72,8 @@ static void parse_option(const char *str)
 #ifdef RobboBases
 	char *s;
 #endif
-	RandRange = 0;
     char arg[6][256];
+	RandRange = 0;
     arg[0][0] = arg[1][0] = arg[2][0] = '\0';
     sscanf(str, "%s %s %s", arg[0], arg[1], arg[2]);
 
