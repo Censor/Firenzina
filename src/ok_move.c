@@ -1,4 +1,4 @@
-/*******************************************************************************
+/******************************************************************************
 Firenzina is a UCI chess playing engine by
 Kranium (Norman Schmidt), Yuri Censor (Dmitri Gusev) and ZirconiumX (Matthew Brades).
 Rededication: To the memories of Giovanna Tornabuoni and Domenico Ghirlandaio.
