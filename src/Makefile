@@ -2,10 +2,13 @@
 # Makefile
 #
 
-LIBS = -lpthread
+LIBS = 
+NDK = /android/ndk
+SYSROOT = $(NDK)/platforms/android-8/arch-arm
+CC = $(NDK)/toolchains/arm-linux-androideabi-4.8/prebuilt/windows-x86_64/bin/arm-linux-androideabi-gcc --sysroot=$(SYSROOT)
 
 
-default: fire
+default: firenzina
 
 OFILES = main.o \
                     50move.o \
@@ -63,22 +66,23 @@ OFILES = main.o \
                     top_node.o \
                     unmake_move.o \
                     utility.o \
-                 
-     
+                    cpu-features.o \
+
+
 $(OFILES): 
 
-fire:  $(OFILES) 
-	gcc -o fire $(OFILES)  $(LIBS) 
+firenzina:  $(OFILES)
+	$(CC) -o firenzina $(OFILES)  $(LIBS) 
 
 clean:
-	rm -f *.o  fire
+	rm -f *.o  firenzina
 
 .c.o:   main.c
-	gcc -c -g $*.c  -Wall -w -pipe  -s -std=c99 -DNDEBUG -DHAVE_STRUCT_TIMESPEC -Ofast -static  \
+	$(CC) -c -g $*.c  -Wall -w -pipe  -s -std=c99 -DNDEBUG -DHAVE_STRUCT_TIMESPEC -Ofast -static  \
                       -flto -fwhole-program -finline-functions -fprefetch-loop-arrays  \
-                      -Wfatal-errors -mtune=native -DHasPreFetch -DRobboBases \
-                      
-                         
+                      -Wfatal-errors -mtune=arm7 -DHasPreFetch -DRobboBases \
+
+
 
 # for popcount (AMD)          =   -march=amdfam10 -mtune=amdfam10 -mpopcnt -DHasPopCNT
 # for popcount (INTEL)        =   -msse4.2 -march=corei7 -mtune=corei7 -mpopcnt -DHasPopCNT
