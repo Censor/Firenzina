@@ -106,7 +106,11 @@ HANDLE PThread[MaxCPUs], PThreadIO;
 #define uint64 unsigned long long int
 #define INLINE inline
 #define Type64Bit "%lld"
+#ifdef __ANDROID__
+#define MemAlign(a, b, c) a = memalign (b, c)
+#else
 #define MemAlign(a, b, c) posix_memalign ((void*) &(a), b, c)
+#endif
 #define AlignedFree(x) free (x)
 #include "bits.h"
 #include <pthread.h>

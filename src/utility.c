@@ -385,6 +385,9 @@ void GetSysInfo()
 SYSTEM_INFO sysinfo;
     GetSystemInfo(&sysinfo);
     NumCPUs = sysinfo.dwNumberOfProcessors;
+#elif defined(__ANDROID__)
+#include "cpu-features.h"
+NumCPUs = android_getCpuCount();
 #else
 #include <sys/sysinfo.h>
 NumCPUs = get_nprocs();

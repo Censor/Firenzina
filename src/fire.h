@@ -50,6 +50,9 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 
 #if defined(__i386__)
 #define Plat "Linux 32"
+#elif defined(__ANDROID__)
+#define boolean bool
+#define Plat "Android"
 #else
 #define Plat "Linux 64"
 //#define LinuxLargePages
