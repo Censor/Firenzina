@@ -38,7 +38,7 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 #include <memory.h>
 
 #define Engine "Firenzina"
-#define Vers "2.4.1 xTreme"
+#define Vers "2.4.4 xTreme"
 #define Orig "based on Ippolit"
 #define Author "Kranium, Yuri Censor and ZirconiumX, a derivative of Fire by Kranium" 
 // ZirconiumX added, 3/19/2013
