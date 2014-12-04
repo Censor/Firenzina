@@ -379,6 +379,19 @@ void ShowBanner()
 #endif
     }
 
+
+#ifdef __APPLE__
+get_nprocs (void)
+{
+    int i = 0;
+    size_t s = sizeof (i);
+    if (sysctlbyname ("hw.ncpu", &i, &s, NULL, 0))
+        return 1;
+    return i;
+
+}
+#endif
+
 void GetSysInfo()
     {
 #if defined(_WIN32) || defined(_WIN64)
@@ -389,7 +402,9 @@ SYSTEM_INFO sysinfo;
 #include "cpu-features.h"
 NumCPUs = android_getCpuCount();
 #else
+#ifdef __linux__
 #include <sys/sysinfo.h>
+#endif
 NumCPUs = get_nprocs();
 #endif
 
