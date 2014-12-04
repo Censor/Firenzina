@@ -379,7 +379,6 @@ void ShowBanner()
 #endif
     }
 
-
 #ifdef __APPLE__
 get_nprocs (void)
 {
